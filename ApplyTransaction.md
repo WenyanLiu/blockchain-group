@@ -53,12 +53,12 @@ func (tx *Transaction) AsMessage(s Signer) (Message, error) {
     }
 从数据结构的来看，Message和交易的变量基本相同。在交易执行中，Message由此次待执行的tx对象转化而来，并携带了解析出的tx的(转帐)转出方地址，属于待处理的数据对象。
 
-##(二)  TransitionDB
+## (二)  TransitionDB
 ![TransitionDB](./img/transitionDB.png)
 
 交易执行是以太坊协议中最复杂的部分：它定义了状态转换函数
 
-##(三) Receipt
+## (三) Receipt
 ![Receipt](./img/Receipt.png)
 
 Receipt 中有一个Log类型的数组，其中每一个Log对象记录了Tx中一小步的操作。所以，每一个tx的执行结果，由一个Receipt对象来表示；更详细的内容，由一组Log对象来记录。这个Log数组很重要，比如在不同Ethereum节点(Node)的相互同步过程中，待同步区块的Log数组有助于验证同步中收到的block是否正确和完整，所以会被单独同步(传输)。
