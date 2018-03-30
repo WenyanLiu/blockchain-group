@@ -4,7 +4,7 @@
 
 * [开始使用以太坊](./开始使用以太坊.md)
 * 以太坊源码学习
-  * trie: [Modified Merkle Patricia Tree](./trie)
+  * trie: [Modified Merkle Patricia Tree](./trie.md)
 
 ## 路线
 
