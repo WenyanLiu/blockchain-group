@@ -7,8 +7,8 @@
 在这个表格中，可以和以太坊源码中Params/protocol_params.go中的定义所对应，如表中倒数第三与第四行的内容，定义了一次SHA3操作的gas费用和每个输入数据单词的SHA3操作额外费用，可以与下图代码段完美契合。
 
 ```
-Sha256BaseGas           uint64 = 60     // Base price for a SHA256 operation
-Sha256PerWordGas        uint64 = 12     // Per-word price for a SHA256 operation
+Sha3Gas          uint64 = 30    // Once per SHA3 operation.
+Sha3WordGas      uint64 = 6     // Once per word of the SHA3 operation's data.
 ```
 但是，表格中前列的集合指令没有在这个代码段中，源码中还会根据实际的情况，定义一些操作集合的gas费用。
 
