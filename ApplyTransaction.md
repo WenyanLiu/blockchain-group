@@ -56,11 +56,12 @@ func (tx *Transaction) AsMessage(s Signer) (Message, error) {
 ## (二)  TransitionDB
 ![TransitionDB](./img/20180330/transitionDB.png)
 
-交易执行是以太坊协议中最复杂的部分：它定义了状态转换函数
+交易执行是以太坊协议中最复杂的部分：它定义了状态转换函数（待细化）
 
 ## (三) Receipt
 ![Receipt](./img/20180330/Receipt.png)
 
+（待细化）
 Receipt 中有一个Log类型的数组，其中每一个Log对象记录了Tx中一小步的操作。所以，每一个tx的执行结果，由一个Receipt对象来表示；更详细的内容，由一组Log对象来记录。这个Log数组很重要，比如在不同Ethereum节点(Node)的相互同步过程中，待同步区块的Log数组有助于验证同步中收到的block是否正确和完整，所以会被单独同步(传输)。
 
 Receipt的PostState保存了创建该Receipt对象时，整个Block内所有“帐户”的当时状态。Ethereum 里用stateObject来表示一个账户Account，这个账户可转帐(transfer value), 可执行tx, 它的唯一标示符是一个Address类型变量。 这个Receipt.PostState 就是当时所在Block里所有stateObject对象的RLP Hash值。
