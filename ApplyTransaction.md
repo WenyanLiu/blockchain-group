@@ -60,7 +60,7 @@ func (tx *Transaction) AsMessage(s Signer) (Message, error) {
 是区块中所有交易共享的Gas池，记录的是一个区块中可用的Gas数量（新建时，将一个Block的Gaslimit赋值给它）。
 
 在TransitionDB()将会通过执行当前的Message来完成状态的改变，返回结果和Gas的消耗，其执行的具体流程如下：
-![TransitionDB](./img/20180330/TransitionDB.png)
+![TransitionDB](img/20180330/transitionDB.png)
 
 1.执行buyGas()。首先从交易(转账)的转出方账户扣除一笔Ether，就是冻结我们为这笔交易所设置的最大Gas消耗费用，其值等于GasLimit
 *GasPrice；同时从Gaspool中减去该笔交易所需，设置initialGas和gas变量，分别表示初始可用的Gas和即时可用的Gas,代码如下。
@@ -102,6 +102,7 @@ func (tx *Transaction) AsMessage(s Signer) (Message, error) {
 交易的一些基本数据，如该次交易使用量。
 
 （具体的作用，尤其是Log的作用，可以在随后的学习中相继补充）
+
 *在Receipt 中有一个Log类型的数组，其中每一个Log对象记录了交易中一小步的操作。所以，每一个tx的执行结果，可以由一个Receipt对象来
 表示；更详细的内容，由一组Log对象来记录。这个Log数组很重要，比如在不同Ethereum节点(Node)的相互同步过程中，待同步区块的
 Log数组有助于验证同步中收到的block是否正确和完整，所以会被单独同步(传输)。*
