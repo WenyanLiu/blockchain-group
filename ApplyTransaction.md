@@ -92,7 +92,6 @@ func (tx *Transaction) AsMessage(s Signer) (Message, error) {
     st.state.AddBalance(st.evm.Coinbase, new(big.Int).Mul(new(big.Int).SetUint64(st.gasUsed()), st.gasPrice))
 值得注意的是，这里的st.gas在步骤5中被加上了refundGas, 所以这笔奖励金所对应的Gas，其数量小于该交易实际消耗量requiredGas。
 
-交易执行是以太坊协议中最复杂的部分，它的核心在于定义了状态转换函数（待细化）
 
 ## (三) Receipt
 以太坊将会为每笔交易都产生一个收据（Receipt） ，这个收据包含关于交易的特定信息，如下图所示：
