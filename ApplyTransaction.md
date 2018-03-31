@@ -85,7 +85,8 @@ func (tx *Transaction) AsMessage(s Signer) (Message, error) {
     	return st.initialGas - st.gas
     }
 然后，将剩余st.gas 和基于实际消耗量requiredGas，系统提供补偿refundGas立即归还到交易转出方。refundGas 所折算的Ether会被立即加在(转帐)转出方账户上，同时st.gas += refundGas，gp += st.gas，即剩余的Gas加上系统补偿的Gas，被一起归并进GasPool。
-**没有看懂这一步设立的原因，为什么会有一个系统的补偿？？？**
+**没有看懂这一步设立的原因，为什么会有一个系统的补偿？？？** 目前，根据以太坊黄皮书，猜测的设计原理是如果交易的执行使得存储
+空间变大（删除了某些内容的存储），将会获得一定的补偿，这里会取 usedGas/2 和 refund的最小值
 
 5.奖励所属区块的挖掘者：系统给矿工增加一笔金额，代码如下：
 
