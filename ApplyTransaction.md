@@ -20,7 +20,7 @@ Sha3WordGas      uint64 = 6     // Once per word of the SHA3 operation's data.
 
 3.	最后创建并返回Recetip对象，以及整个tx执行过程所消耗Gas数量
 
-随后的内容，我们将分别的阐述数据结构Message，交易的执行函数TransitionDB的流程，以及Receipt的基本数据结构。
+随后的内容，我们将分别的阐述数据结构Message，交易的执行函数TransitionDB的流程，以及Receipt的基本数据结构。到目前为止，ApplyTransaction()将会是以太坊中交易在虚拟机外执行的最后一步，按照其架构设计，在此创建虚拟机后，将会在虚拟机执行账户改变，创建合约并执行合约指令数组等操作。
 ## （一） Message
 
 在ApplyTransaction()中，首先调用的AsMessage(),从上图可以看出，这个方法的主要的作用是返回一个已经对账户地址进行了签名的message，message的数据结构如下：
@@ -54,9 +54,45 @@ func (tx *Transaction) AsMessage(s Signer) (Message, error) {
 从数据结构的来看，Message和交易的变量基本相同。在交易执行中，Message由此次待执行的tx对象转化而来，并携带了解析出的tx的(转帐)转出方地址，属于待处理的数据对象。
 
 ## (二)  TransitionDB
+在ApplyMessage函数中，将会初始化一个StateTransition()对象，并直接调用TransitionDB()方法，最终返回EVM的执行字节**（不懂）**，Gas的实际消耗
+和一个错误代码（如果执行失败）。StateTransition是以太坊中状态转换的模型对象，它将会将交易应用到当前世界状态的改变，完成
+所有所需的工作并计算出一个新的合法状态树根。它以EVM，Mesage和一个Gaspool对象为输入参数，其中GasPool是之前Block中创建，
+是区块中所有交易共享的Gas池，记录的是一个区块中可用的Gas数量（新建时，将一个Block的Gaslimit赋值给它）。
+
+在TransitionDB()将会通过执行当前的Message来完成状态的改变，返回结果和Gas的消耗，其执行的具体流程如下：
 ![TransitionDB](./img/20180330/transitionDB.png)
 
-交易执行是以太坊协议中最复杂的部分：它定义了状态转换函数（待细化）
+1.执行buyGas()。首先从交易(转账)的转出方账户扣除一笔Ether，就是冻结我们为这笔交易所设置的最大Gas消耗费用，其值等于GasLimit
+*GasPrice；同时从Gaspool中减去该笔交易所需，设置initialGas和gas变量，分别表示初始可用的Gas和即时可用的Gas,代码如下。
+  ```
+  if err := st.gp.SubGas(st.msg.Gas()); err != nil {
+  		return err
+  	}
+    st.gas += st.msg.Gas() 
+       
+    st.initialGas = st.msg.Gas()
+    state.SubBalance(sender.Address(), mgval)
+   ```
+
+2.执行IntrinsicGas(), 计算tx的固有Gas消耗。它分为两个部分，每一个tx预设的消耗量，这个消耗根据是转账交易还是合约创建而略有
+不同；然后，针对tx.data.Payload中的非0字节和0字节长度计算固有消耗，最终，st.gas（当前所剩gas） -= intrinsicGas。**（Payload中具体内容还需要进一步了解）**
+
+3.EVM执行。如果交易的(转帐)转入方地址为空（判断是转账交易还是合约创建），调用EVM的Create()函数；否则，调用Call()函数。无论哪个函数返回后，更新st.gas。
+
+4.执行 refundGas()。在refundGas中，首先将会计算本次执行交易所实际消耗的Gas, 代码为：
+    
+    func (st *StateTransition) gasUsed() uint64 {
+    	return st.initialGas - st.gas
+    }
+然后，将剩余st.gas 和基于实际消耗量requiredGas，系统提供补偿refundGas立即归还到交易转出方。refundGas 所折算的Ether会被立即加在(转帐)转出方账户上，同时st.gas += refundGas，gp += st.gas，即剩余的Gas加上系统补偿的Gas，被一起归并进GasPool。
+**没有看懂这一步设立的原因，为什么会有一个系统的补偿？？？**
+
+5.奖励所属区块的挖掘者：系统给矿工增加一笔金额，代码如下：
+
+    st.state.AddBalance(st.evm.Coinbase, new(big.Int).Mul(new(big.Int).SetUint64(st.gasUsed()), st.gasPrice))
+值得注意的是，这里的st.gas在步骤5中被加上了refundGas, 所以这笔奖励金所对应的Gas，其数量小于该交易实际消耗量requiredGas。
+
+交易执行是以太坊协议中最复杂的部分，它的核心在于定义了状态转换函数（待细化）
 
 ## (三) Receipt
 ![Receipt](./img/20180330/Receipt.png)
