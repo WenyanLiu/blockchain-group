@@ -86,7 +86,7 @@ HASH(G):[<7>, '0.12 ETH']
 
 > ...; we simply define the identity function mapping the key-value set `J` to a 32-byte hash and assert that only a single such hash exists for any `J`, which though not strictly true is accurate within acceptable precision given the Keccak hash's collision resistance. In reality, a sensible implementation will not fully recompute the trie root hash for each set.
 
-释疑：[trie包的hasher go文件的`hashChildren`函数](#trie/hasher.go)
+释疑：[trie包的hasher go文件的`hashChildren`函数](#triehashergo)
 
 ## 源码解读
 
