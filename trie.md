@@ -63,7 +63,7 @@ MPT是一种前缀树的变种，基本思想来自[前缀树](#前缀树)、[�
 
 首次，将key和value转换为`bytes`。*注：为了方便理解，key使用`<>`、value使用`''`标记，在实现中他们都是字节数组。*
 
-然后，在底层DB中构建如下MPT：
+然后，构建如下MPT：
 
 ```
 root:   [<a7>, HASH(A)]
@@ -86,6 +86,10 @@ HASH(G):[<7>, '0.12 ETH']
 
 > ...; we simply define the identity function mapping the key-value set `J` to a 32-byte hash and assert that only a single such hash exists for any `J`, which though not strictly true is accurate within acceptable precision given the Keccak hash's collision resistance. In reality, a sensible implementation will not fully recompute the trie root hash for each set.
 
+#### 释疑❗️
+
+[trie包的hasher go文件的`hashChildren`函数](#triehashergo)
+
 ## 源码解读
 
 trie包的内容如下：
@@ -106,6 +110,8 @@ trie
 
 #### trie/database.go
 
+`Database`是在MPT数据结构和磁盘数据库间的中间件。
+
 #### trie/encoding.go
 
 `encoding`主要处理编码格式的相互转换。这三种编码分别是：
@@ -116,9 +122,29 @@ trie
 
 #### trie/errors.go
 
+在`errors`中，如果MPT节点不存在，`TryGet`、`TryUpdate`和`TryDelete`函数返回`MissingNodeError`。
+
 #### trie/hasher.go
 
+`hash`函数主要:
+1. 计算原有树形结构的哈希值，**体现哈希树的性质**；
+2. 保留原有树形结构，**体现压缩前缀树的性质**。
+
+计算原有树形结构的哈希值调用`hashChildren`计算所有子节点的哈希值，将原有的子节点替换成子节点的哈希值。
+
+```gofunc (h *hasher) hash(n node, db *Database, force bool) (node, node, error) {	if hash, dirty := n.cache(); hash != nil {		if db == nil {			return hash, n, nil		}		if n.canUnload(h.cachegen, h.cachelimit) {			cacheUnloadCounter.Inc(1)			return hash, hash, nil		}		if !dirty {			return hash, n, nil		}	}	collapsed, cached, err := h.hashChildren(n, db)	if err != nil {		return hashNode{}, n, err	}	hashed, err := h.store(collapsed, db, force)	if err != nil {		return hashNode{}, n, err	}	cachedHash, _ := hashed.(hashNode)	switch cn := cached.(type) {	case *shortNode:		cn.flags.hash = cachedHash		if db != nil {			cn.flags.dirty = false		}	case *fullNode:		cn.flags.hash = cachedHash		if db != nil {			cn.flags.dirty = false		}	}	return hashed, cached, nil}
+```
+
+`hashChildren`函数递归地从叶子节点向上计算到根节点。
+
+```go
+func (h *hasher) hashChildren(original node, db *Database) (node, node, error) {	var err error	switch n := original.(type) {	case *shortNode:		collapsed, cached := n.copy(), n.copy()		collapsed.Key = hexToCompact(n.Key)		cached.Key = common.CopyBytes(n.Key)		if _, ok := n.Val.(valueNode); !ok {			collapsed.Val, cached.Val, err = h.hash(n.Val, db, false)			if err != nil {				return original, original, err			}		}		if collapsed.Val == nil {			collapsed.Val = valueNode(nil)
+        }		return collapsed, cached, nil	case *fullNode:		collapsed, cached := n.copy(), n.copy()		for i := 0; i < 16; i++ {			if n.Children[i] != nil {				collapsed.Children[i], cached.Children[i], err = h.hash(n.Children[i], db, false)				if err != nil {					return original, original, err				}			} else {				collapsed.Children[i] = valueNode(nil)			}		}		cached.Children[16] = n.Children[16]		if collapsed.Children[16] == nil {			collapsed.Children[16] = valueNode(nil)		}		return collapsed, cached, nil	default:		return n, original, nil	}}
+```
+
 #### trie/iterator.go
+
+`Iterator`是遍历MPT的key-value迭代器。
 
 #### trie/node.go
 
@@ -151,6 +177,8 @@ type (
 `secure_trie`中所有的访问操作的key使用Keccak256的哈希值，避免增加访问时间的节点的长链。
 
 #### sync.go
+
+`TrieSync`是MPT同步调度器。
 
 #### trie.go
 
@@ -228,8 +256,10 @@ func (t *Trie) insert(n node, prefix, key []byte, value node) (bool, node, error
         rn, err := t.resolveHash(n, prefix)        if err != nil {            return false, nil, err        }        dirty, nn, err := t.insert(rn, prefix, key, value)        if !dirty || err != nil {            return false, rn, err        }        return true, nn, nil    default:        panic(fmt.Sprintf("%T: invalid node: %v", n, n))    }}
 ```
 
-`Get`函数获取MPT的key。
+`TryGet`函数根据MPT的key获取value。
 
-`Delete`函数删除MPT。
+`TryUpdate`函数更新或者删除MPT的节点。
+
+`Delete`函数删除MPT的节点。
 
 
