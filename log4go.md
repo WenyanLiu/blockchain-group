@@ -9,7 +9,7 @@
 :warning: 克隆命令中源代码的git仓库地址是
 
 ```
-git clone https://github.com/WenyanLiu/blockchain-group.git
+git clone https://github.com/WenyanLiu/log4go-ethereum.git
 ```
 
 #### 日志等级
@@ -32,7 +32,7 @@ git clone https://github.com/WenyanLiu/blockchain-group.git
 | 参数 | 描述 |
 | :-: | :-: |
 | `%Prefix` | 用于输出日志事件的前缀 |
-| `%LstdFlags` | `= Ldate | Ltime`，用于输出日志事件的日期和时间 |
+| `%LstdFlags` | `= Ldate \| Ltime`，用于输出日志事件的日期和时间 |
 | `%Llongfile` | 用于输出函数事件的绝对路径和文件名 |
 | `%Func`| 用于输出函数事件的函数名 |
 | `%line`| 用于输出函数事件的行号 |
