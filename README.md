@@ -23,7 +23,8 @@
 | 2018/3/30 | [Gas价目与虚拟机外的交易执行](./ApplyTransaction.md) | 袁佳豪 | :checkered_flag: |
 | 2018/3/30 | [改进的默克尔·帕特里夏树](./trie.md) | 刘文炎 | :checkered_flag: |
 | 2018/3/30 | [新区块的插入](./newBlockInsert.md) | 王浩 | :checkered_flag:  |
-| 2018/4/3 | [EVM初探](./EVM.md) | 袁佳豪 |  |
+| 2018/4/4 | [EVM初探](./EVM.md) | 袁佳豪 |  |
+| 2018/4/4 | [日志记录工具](./log4go.md) | 刘文炎 |  |
 
   
 
