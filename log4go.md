@@ -51,4 +51,68 @@ git clone https://github.com/WenyanLiu/blockchain-group.git
 
 ![log4go](./img/log4go.png)
 
+## Code
+
+在输出日志事件中，允许自定义：
+
+* `Prefix`：日志事件的前缀；
+* `Flags`：日志事件的标准日期和时间；
+* `File`：
+    * `name`:日志文件的文件名；
+    * `flag`：`O_WRONLY`只写、`O_APPEND`追加、`O_CREATE`若无创建和`os.O_TRUNC`若开关闭；
+    * `mode`：日志文件的权限；
+* `Output`：`Stdout`控制台打印和`file`文件输出。
+
+```go
+// cmd/geth/main.go
+package main
+
+import (
+    ...
+	"github.com/ethereum/go-ethereum/log"
+	...
+)
+
+func init() {
+	oslog.SetPrefix("[Debug] ")
+	oslog.SetFlags(oslog.LstdFlags)
+
+	file, err := os.OpenFile("Debug.log",os.O_WRONLY|os.O_APPEND|os.O_CREATE|os.O_TRUNC, 0666)
+	if err != nil {
+		oslog.Fatalln("Fail to create Debug.log file.")
+	}
+	oslog.SetOutput(io.MultiWriter(os.Stdout, file))
+	...
+}
+
+func main() {
+	log.DebugLog()
+    ...
+}
+```
+
+在输出函数事件中，允许自定义包含但不限于：
+
+* `pc`：当前程序计数器的值；
+* `file`：文件名；
+* `line`：行号。
+
+```go
+// log/debuglog.go
+package log
+
+import (
+	"runtime"
+	"strings"
+	"log"
+)
+
+func DebugLog() {
+	pc, file1, line, _ := runtime.Caller(1)
+	f := strings.Split(runtime.FuncForPC(pc).Name(), ".")[1]
+
+	log.Println(file1, "/", f, "()", "line", line)
+}
+```
+
 
