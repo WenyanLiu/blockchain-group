@@ -23,7 +23,7 @@
 
 #### 
 
-![](D:\wh\blockchain\技术相关\源码阅读\学习文档\blockchain-group\img\newBlockInsert.jpg)
+![](.\img\newBlockInsert.jpg)
 
 
 
