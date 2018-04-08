@@ -1,6 +1,6 @@
 # Log4go-ethereum
 
-[Log4go-ethereum](https://github.com/WenyanLiu/log4go-ethereum.git)是针对[go-ethereum](https://github.com/ethereum/go-ethereum.git)的日志记录工具。
+[Log4go-ethereum](https://github.com/WenyanLiu/log4go-ethereum.git)是针对[Go Ethereum](https://github.com/ethereum/go-ethereum.git)的日志记录工具。
 
 #### 使用Log4go-ethereum
 
