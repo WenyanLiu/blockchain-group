@@ -43,6 +43,10 @@ git clone https://github.com/WenyanLiu/log4go-ethereum.git
 
 ## What's New
 
+- [1.0-RELEASE](https://github.com/WenyanLiu/log4go-ethereum/releases/tag/1.0-RELEASE)
+    - 9 Apr, 2018
+    - 现在可以追踪`abigen`、`bootnode`、`evm`、`gethrpctest`、`rlpdump`、`swarm`和`puppeth`的栈上函数调用信息了
+
 - [1.0-SNAPSHOT](https://github.com/WenyanLiu/log4go-ethereum/releases/tag/1.0-SNAPSHOT)
     - 3 Apr, 2018
     - 现在可以追踪`geth`的栈上函数调用信息了
