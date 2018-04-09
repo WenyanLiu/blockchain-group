@@ -84,9 +84,9 @@ HASH(G):[<7>, '0.12 ETH']
 - MPT如何体现哈希树的性质？
 ```
 
-> ...; we simply define the identity function mapping the key-value set `J` to a 32-byte hash and assert that only a single such hash exists for any `J`, which though not strictly true is accurate within acceptable precision given the Keccak hash's collision resistance. In reality, a sensible implementation will not fully recompute the trie root hash for each set.
-
 #### 释疑❗️
+
+> ...; we simply define the identity function mapping the key-value set `J` to a 32-byte hash and assert that only a single such hash exists for any `J`, which though not strictly true is accurate within acceptable precision given the Keccak hash's collision resistance. In reality, a sensible implementation will not fully recompute the trie root hash for each set.
 
 [trie包的hasher go文件的`hashChildren`函数](#triehashergo)
 
