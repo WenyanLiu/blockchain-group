@@ -44,7 +44,7 @@ go的标识，意味着这个函数执行是一个新的线程
 
 
 
-![](.\img\whImg\minerPackage.jpg)
+![](./img/whImg/minerPackage.jpg)
 
 
 
@@ -125,7 +125,7 @@ wait()
 
 下面的流程图大致说明了commitNewWork()被调用的过程以及执行的操作。
 
-![](.\img\whImg\commitNewWork.jpg)
+![](./img/whImg/commitNewWork.jpg)
 
 
 
