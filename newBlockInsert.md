@@ -1,152 +1,342 @@
-# 新区块插入
-获得新区块有两个途径
->1. downloader，主要负责区块链最开始的同步工作，不断下载区块到达和主链同步
->2. fetcher，收到邻居消息后获取block
+# 区块插入具体过程
+
+以太坊通过fetcher和downloader将邻居节点传送的区块进行验证，并插入本地链中。
+
+#### fetcher的方式
+
+- fetcher用来处理单个block的消息的添加，只能添加本地当前chainHeight范围（chainHeight-6 至chainHeight+32）的区块。
+
+- handler.go会执行loop循环会处理邻居发送的NewBlockMsg消息，其中有新的block信息，交给fetcher的插入队列f.queue
+- fetcher会对block的number进行验证后调用自身的insert方法
+- insert方法中会调用f.verifyHeader验证block头部，验证通过后会执行f.insertChain方法，f.insertChain方法会调用blockchain.InsertChain方法插入区块
+
+#### downloader的方式
+- downloader方法用来和邻居节点进行区块同步，在有新邻居加入或每10秒回强制同步一次
+
+- handler.go会执行loop循环会处理邻居发送的NewBlockMsg消息，如果调用sync.go的synchronise方法 
+- sync.go的synchronise方法会设置downloader的模式，FullSync还是FastSync，调用downloader.Synchronise方法
+- downloader.Synchronise方法会调用d.syncWithPeer方法
+- d.syncWithPeer会创建fetchers函数数组，调用d.spawnSync(fetchers)方法
+- d.spawnSync方法会执行fetchers中的函数：
+- fetchHeaders，fetchBodies，fetchReceipts，processHeaders，processFullSyncContent或者processFastSyncContent
+- 获取到block之后会执行blockchain.InsertChain方法插入区块
+
+#### 
+
+![](./img/whImg/newBlockInsert.jpg)
 
 
 
+#### chainHeadEvent通知
 
-### fetcher
->fetcher包含基于块通知的同步。当我们接收到NewBlockHashesMsg或者NewBlockMsg消息时，根据消息传递的内容得到要同步的区块，然后更新本地区块链。
+当节点挖掘或者收到邻居的block并插入到链上时，会发送chainHeadEvent通知。
 
+tx_pool会执行reset方法，更新交易池中的交易
 
-fetcher 的数据结构
 ```
-type Fetcher struct {
-	// Various event channels
-	notify chan *announce	//announce的通道，
-	inject chan *inject		//inject的通道
+tx_pool.go
+func (pool *TxPool) loop() {
+for {
+		select {
+		// Handle ChainHeadEvent
+		// 处理新链头事件
+		case ev := <-pool.chainHeadCh:
+			if ev.Block != nil {
+				pool.mu.Lock()
+				// 家园阶段
+				if pool.chainconfig.IsHomestead(ev.Block.Number()) {
+					pool.homestead = true
+				}
 
-	blockFilter  chan chan []*types.Block	 //通道的通道？
-	headerFilter chan chan *headerFilterTask 
-	bodyFilter   chan chan *bodyFilterTask
+				// 重置当前交易池，确保其中交易有效
+				pool.reset(head.Header(), ev.Block.Header())
+				head = ev.Block
 
-	done chan common.Hash
-	quit chan struct{}
-
-	// Announce states
-	announces  map[string]int              //  key是peer的名字， value是announce的count， 为了避免内存占用太大。
-	announced  map[common.Hash][]*announce //  等待调度fetching的announce ，announce是一个hash通知，表示网络上有合适的新区块出现。  
-
-	fetching   map[common.Hash]*announce   // 正在fetching的announce
-	fetched    map[common.Hash][]*announce // 已经获取区块头的，等待获取区块body
-	completing map[common.Hash]*announce   //头和体都已经获取完成的announce
-
-	// Block cache
-	queue  *prque.Prque             //包含了import操作的队列(按照区块号排列)
-	queues map[string]int          // 每个邻居的block数 key是peer，value是block数量。 避免内存消耗太多。
-	queued map[common.Hash]*inject // 已经放入队列的区块。 为了去重。
-
-	// Callbacks  依赖了一些回调函数。
-	getBlock       blockRetrievalFn   // Retrieves a block from the local chain
-	verifyHeader   headerVerifierFn   // 验证header
-	broadcastBlock blockBroadcasterFn // 广播 block 到链接的节点
-	chainHeight    chainHeightFn      // Retrieves the current chain's height
-	insertChain    chainInsertFn      // 插入一组block到链上
-	dropPeer       peerDropFn         // Drops a peer for misbehaving
-
-	// Testing hooks
-	// 测试用
-	announceChangeHook func(common.Hash, bool) // Method to call upon adding or deleting a hash from the announce list
-	queueChangeHook    func(common.Hash, bool) // Method to call upon adding or deleting a block from the import queue
-	fetchingHook       func([]common.Hash)     // Method to call upon starting a block (eth/61) or header (eth/62) fetch
-	completingHook     func([]common.Hash)     // Method to call upon starting a block body fetch (eth/62)
-	importedHook       func(*types.Block)      // Method to call upon successful block import (both eth/61 and eth/62)
+				pool.mu.Unlock()
+			}
+    }
 }
 ```
 
-fetcher会运行一个loop函数，处理队列中的区块，循环等待其他节点发来的消息处理事件，主要处理六个事件
-
-1.从f.queue中取出inject结构体，调用insert方法插入block到链上
-```
-type inject struct {
-	origin string // 邻居peer的hash
-	block  *types.Block
-}
-op := f.queue.PopItem().(*inject)
-    // 插入区块
-    f.insert(op.origin, op.block)
-```
-
-2.在收到NewBlockHashesMsg消息的时候，handler.go会将blockHash加入fetcher的notify通道，loop()中接收f.notify通道的notification，放入f.announced
+txpool会执行setNewHead()
 
 ```
-case notification := <-f.notify:
-    f.announced[notification.hash] = append(f.announced[notification.hash], notification)
+//txpool.go
+func (pool *TxPool) eventLoop() {
+	for {
+		select {
+		case ev := <-pool.chainHeadCh:
 
-```
+			// 设置新的head
+			pool.setNewHead(ev.Block.Header())
+			// hack in order to avoid hogging the lock; this part will
+			// be replaced by a subsequent PR.
+			//
+			time.Sleep(time.Millisecond)
 
-3.在收到NewBlockMsg消息的时候，handler.go的handle()方法将接收到的block加入f.inject通道中。oop()中接收f.inject通道的inject结构体，放入f.queue中
-
-```
-case op := <-f.inject:
-	f.enqueue(op.origin, op.block)
-```
-
-4.fetcherTimer到时间，调用fetchHeader返回得到fetchHeader
-
-```
-case <-fetchTimer.C:
-// 调用fetchHeader返回得到fetchHeader
-	fetchHeader, hashes := f.fetching[hashes[0]].fetchHeader, hashes
-
-```
-5.completeTimer到时间，从fetched中取出hash和announces，加入request和f.completing，遍历request，得到hashes，调用fetchBodies请求body
-```
-case <-fetchTimer.C:
-// 调用fetchBodies请求body
-	go f.completing[hashes[0]].fetchBodies(hashes)
-```
-
-6.headerFilter，
-- handle.go接收到BlockHeadersMsg消息，会调用fetcher.FilterHeaders方法将header放入f.headerFilter通道
-- 从f.headerFilter通道中取出filter，filter通道中取出task，遍历task.headers得到header，
-- 验证fetching中有对应header.hash的announce、fetched、completing 和 queue队列中没有对应hash，验证announce的number和header对应，验证链上没有对应的hash的block。
-- 根据区块头查看，如果这个区块不包含任何交易或者是Uncle区块。那么我们就不用获取区块的body了。 那么直接将没有body的block插入complete，announce放入completing中。
-- 遍历complete，**取出block（无body）放入f.queue中**
-
-7.bodyFilter
-- handle.go接收到BlockBodiesMsg消息，会调用fetcher.FilterBodies方法将trasactions, uncles放入f.bodyFilter通道
-- 从bodyFilter通道中取出filter通道，从filter中取出task
-- 遍历task中的transactions和uncles
-- 遍历completing的每个hash和announce
-- 如果hash不在f.queued（已经加入完成的队列），比较announce.header与types计算的TxHash和UncleHash，匹配成功标记marked为true
-- 如果链上没有对应hash的block，使用announce.header和task.transaction[i]和task.uncles[i]组装一个block，**将block放入f.queue中**
-
-
-
-
-**fetcher中实现的insert方法**  
-首先使用verifyHeader验证block.header，验证通过后会给邻居发送NewBlockMsg通知此block消息  
-
-然后会调用inserChain方法将区块插入主链，如果成功，会给邻居发送NewBlockHashesMsg通知此block的hash消息  
-
-成功插入后，会将block的hash放入f.done 通道，通知此block以成功加入
-
-```
-// 验证区块header
-switch err := f.verifyHeader(block.Header()); err {
-		case nil:
-			// All ok, quickly propagate to our peers
-			propBroadcastOutTimer.UpdateSince(block.ReceivedAt)
-			go f.broadcastBlock(block, true)
-// 插入block
-if _, err := f.insertChain(types.Blocks{block}); err != nil {
-			log.Debug("Propagated block import failed", "peer", peer, "number", block.Number(), "hash", hash, "err", err)
+		// System stopped
+		case <-pool.chainHeadSub.Err():
 			return
 		}
-		// If import succeeded, broadcast the block
-		// 如果插入成功， 那么广播区块， 第二个参数为false。那么只会对区块的hash进行广播。NewBlockHashesMsg
-		propAnnounceOutTimer.UpdateSince(block.ReceivedAt)
-		go f.broadcastBlock(block, false)			
+	}
+}
 ```
 
 
 
-### downloader(待补充)
+worker会执行commitNewWork方法，组装新的block
 
->downloader主要负责区块链最开始的同步工作，当前的同步有两种模式:
+```
+// wroker.go  注册监听
+func (self *worker) update() {
+	defer self.txSub.Unsubscribe()
+	defer self.chainHeadSub.Unsubscribe()
+	defer self.chainSideSub.Unsubscribe()
 
->一种是传统的fullmode,这种模式通过下载区块header，和区块body来构建区块链，同步的过程就和普通的区块插入的过程一样，包括区块头的验证，交易的验证，交易执行，账户状态的改变等操作，这是一个比较消耗CPU和磁盘的一个过程。
+	for {
+		// A real event arrived, process interesting content
+		select {
+		// Handle ChainHeadEvent
+		// 得知已经有新的链头 就组装下一个块
+		case <-self.chainHeadCh:
+			self.commitNewWork()
+	}
+}
+```
 
->另一种模式就是 快速同步的fast sync模式。简单的说 fast sync的模式会下载区块头，区块体和收据，插入的过程不会执行交易，然后在一个区块高度(最高的区块高度 - 1024)的时候同步所有的账户状态，后面的1024个区块会采用fullmode的方式来构建。 这种模式会加快区块的插入时间，同时不会产生大量的历史的账户信息。会相对节约磁盘， 但是对于网络的消耗会更高。 因为需要下载收据和状态。
+
+
+
+
+#### blockchain.insertChain()
+
+
+下面详细解释blockchain的insertChain方法
+```
+func (bc *BlockChain) insertChain(chain types.Blocks) (int, []interface{}, []*types.Log, error) {
+	// Do a sanity check that the provided chain is actually ordered and linked
+	// 检查链有序
+	for i := 1; i < len(chain); i++ {
+		if chain[i].NumberU64() != chain[i-1].NumberU64()+1 || chain[i].ParentHash() != chain[i-1].Hash() {
+			// Chain broke ancestry, log a messge (programming error) and skip insertion
+			log.Error("Non contiguous block insert", "number", chain[i].Number(), "hash", chain[i].Hash(),
+				"parent", chain[i].ParentHash(), "prevnumber", chain[i-1].Number(), "prevhash", chain[i-1].Hash())
+
+			return 0, nil, nil, fmt.Errorf("non contiguous insert: item %d is #%d [%x…], item %d is #%d [%x…] (parent [%x…])", i-1, chain[i-1].NumberU64(),
+				chain[i-1].Hash().Bytes()[:4], i, chain[i].NumberU64(), chain[i].Hash().Bytes()[:4], chain[i].ParentHash().Bytes()[:4])
+		}
+	}
+	// Pre-checks passed, start the full block imports
+	// 预检查通过，开始全block import
+	bc.wg.Add(1)
+	defer bc.wg.Done()
+
+	bc.chainmu.Lock()
+	defer bc.chainmu.Unlock()
+
+	// A queued approach to delivering events. This is generally
+	// faster than direct delivery and requires much less mutex
+	// acquiring.
+	// 一个发送事件队列
+	var (
+		stats         = insertStats{startTime: mclock.Now()}
+		events        = make([]interface{}, 0, len(chain))
+		lastCanon     *types.Block
+		coalescedLogs []*types.Log
+	)
+	// Start the parallel header verifier
+	// 开始并行header验证
+	headers := make([]*types.Header, len(chain))
+	seals := make([]bool, len(chain))
+
+	for i, block := range chain {
+		headers[i] = block.Header()
+		seals[i] = true
+	}
+
+	// 验证头部
+	abort, results := bc.engine.VerifyHeaders(bc, headers, seals)
+
+	defer close(abort)
+
+	// Iterate over the blocks and insert when the verifier permits
+	// 遍历所有的blocks 在验证通过后插入
+	for i, block := range chain {
+		// If the chain is terminating, stop processing blocks
+		// 一个链终止，停止产生block
+		if atomic.LoadInt32(&bc.procInterrupt) == 1 {
+			log.Debug("Premature abort during blocks processing")
+			break
+		}
+		// If the header is a banned one, straight out abort
+		// header是被禁止的
+		if BadHashes[block.Hash()] {
+			bc.reportBlock(block, nil, ErrBlacklistedHash)
+			return i, events, coalescedLogs, ErrBlacklistedHash
+		}
+		// Wait for the block's verification to complete
+		// 等待block的验证完成
+		// TODO : 时间的作用
+		bstart := time.Now()
+
+		err := <-results
+		if err == nil {
+			// 验证body有效性
+			err = bc.Validator().ValidateBody(block)
+		}
+		switch {
+		case err == ErrKnownBlock:
+			// Block and state both already known. However if the current block is below
+			// this number we did a rollback and we should reimport it nonetheless.
+			// block和state已经知道
+			// 但是如果当前block低于这个数字我们做了回滚我们应该重新导入它
+			if bc.CurrentBlock().NumberU64() >= block.NumberU64() {
+				stats.ignored++
+				continue
+			}
+
+		case err == consensus.ErrFutureBlock:
+			// Allow up to MaxFuture second in the future blocks. If this limit is exceeded
+			// the chain is discarded and processed at a later time if given.
+			// 过于超前
+			max := big.NewInt(time.Now().Unix() + maxTimeFutureBlocks)
+			if block.Time().Cmp(max) > 0 {
+				return i, events, coalescedLogs, fmt.Errorf("future block: %v > %v", block.Time(), max)
+			}
+			bc.futureBlocks.Add(block.Hash(), block)
+			stats.queued++
+			continue
+
+		case err == consensus.ErrUnknownAncestor && bc.futureBlocks.Contains(block.ParentHash()):
+			bc.futureBlocks.Add(block.Hash(), block)
+			stats.queued++
+			continue
+
+		//祖先已知，但是状态不可用
+		case err == consensus.ErrPrunedAncestor:
+			// Block competing with the canonical chain, store in the db, but don't process
+			// until the competitor TD goes above the canonical TD
+			// 得到当前块
+			currentBlock := bc.CurrentBlock()
+			// 得到本地当前TD
+			localTd := bc.GetTd(currentBlock.Hash(), currentBlock.NumberU64())
+			externTd := new(big.Int).Add(bc.GetTd(block.ParentHash(), block.NumberU64()-1), block.Difficulty())
+
+			// 本地td更大
+			if localTd.Cmp(externTd) > 0 {
+				// 写入blocks 不带state
+			if err = bc.WriteBlockWithoutState(block, externTd); err != nil {
+					return i, events, coalescedLogs, err
+				}
+				continue
+			}
+			// Competitor chain beat canonical, gather all blocks from the common ancestor
+			// 竞争链击败主链 从共同ancestor收集所有的block
+			var winner []*types.Block
+
+			// 得到 父块
+			parent := bc.GetBlock(block.ParentHash(), block.NumberU64()-1)
+			// 父块的Root 的state有错误
+			for !bc.HasState(parent.Root()) {
+				winner = append(winner, parent)
+				// 继续找父块
+				parent = bc.GetBlock(parent.ParentHash(), parent.NumberU64()-1)
+			}
+			// 逆序？
+			for j := 0; j < len(winner)/2; j++ {
+				winner[j], winner[len(winner)-1-j] = winner[len(winner)-1-j], winner[j]
+			}
+			// Import all the pruned blocks to make the state available
+			// 导入所有的修剪的block 是的state可用
+			bc.chainmu.Unlock()
+			// 插入winner到区块链
+			_, evs, logs, err := bc.insertChain(winner)
+			bc.chainmu.Lock()
+			events, coalescedLogs = evs, logs
+
+			if err != nil {
+				return i, events, coalescedLogs, err
+			}
+
+		case err != nil:
+			bc.reportBlock(block, nil, err)
+			return i, events, coalescedLogs, err
+		}
+		// Create a new statedb using the parent block and report an
+		// error if it fails.
+		// 使用父块创建新的statedb
+		var parent *types.Block
+		if i == 0 {
+			parent = bc.GetBlock(block.ParentHash(), block.NumberU64()-1)
+		} else {
+			parent = chain[i-1]
+		}
+		// 新的state
+		state, err := state.New(parent.Root(), bc.stateCache)
+		if err != nil {
+			return i, events, coalescedLogs, err
+		}
+		
+		// Process block using the parent state as reference point.
+		// 使用parent state 执行 block
+		// 这里会执行ApplyTransaction
+		receipts, logs, usedGas, err := bc.processor.Process(block, state, bc.vmConfig)
+
+		if err != nil {
+			//log 记录错误
+			bc.reportBlock(block, receipts, err)
+			return i, events, coalescedLogs, err
+		}
+		// Validate the state using the default validator
+		// 验证state gas使用，收据
+		err = bc.Validator().ValidateState(block, parent, state, receipts, usedGas)
+
+		if err != nil {
+			bc.reportBlock(block, receipts, err)
+			return i, events, coalescedLogs, err
+		}
+		proctime := time.Since(bstart)
+
+		// Write the block to the chain and get the status.
+		// 写block到链上
+		status, err := bc.WriteBlockWithState(block, receipts, state)
+		if err != nil {
+			return i, events, coalescedLogs, err
+		}
+		
+		switch status {
+		// 主链
+		case CanonStatTy:
+			log.Debug("Inserted new block", "number", block.Number(), "hash", block.Hash(), "uncles", len(block.Uncles()),
+				"txs", len(block.Transactions()), "gas", block.GasUsed(), "elapsed", common.PrettyDuration(time.Since(bstart)))
+
+			coalescedLogs = append(coalescedLogs, logs...)
+			blockInsertTimer.UpdateSince(bstart)
+			// 通知block事件
+			events = append(events, ChainEvent{block, block.Hash(), logs})
+			lastCanon = block
+
+			// Only count canonical blocks for GC processing time
+			bc.gcproc += proctime
+
+		//侧链
+		case SideStatTy:
+			log.Debug("Inserted forked block", "number", block.Number(), "hash", block.Hash(), "diff", block.Difficulty(), "elapsed",
+				common.PrettyDuration(time.Since(bstart)), "txs", len(block.Transactions()), "gas", block.GasUsed(), "uncles", len(block.Uncles()))
+
+			blockInsertTimer.UpdateSince(bstart)
+			// 侧链通知
+			events = append(events, ChainSideEvent{block})
+		}
+		stats.processed++
+		stats.usedGas += usedGas
+		stats.report(chain, i, bc.stateCache.TrieDB().Size())
+	}
+	// Append a single chain head event if we've progressed the chain
+	// 加入ChainHeadEvent事件，本地得到此消息会更新txpool，worker重新commiteNewWork
+	if lastCanon != nil && bc.CurrentBlock().Hash() == lastCanon.Hash() {
+		events = append(events, ChainHeadEvent{lastCanon})
+	}
+	return 0, events, coalescedLogs, nil
+}
+```
