@@ -1,6 +1,6 @@
 # Log4go-ethereum
 
-[Log4go-ethereum](https://github.com/WenyanLiu/log4go-ethereum.git)是针对[go-ethereum](https://github.com/ethereum/go-ethereum.git)的日志记录工具。
+[Log4go-ethereum](https://github.com/WenyanLiu/log4go-ethereum.git)是针对[Go Ethereum](https://github.com/ethereum/go-ethereum.git)的日志记录工具。
 
 #### 使用Log4go-ethereum
 
@@ -42,6 +42,10 @@ git clone https://github.com/WenyanLiu/log4go-ethereum.git
 `[Debug] 2018/04/03 19:07:07 /Users/WenyanLiu/log4go-ethereum/cmd/geth/main.go/main() line 220`
 
 ## What's New
+
+- [1.0-RELEASE](https://github.com/WenyanLiu/log4go-ethereum/releases/tag/1.0-RELEASE)
+    - 9 Apr, 2018
+    - 现在可以追踪`abigen`、`bootnode`、`evm`、`gethrpctest`、`rlpdump`、`swarm`和`puppeth`的栈上函数调用信息了
 
 - [1.0-SNAPSHOT](https://github.com/WenyanLiu/log4go-ethereum/releases/tag/1.0-SNAPSHOT)
     - 3 Apr, 2018
