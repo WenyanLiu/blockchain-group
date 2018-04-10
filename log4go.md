@@ -77,7 +77,7 @@ git clone https://github.com/WenyanLiu/log4go-ethereum.git
 * `Output`：`Stdout`控制台打印和`file`文件输出。
 
 ```go
-// cmd/geth/main.go
+# cmd/geth/main.go
 package main
 
 import (
@@ -111,7 +111,7 @@ func main() {
 * `line`：行号。
 
 ```go
-// log/debuglog.go
+# log/debuglog.go
 package log
 
 import (
