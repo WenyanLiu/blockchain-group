@@ -43,6 +43,10 @@ git clone https://github.com/WenyanLiu/log4go-ethereum.git
 
 ## What's New
 
+- [1.2-RELEASE](https://github.com/WenyanLiu/log4go-ethereum/releases/tag/1.2-RELEASE)
+    - 10 Apr, 2018
+    - 优化了log输出的格式
+
 - [1.1-RELEASE](https://github.com/WenyanLiu/log4go-ethereum/releases/tag/1.1-RELEASE)
     - 10 Apr, 2018
     - 修复了字符串分割指定值错误的bug
