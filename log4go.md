@@ -41,11 +41,11 @@ git clone https://github.com/WenyanLiu/log4go-ethereum.git
 
 `[Debug] 2018/04/03 19:07:07 /Users/WenyanLiu/log4go-ethereum/cmd/geth/main.go/main() line 220`
 
-## What's New
+## Version History
 
 - [1.2-RELEASE](https://github.com/WenyanLiu/log4go-ethereum/releases/tag/1.2-RELEASE)
     - 10 Apr, 2018
-    - 优化了log输出的格式
+    - 增加了获取函数名的方法
 
 - [1.1-RELEASE](https://github.com/WenyanLiu/log4go-ethereum/releases/tag/1.1-RELEASE)
     - 10 Apr, 2018
