@@ -24,7 +24,7 @@
 | 2018/3/24 | Transaction与block的打包与提交 | 袁佳豪 |  |
 | 2018/3/24 | 以太坊物理存储分析 | 刘文炎 |  |
 | 2018/3/24 | [Miner包中的挖矿流程](./minerPackage.md) | 王浩 |:checkered_flag:  |
-| 2018/3/24 | 以太坊物理存储分析 [数据库访问工具](./plyvel.md) | 刘文炎 |  |
+| 2018/3/24 | 以太坊物理存储分析<br>[数据库访问工具](./plyvel.md) | 刘文炎 |  |
 | 2018/3/24 | Miner包中的挖矿流程| 王浩 |  |
 | 2018/3/27 | Gas管理 DoS攻击 交易打包与执行 交易堵塞 | 袁佳豪 |  |
 | 2018/3/27 | 从世界状态获取账户余额 | 刘文炎 |  |
@@ -35,7 +35,7 @@
 | 2018/3/30 | [新区块写入WriteBlockWithState方法](./WriteBlockWithState.md) | 王浩 |  |
 | 2018/3/30 | [fetcher与downloader](./fetcherAndDownLoader.md) | 王浩 |  |
 | 2018/4/4 | [EVM初探](./EVM.md) | 袁佳豪 |  |
-| 2018/4/4 | [日志记录工具](./log4go.md)  [Sender函数](./Sender.md) | 刘文炎 | :checkered_flag: |
+| 2018/4/4 | [日志记录工具](./log4go.md)<br>[Sender函数](./Sender.md) | 刘文炎 | :checkered_flag: |
 | 2018/4/12 | ??? | 袁佳豪 |  |
 | 2018/4/12 | [以太坊虚拟机解释器](./EVMInterpreter.md) | 刘文炎 |  |
 | 2018/4/12 | ??? | 王浩 |  |
