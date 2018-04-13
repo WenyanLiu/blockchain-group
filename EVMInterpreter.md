@@ -56,8 +56,7 @@ sub_0: assembly {
       dup1
       revert
 
-    auxdata: 0xa165627a7a723058204c4b7cb2d6601994bbe06eeb297368f48ca11be35e15fe1
-d8e5aca29313706070029
+    auxdata: 0xa165627a7a723058204c4b7cb2d6601994bbe06eeb297368f48ca11be35e15fe1d8e5aca29313706070029
 }
 
 Binary:
