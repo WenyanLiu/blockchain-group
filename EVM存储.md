@@ -38,9 +38,11 @@
     }  
     
 JVM：
+
 ![JVM.png](./img/20180416/JVM.gif)
 
 Dalvik VM:
+
 ![JVM.png](./img/20180416/安卓.gif)
 
 一般而言，基于堆栈的机器需要更多指令，而基于寄存器的机器指令更长。
@@ -62,10 +64,6 @@ Dalvik VM:
 
 状态存储本质上就是存储合约的状态，将合约中定义的相关的变量永久性的保存在区块链上。
 
-
-基于栈的操作很好理解，但是
-1. 内存中到底存的什么？
-2. 什么时候会使用Storage?
 我们来看看执行同样的代码的结果，首先实现一个同样功能的智能合约：
 ```    
     contract A {
@@ -82,17 +80,24 @@ Dalvik VM:
 通过编译可以得到相关的字节码和对应的合约代码：
 
     "object": "60606040523415600e57600080fd5b6001600081905550600260018190555060026001546000540102600281905550603580603b6000396000f3006060604052600080fd00a165627a7a72305820b6ac9455705e1dc13f58f4957e5b50c1c0f37eb5b671acf9881f2c9f4e6a88160029",
-    "opcodes": "PUSH1 0x60 PUSH1 0x40 MSTORE CALLVALUE ISZERO PUSH1 0xE JUMPI
+    "opcodes": "PUSH1 0x60 PUSH1 0x40 MSTORE CALLVALUE ISZERO PUSH1 0xE JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST
     
     a的赋值：
-    PUSH1 0x0 DUP1 REVERT JUMPDEST PUSH1 0x1 PUSH1 0x0 DUP2 SWAP1 SSTORE 
+    PUSH1 0x1 PUSH1 0x0 DUP2 SWAP1 SSTORE POP
     
     b的赋值：
-    POP PUSH1 0x2 PUSH1 0x1 DUP2 SWAP1 SSTORE 
+    PUSH1 0x2 PUSH1 0x1 DUP2 SWAP1 SSTORE POP
     
     c的赋值：
-    POP PUSH1 0x2 PUSH1 0x1 SLOAD PUSH1 0x0 SLOAD ADD MUL PUSH1 0x2 DUP2 SWAP1 SSTORE POP PUSH1 0x35 DUP1 PUSH1 0x3B PUSH1 0x0 CODECOPY PUSH1 0x0 RETURN"
+    PUSH1 0x2 PUSH1 0x1 SLOAD PUSH1 0x0 SLOAD ADD MUL PUSH1 0x2 DUP2 SWAP1 SSTORE POP PUSH1 0x35 DUP1 PUSH1 0x3B PUSH1 0x0 CODECOPY PUSH1 0x0 RETURN"
 
 这里要注意必须在函数外声明变量才是状态变量，才会写入到Storage中，对应的就是SSTORE命令
+
+### 存疑❓
+
+```diff
+基于栈的操作很好理解，但是
+1. 内存中到底存的什么？
+```
 
 
