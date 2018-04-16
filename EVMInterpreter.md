@@ -159,11 +159,45 @@ pop
     <summary>合约文件c0.sol</summary>
 
 ```solidity
-pragma solidity ^0.4.21;contract C {}
+pragma solidity ^0.4.21;
+
+contract C {
+}
 ```
 
 ```solc
-$ solc --bin --asm c0.sol======= c0.sol:C =======EVM assembly:... */ "c0.sol":28:43  contract C {  mstore(0x40, 0x60)  jumpi(tag_1, iszero(callvalue))  0x0  dup1  reverttag_1:  dataSize(sub_0)  dup1  dataOffset(sub_0)  0x0  codecopy  0x0  returnstopsub_0: assembly {... */  /* "c0.sol":28:43  contract C {      mstore(0x40, 0x60)      0x0      dup1      revert    auxdata: 0xa165627a7a723058201d469b4657b693edab593906b8c3ee445c385829905abe3bdd93ba71553773760029}Binary:60606040523415600e57600080fd5b603580601b6000396000f3006060604052600080fd00a165627a7a723058201d469b4657b693edab593906b8c3ee445c385829905abe3bdd93ba71553773760029
+$ solc --bin --asm c0.sol
+
+======= c0.sol:C =======
+EVM assembly:
+... */ "c0.sol":28:43  contract C {
+  mstore(0x40, 0x60)
+  jumpi(tag_1, iszero(callvalue))
+  0x0
+  dup1
+  revert
+tag_1:
+  dataSize(sub_0)
+  dup1
+  dataOffset(sub_0)
+  0x0
+  codecopy
+  0x0
+  return
+stop
+
+sub_0: assembly {
+... */  /* "c0.sol":28:43  contract C {
+      mstore(0x40, 0x60)
+      0x0
+      dup1
+      revert
+
+    auxdata: 0xa165627a7a723058201d469b4657b693edab593906b8c3ee445c385829905abe3bdd93ba71553773760029
+}
+
+Binary:
+60606040523415600e57600080fd5b603580601b6000396000f3006060604052600080fd00a165627a7a723058201d469b4657b693edab593906b8c3ee445c385829905abe3bdd93ba71553773760029
 ```
 
 </details>
@@ -172,11 +206,46 @@ $ solc --bin --asm c0.sol======= c0.sol:C =======EVM assembly:... */ "c0.sol
     <summary>合约文件c1.sol</summary>
 
 ```solidity
-pragma solidity ^0.4.21;contract C {    uint256 cbd;}
+pragma solidity ^0.4.21;
+
+contract C {
+    uint256 cbd;
+}
 ```
 
 ```solc
-$ solc --bin --asm c1.sol======= c1.sol:C =======EVM assembly:... */ "c1.sol":28:61  contract C {  mstore(0x40, 0x60)  jumpi(tag_1, iszero(callvalue))  0x0  dup1  reverttag_1:  dataSize(sub_0)  dup1  dataOffset(sub_0)  0x0  codecopy  0x0  returnstopsub_0: assembly {... */  /* "c1.sol":28:61  contract C {      mstore(0x40, 0x60)      0x0      dup1      revert    auxdata: 0xa165627a7a72305820968d746a315303b79deb2c805205e6b37ea9252d9e50e39ac97b747b7c8f40140029}Binary:60606040523415600e57600080fd5b603580601b6000396000f3006060604052600080fd00a165627a7a72305820968d746a315303b79deb2c805205e6b37ea9252d9e50e39ac97b747b7c8f40140029
+$ solc --bin --asm c1.sol
+
+======= c1.sol:C =======
+EVM assembly:
+... */ "c1.sol":28:61  contract C {
+  mstore(0x40, 0x60)
+  jumpi(tag_1, iszero(callvalue))
+  0x0
+  dup1
+  revert
+tag_1:
+  dataSize(sub_0)
+  dup1
+  dataOffset(sub_0)
+  0x0
+  codecopy
+  0x0
+  return
+stop
+
+sub_0: assembly {
+... */  /* "c1.sol":28:61  contract C {
+      mstore(0x40, 0x60)
+      0x0
+      dup1
+      revert
+
+    auxdata: 0xa165627a7a72305820968d746a315303b79deb2c805205e6b37ea9252d9e50e39ac97b747b7c8f40140029
+}
+
+Binary:
+60606040523415600e57600080fd5b603580601b6000396000f3006060604052600080fd00a165627a7a72305820968d746a315303b79deb2c805205e6b37ea9252d9e50e39ac97b747b7c8f40140029
 ```
 
 </details>
@@ -185,11 +254,60 @@ $ solc --bin --asm c1.sol======= c1.sol:C =======EVM assembly:... */ "c1.sol
     <summary>合约文件c2.sol</summary>
 
 ```solidity
-pragma solidity ^0.4.21;contract C {    uint256 cbd;    function C() public{        cbd = 109;    }}
+pragma solidity ^0.4.21;
+
+contract C {
+    uint256 cbd;
+    function C() public{
+        cbd = 109;
+    }
+}
 ```
 
 ```solc
-$ solc --bin --asm c2.sol======= c2.sol:C =======EVM assembly:... */ "c2.sol":28:114  contract C {  mstore(0x40, 0x60)... */ "c2.sol":64:111  function C() public{  jumpi(tag_1, iszero(callvalue))  0x0  dup1  reverttag_1:    /* "c2.sol":100:103  109 */  0x6d    /* "c2.sol":94:97  cbd */  0x0    /* "c2.sol":94:103  cbd = 109 */  dup2  swap1  sstore  pop... */ "c2.sol":28:114  contract C {  dataSize(sub_0)  dup1  dataOffset(sub_0)  0x0  codecopy  0x0  returnstopsub_0: assembly {... */  /* "c2.sol":28:114  contract C {      mstore(0x40, 0x60)      0x0      dup1      revert    auxdata: 0xa165627a7a723058208f314c40e9246a81f576d441000fa46691b988eed9f4e0692e4b8e74d9738f880029}Binary:60606040523415600e57600080fd5b606d60008190555060358060236000396000f3006060604052600080fd00a165627a7a723058208f314c40e9246a81f576d441000fa46691b988eed9f4e0692e4b8e74d9738f880029
+$ solc --bin --asm c2.sol
+
+======= c2.sol:C =======
+EVM assembly:
+... */ "c2.sol":28:114  contract C {
+  mstore(0x40, 0x60)
+... */ "c2.sol":64:111  function C() public{
+  jumpi(tag_1, iszero(callvalue))
+  0x0
+  dup1
+  revert
+tag_1:
+    /* "c2.sol":100:103  109 */
+  0x6d
+    /* "c2.sol":94:97  cbd */
+  0x0
+    /* "c2.sol":94:103  cbd = 109 */
+  dup2
+  swap1
+  sstore
+  pop
+... */ "c2.sol":28:114  contract C {
+  dataSize(sub_0)
+  dup1
+  dataOffset(sub_0)
+  0x0
+  codecopy
+  0x0
+  return
+stop
+
+sub_0: assembly {
+... */  /* "c2.sol":28:114  contract C {
+      mstore(0x40, 0x60)
+      0x0
+      dup1
+      revert
+
+    auxdata: 0xa165627a7a723058208f314c40e9246a81f576d441000fa46691b988eed9f4e0692e4b8e74d9738f880029
+}
+
+Binary:
+60606040523415600e57600080fd5b606d60008190555060358060236000396000f3006060604052600080fd00a165627a7a723058208f314c40e9246a81f576d441000fa46691b988eed9f4e0692e4b8e74d9738f880029
 ```
 
 </details>
@@ -205,17 +323,21 @@ $ solc --bin --asm c2.sol======= c2.sol:C =======EVM assembly:... */ "c2.sol
 2. 加载运行时合约代码
 
 ```solc
-  /* 603580601b6000396000f3 */tag_1:
+  /* 603580601b6000396000f3 */
+tag_1:
   /* 60 35：PUSH1 0x35 */
   dataSize(sub_0)
     stack: [0x35]
     memory: {}
     
-  /* 80: DUP1 */  dup1
+  /* 80: DUP1 */
+  dup1
     stack: [0x35 0x35]
     memory: {}
     
-  /* 60 1b: PUSH1 0x1b */  dataOffset(sub_0)    stack: [0x1b 0x35 0x35]
+  /* 60 1b: PUSH1 0x1b */
+  dataOffset(sub_0)
+    stack: [0x1b 0x35 0x35]
     memory: {}
     
   /* 60 00: PUSH1 0x0 */
@@ -227,7 +349,9 @@ $ solc --bin --asm c2.sol======= c2.sol:C =======EVM assembly:... */ "c2.sol
      消耗三个栈元素
      memoryOffset = 0x00
      codeOffset = 0x1b
-     codeLength = 0x35 */  codecopy    stack: [0x35]
+     codeLength = 0x35 */
+  codecopy
+    stack: [0x35]
     memory: {0x0:0x35 => calldata[0x1b:0x50]}
   
   /* 60 00: PUSH1 0*/
@@ -235,7 +359,8 @@ $ solc --bin --asm c2.sol======= c2.sol:C =======EVM assembly:... */ "c2.sol
     stack: [0x0 0x35]
     memory: {0x0:0x35 => calldata[0x1b:0x50]}
   
-  /* f3: RETURN */  return
+  /* f3: RETURN */
+  return
     stack: []
     memory: {0x0:0x35 => calldata[0x1b:0x50]}
 ```
@@ -249,7 +374,18 @@ $ solc --bin --asm c2.sol======= c2.sol:C =======EVM assembly:... */ "c2.sol
 ```go
 # core/vm/instructions.go
 
-func opCodeCopy(pc *uint64, evm *EVM, contract *Contract, memory *Memory, stack *Stack) ([]byte, error) {	var (		memOffset  = stack.pop()		codeOffset = stack.pop()		length     = stack.pop()	)	codeCopy := getDataBig(contract.Code, codeOffset, length)	memory.Set(memOffset.Uint64(), length.Uint64(), codeCopy)	evm.interpreter.intPool.put(memOffset, codeOffset, length)	return nil, nil}
+func opCodeCopy(pc *uint64, evm *EVM, contract *Contract, memory *Memory, stack *Stack) ([]byte, error) {
+	var (
+		memOffset  = stack.pop()
+		codeOffset = stack.pop()
+		length     = stack.pop()
+	)
+	codeCopy := getDataBig(contract.Code, codeOffset, length)
+	memory.Set(memOffset.Uint64(), length.Uint64(), codeCopy)
+
+	evm.interpreter.intPool.put(memOffset, codeOffset, length)
+	return nil, nil
+}
 ```
 
 `auxdata`[在字节码中编码元数据的哈希值](https://github.com/ethereum/solidity/blob/8fbfd62d15ae83a757301db35621e95bccace97b/docs/metadata.rst#encoding-of-the-metadata-hash-in-the-bytecode)。
@@ -273,13 +409,70 @@ func opCodeCopy(pc *uint64, evm *EVM, contract *Contract, memory *Memory, stack 
 * EVM运行预加载代码，返回运行时合约代码给EVM
 * 收取创建合约的Gas，加载运行时合约代码
 
-```go	maxCodeSizeExceeded := evm.ChainConfig().IsEIP158(evm.BlockNumber) && len(ret) > params.MaxCodeSize	if err == nil && !maxCodeSizeExceeded {		createDataGas := uint64(len(ret)) * params.CreateDataGas		if contract.UseGas(createDataGas) {			evm.StateDB.SetCode(contractAddr, ret)		} else {			err = ErrCodeStoreOutOfGas		}	}	if maxCodeSizeExceeded || (err != nil && (evm.ChainConfig().IsHomestead(evm.BlockNumber) || err != ErrCodeStoreOutOfGas)) {		evm.StateDB.RevertToSnapshot(snapshot)		if err != errExecutionReverted {			contract.UseGas(contract.Gas)		}	}	if maxCodeSizeExceeded && err == nil {		err = errMaxCodeSizeExceeded	}	if evm.vmConfig.Debug && evm.depth == 0 {		evm.vmConfig.Tracer.CaptureEnd(ret, gas-contract.Gas, time.Since(start), err)	}	return ret, contractAddr, contract.Gas, err}
-```
-
 ```go
 # core/vm/evm.go
 
-func (evm *EVM) Create(caller ContractRef, code []byte, gas uint64, value *big.Int) (ret []byte, contractAddr common.Address, leftOverGas uint64, err error) {	if evm.depth > int(params.CallCreateDepth) {		return nil, common.Address{}, gas, ErrDepth	}	if !evm.CanTransfer(evm.StateDB, caller.Address(), value) {		return nil, common.Address{}, gas, ErrInsufficientBalance	}	nonce := evm.StateDB.GetNonce(caller.Address())	evm.StateDB.SetNonce(caller.Address(), nonce+1)	contractAddr = crypto.CreateAddress(caller.Address(), nonce)	contractHash := evm.StateDB.GetCodeHash(contractAddr)	if evm.StateDB.GetNonce(contractAddr) != 0 || (contractHash != (common.Hash{}) && contractHash != emptyCodeHash) {		return nil, common.Address{}, 0, ErrContractAddressCollision	}	snapshot := evm.StateDB.Snapshot()	evm.StateDB.CreateAccount(contractAddr)	if evm.ChainConfig().IsEIP158(evm.BlockNumber) {		evm.StateDB.SetNonce(contractAddr, 1)	}	evm.Transfer(evm.StateDB, caller.Address(), contractAddr, value)	contract := NewContract(caller, AccountRef(contractAddr), value, gas)	contract.SetCallCode(&contractAddr, crypto.Keccak256Hash(code), code)	if evm.vmConfig.NoRecursion && evm.depth > 0 {		return nil, contractAddr, gas, nil	}	if evm.vmConfig.Debug && evm.depth == 0 {		evm.vmConfig.Tracer.CaptureStart(caller.Address(), contractAddr, true, code, gas, value)	}	start := time.Now()	ret, err = run(evm, contract, nil)	maxCodeSizeExceeded := evm.ChainConfig().IsEIP158(evm.BlockNumber) && len(ret) > params.MaxCodeSize	if err == nil && !maxCodeSizeExceeded {		createDataGas := uint64(len(ret)) * params.CreateDataGas		if contract.UseGas(createDataGas) {			evm.StateDB.SetCode(contractAddr, ret)		} else {			err = ErrCodeStoreOutOfGas		}	}	if maxCodeSizeExceeded || (err != nil && (evm.ChainConfig().IsHomestead(evm.BlockNumber) || err != ErrCodeStoreOutOfGas)) {		evm.StateDB.RevertToSnapshot(snapshot)		if err != errExecutionReverted {			contract.UseGas(contract.Gas)		}	}	if maxCodeSizeExceeded && err == nil {		err = errMaxCodeSizeExceeded	}	if evm.vmConfig.Debug && evm.depth == 0 {		evm.vmConfig.Tracer.CaptureEnd(ret, gas-contract.Gas, time.Since(start), err)	}	return ret, contractAddr, contract.Gas, err}
+func (evm *EVM) Create(caller ContractRef, code []byte, gas uint64, value *big.Int) (ret []byte, contractAddr common.Address, leftOverGas uint64, err error) {
+
+	if evm.depth > int(params.CallCreateDepth) {
+		return nil, common.Address{}, gas, ErrDepth
+	}
+	if !evm.CanTransfer(evm.StateDB, caller.Address(), value) {
+		return nil, common.Address{}, gas, ErrInsufficientBalance
+	}
+	nonce := evm.StateDB.GetNonce(caller.Address())
+	evm.StateDB.SetNonce(caller.Address(), nonce+1)
+
+	contractAddr = crypto.CreateAddress(caller.Address(), nonce)
+	contractHash := evm.StateDB.GetCodeHash(contractAddr)
+	if evm.StateDB.GetNonce(contractAddr) != 0 || (contractHash != (common.Hash{}) && contractHash != emptyCodeHash) {
+		return nil, common.Address{}, 0, ErrContractAddressCollision
+	}
+	snapshot := evm.StateDB.Snapshot()
+	evm.StateDB.CreateAccount(contractAddr)
+	if evm.ChainConfig().IsEIP158(evm.BlockNumber) {
+		evm.StateDB.SetNonce(contractAddr, 1)
+	}
+	evm.Transfer(evm.StateDB, caller.Address(), contractAddr, value)
+
+	contract := NewContract(caller, AccountRef(contractAddr), value, gas)
+	contract.SetCallCode(&contractAddr, crypto.Keccak256Hash(code), code)
+
+	if evm.vmConfig.NoRecursion && evm.depth > 0 {
+		return nil, contractAddr, gas, nil
+	}
+
+	if evm.vmConfig.Debug && evm.depth == 0 {
+		evm.vmConfig.Tracer.CaptureStart(caller.Address(), contractAddr, true, code, gas, value)
+	}
+	start := time.Now()
+
+	ret, err = run(evm, contract, nil)
+
+	maxCodeSizeExceeded := evm.ChainConfig().IsEIP158(evm.BlockNumber) && len(ret) > params.MaxCodeSize
+	if err == nil && !maxCodeSizeExceeded {
+		createDataGas := uint64(len(ret)) * params.CreateDataGas
+		if contract.UseGas(createDataGas) {
+			evm.StateDB.SetCode(contractAddr, ret)
+		} else {
+			err = ErrCodeStoreOutOfGas
+		}
+	}
+
+	if maxCodeSizeExceeded || (err != nil && (evm.ChainConfig().IsHomestead(evm.BlockNumber) || err != ErrCodeStoreOutOfGas)) {
+		evm.StateDB.RevertToSnapshot(snapshot)
+		if err != errExecutionReverted {
+			contract.UseGas(contract.Gas)
+		}
+	}
+	if maxCodeSizeExceeded && err == nil {
+		err = errMaxCodeSizeExceeded
+	}
+	if evm.vmConfig.Debug && evm.depth == 0 {
+		evm.vmConfig.Tracer.CaptureEnd(ret, gas-contract.Gas, time.Since(start), err)
+	}
+	return ret, contractAddr, contract.Gas, err
+}
 ```
 
 ## 测试运行时实例
@@ -331,9 +524,103 @@ STOP
 
 ```go
 # core/vm/interpreter.go
-func (in *Interpreter) Run(contract *Contract, input []byte) (ret []byte, err error) {	log.DebugLog()	in.evm.depth++	defer func() { in.evm.depth-- }()	in.returnData = nil	if len(contract.Code) == 0 {		return nil, nil	}	var (		op    OpCode		mem   = NewMemory()		stack = newstack()		pc   = uint64(0)		cost uint64		pcCopy  uint64		gasCopy uint64		logged  bool	)	contract.Input = input	if in.cfg.Debug {		defer func() {			if err != nil {				if !logged {					in.cfg.Tracer.CaptureState(in.evm, pcCopy, op, gasCopy, cost, mem, stack, contract, in.evm.depth, err)				} else {					in.cfg.Tracer.CaptureFault(in.evm, pcCopy, op, gasCopy, cost, mem, stack, contract, in.evm.depth, err)				}			}		}()	}
+func (in *Interpreter) Run(contract *Contract, input []byte) (ret []byte, err error) {
+	log.DebugLog()
+	in.evm.depth++
+	defer func() { in.evm.depth-- }()
+
+	in.returnData = nil
+
+	if len(contract.Code) == 0 {
+		return nil, nil
+	}
+
+	var (
+		op    OpCode
+		mem   = NewMemory()
+		stack = newstack()
+		pc   = uint64(0)
+		cost uint64
+		pcCopy  uint64
+		gasCopy uint64
+		logged  bool
+	)
+	contract.Input = input
+
+	if in.cfg.Debug {
+		defer func() {
+			if err != nil {
+				if !logged {
+					in.cfg.Tracer.CaptureState(in.evm, pcCopy, op, gasCopy, cost, mem, stack, contract, in.evm.depth, err)
+				} else {
+					in.cfg.Tracer.CaptureFault(in.evm, pcCopy, op, gasCopy, cost, mem, stack, contract, in.evm.depth, err)
+				}
+			}
+		}()
+	}
 	
-	// main run loop	for atomic.LoadInt32(&in.evm.abort) == 0 {		if in.cfg.Debug {			logged, pcCopy, gasCopy = false, pc, contract.Gas		}		op = contract.GetOp(pc)		operation := in.cfg.JumpTable[op]		if !operation.valid {			return nil, fmt.Errorf("invalid opcode 0x%x", int(op))		}		if err := operation.validateStack(stack); err != nil {			return nil, err		}		if err := in.enforceRestrictions(op, operation, stack); err != nil {			return nil, err		}		var memorySize uint64		if operation.memorySize != nil {			memSize, overflow := bigUint64(operation.memorySize(stack))			if overflow {				return nil, errGasUintOverflow			}			if memorySize, overflow = math.SafeMul(toWordSize(memSize), 32); overflow {				return nil, errGasUintOverflow			}		}		cost, err = operation.gasCost(in.gasTable, in.evm, contract, stack, mem, memorySize)		if err != nil || !contract.UseGas(cost) {			return nil, ErrOutOfGas		}		if memorySize > 0 {			mem.Resize(memorySize)		}		if in.cfg.Debug {			in.cfg.Tracer.CaptureState(in.evm, pc, op, gasCopy, cost, mem, stack, contract, in.evm.depth, err)			logged = true		}		res, err := operation.execute(&pc, in.evm, contract, mem, stack)		if verifyPool {			verifyIntegerPool(in.intPool)		}		if operation.returns {			in.returnData = res		}		switch {		case err != nil:			return nil, err		case operation.reverts:			return res, errExecutionReverted		case operation.halts:			return res, nil		case !operation.jumps:			pc++		}	}	return nil, nil}
+	// main run loop
+	for atomic.LoadInt32(&in.evm.abort) == 0 {
+		if in.cfg.Debug {
+			logged, pcCopy, gasCopy = false, pc, contract.Gas
+		}
+
+		op = contract.GetOp(pc)
+		operation := in.cfg.JumpTable[op]
+		if !operation.valid {
+			return nil, fmt.Errorf("invalid opcode 0x%x", int(op))
+		}
+		if err := operation.validateStack(stack); err != nil {
+			return nil, err
+		}
+		if err := in.enforceRestrictions(op, operation, stack); err != nil {
+			return nil, err
+		}
+
+		var memorySize uint64
+		if operation.memorySize != nil {
+			memSize, overflow := bigUint64(operation.memorySize(stack))
+			if overflow {
+				return nil, errGasUintOverflow
+			}
+			if memorySize, overflow = math.SafeMul(toWordSize(memSize), 32); overflow {
+				return nil, errGasUintOverflow
+			}
+		}
+		cost, err = operation.gasCost(in.gasTable, in.evm, contract, stack, mem, memorySize)
+		if err != nil || !contract.UseGas(cost) {
+			return nil, ErrOutOfGas
+		}
+		if memorySize > 0 {
+			mem.Resize(memorySize)
+		}
+
+		if in.cfg.Debug {
+			in.cfg.Tracer.CaptureState(in.evm, pc, op, gasCopy, cost, mem, stack, contract, in.evm.depth, err)
+			logged = true
+		}
+
+		res, err := operation.execute(&pc, in.evm, contract, mem, stack)
+		if verifyPool {
+			verifyIntegerPool(in.intPool)
+		}
+		if operation.returns {
+			in.returnData = res
+		}
+
+		switch {
+		case err != nil:
+			return nil, err
+		case operation.reverts:
+			return res, errExecutionReverted
+		case operation.halts:
+			return res, nil
+		case !operation.jumps:
+			pc++
+		}
+	}
+	return nil, nil
+}
 ```
 
 :exclamation:	evm.depth
