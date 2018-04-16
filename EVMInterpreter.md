@@ -20,26 +20,28 @@ contract C {
 使用`solc`编译合约`C`：
 
 ```solc
-======= c1.sol:C =======
+$ solc --bin --asm c2.sol
+
+======= c2.sol:C =======
 EVM assembly:
-... */ "c1.sol":28:114  contract C {
+... */ "c2.sol":28:114  contract C {
   mstore(0x40, 0x60)
-... */ "c1.sol":64:111  function C() public{
+... */ "c2.sol":64:111  function C() public{
   jumpi(tag_1, iszero(callvalue))
   0x0
   dup1
   revert
 tag_1:
-    /* "c1.sol":100:103  109 */
+    /* "c2.sol":100:103  109 */
   0x6d
-    /* "c1.sol":94:97  cbd */
+    /* "c2.sol":94:97  cbd */
   0x0
-    /* "c1.sol":94:103  cbd = 109 */
+    /* "c2.sol":94:103  cbd = 109 */
   dup2
   swap1
   sstore
   pop
-... */ "c1.sol":28:114  contract C {
+... */ "c2.sol":28:114  contract C {
   dataSize(sub_0)
   dup1
   dataOffset(sub_0)
@@ -50,7 +52,7 @@ tag_1:
 stop
 
 sub_0: assembly {
-... */  /* "c1.sol":28:114  contract C {
+... */  /* "c2.sol":28:114  contract C {
       mstore(0x40, 0x60)
       0x0
       dup1
@@ -120,9 +122,164 @@ pop
 #### 存疑❓
 
 ```diff
-- 如何解读智能合约中的样板语句？
+- 如何解读智能合约中的预加载语句？
 - 在汇编语言中，状态变量cbd的名称是如何存储的？
 - auxdata里存储的是什么？
+```
+
+#### 释疑❗️
+
+```diff
++ 智能合约的字节码：
+```
+
+> When compiling a new smart-contract with Solidity, you will be asked to choose between two options to retrieve the bytecode as shown below.
+> 
+> --bin
+> 
+> --bin-runtime
+> 
+> The first one will output the binary of the entire contract, which includes its pre-loader. While the second one will output the binary of the runtime part of the contract which is the part we are interested in for analysis.
+> 
+> ——Suiche, M., 2017. Porosity: A Decompiler For Blockchain-Based Smart Contracts Bytecode. DEF CON, 25.
+
+> Smart contract bytecode is divided into two sections: the pre-loader and the runtime code. The pre-loader bootstraps the contract by deploying it on the Ethereum network and running its constructor. The runtime code only contains the core functionality of the contract that can be invoked by other blockchain agents.
+>
+> ——Amani, S., Bégel, M., Bortin, M. and Staples, M., 2018. Towards Verifying Ethereum Smart Contract Bytecode in Isabelle/HOL. CPP. ACM. To appear.
+
+智能合约的字节码分为两个类别：
+
+* 预加载代码
+    * 引导合约的程序，在开始时构建
+* 合约的运行时代码
+    * 由用户编写、Solidity编译的核心代码
+    * 调度函数，基于指定的哈希，重定向调用相应的函数
+
+<details>
+    <summary>合约文件c0.sol</summary>
+
+```solidity
+pragma solidity ^0.4.21;contract C {}
+```
+
+```solc
+$ solc --bin --asm c0.sol======= c0.sol:C =======EVM assembly:... */ "c0.sol":28:43  contract C {  mstore(0x40, 0x60)  jumpi(tag_1, iszero(callvalue))  0x0  dup1  reverttag_1:  dataSize(sub_0)  dup1  dataOffset(sub_0)  0x0  codecopy  0x0  returnstopsub_0: assembly {... */  /* "c0.sol":28:43  contract C {      mstore(0x40, 0x60)      0x0      dup1      revert    auxdata: 0xa165627a7a723058201d469b4657b693edab593906b8c3ee445c385829905abe3bdd93ba71553773760029}Binary:60606040523415600e57600080fd5b603580601b6000396000f3006060604052600080fd00a165627a7a723058201d469b4657b693edab593906b8c3ee445c385829905abe3bdd93ba71553773760029
+```
+
+</details>
+
+<details>
+    <summary>合约文件c1.sol</summary>
+
+```solidity
+pragma solidity ^0.4.21;contract C {    uint256 cbd;}
+```
+
+```solc
+$ solc --bin --asm c1.sol======= c1.sol:C =======EVM assembly:... */ "c1.sol":28:61  contract C {  mstore(0x40, 0x60)  jumpi(tag_1, iszero(callvalue))  0x0  dup1  reverttag_1:  dataSize(sub_0)  dup1  dataOffset(sub_0)  0x0  codecopy  0x0  returnstopsub_0: assembly {... */  /* "c1.sol":28:61  contract C {      mstore(0x40, 0x60)      0x0      dup1      revert    auxdata: 0xa165627a7a72305820968d746a315303b79deb2c805205e6b37ea9252d9e50e39ac97b747b7c8f40140029}Binary:60606040523415600e57600080fd5b603580601b6000396000f3006060604052600080fd00a165627a7a72305820968d746a315303b79deb2c805205e6b37ea9252d9e50e39ac97b747b7c8f40140029
+```
+
+</details>
+
+<details>
+    <summary>合约文件c2.sol</summary>
+
+```solidity
+pragma solidity ^0.4.21;contract C {    uint256 cbd;    function C() public{        cbd = 109;    }}
+```
+
+```solc
+$ solc --bin --asm c2.sol======= c2.sol:C =======EVM assembly:... */ "c2.sol":28:114  contract C {  mstore(0x40, 0x60)... */ "c2.sol":64:111  function C() public{  jumpi(tag_1, iszero(callvalue))  0x0  dup1  reverttag_1:    /* "c2.sol":100:103  109 */  0x6d    /* "c2.sol":94:97  cbd */  0x0    /* "c2.sol":94:103  cbd = 109 */  dup2  swap1  sstore  pop... */ "c2.sol":28:114  contract C {  dataSize(sub_0)  dup1  dataOffset(sub_0)  0x0  codecopy  0x0  returnstopsub_0: assembly {... */  /* "c2.sol":28:114  contract C {      mstore(0x40, 0x60)      0x0      dup1      revert    auxdata: 0xa165627a7a723058208f314c40e9246a81f576d441000fa46691b988eed9f4e0692e4b8e74d9738f880029}Binary:60606040523415600e57600080fd5b606d60008190555060358060236000396000f3006060604052600080fd00a165627a7a723058208f314c40e9246a81f576d441000fa46691b988eed9f4e0692e4b8e74d9738f880029
+```
+
+</details>
+
+捉对比较合约，得出结论：
+
+* 智能合约的字节码由预加载代码`60606040523415600e57600080fd5b603580601b6000396000f300`和运行时代码连接组成，运行时代码由合约代码`6060604052600080fd00`和auxdata`a165627a7a723058201d469b4657b693edab593906b8c3ee445c385829905abe3bdd93ba71553773760029`连接组成
+* 仅声明变量而不存储数据时，运行时代码相同，不消耗任何成本
+
+预加载代码主要有两个作用：
+
+1. 运行构造函数，初始化变量
+2. 加载运行时合约代码
+
+```solc
+  /* 603580601b6000396000f3 */tag_1:
+  /* 60 35：PUSH1 0x35 */
+  dataSize(sub_0)
+    stack: [0x35]
+    memory: {}
+    
+  /* 80: DUP1 */  dup1
+    stack: [0x35 0x35]
+    memory: {}
+    
+  /* 60 1b: PUSH1 0x1b */  dataOffset(sub_0)    stack: [0x1b 0x35 0x35]
+    memory: {}
+    
+  /* 60 00: PUSH1 0x0 */
+  0x0
+    stack: [0x0 0x1b 0x35 0x35]
+    memory: {}
+  
+  /* 39: CODECOPY，将运行在当前环境中的代码拷贝到memory中
+     消耗三个栈元素
+     memoryOffset = 0x00
+     codeOffset = 0x1b
+     codeLength = 0x35 */  codecopy    stack: [0x35]
+    memory: {0x0:0x35 => calldata[0x1b:0x50]}
+  
+  /* 60 00: PUSH1 0*/
+  0x0
+    stack: [0x0 0x35]
+    memory: {0x0:0x35 => calldata[0x1b:0x50]}
+  
+  /* f3: RETURN */  return
+    stack: []
+    memory: {0x0:0x35 => calldata[0x1b:0x50]}
+```
+
+其中，`dataSize(sub_0)`和`dataOffset(sub_0)`不是真正的指令，而是将常量压栈的PUSH指令。
+
+`memory`的作用之一是存储运行时代码。
+
+`CodeCopy`的指令行为如下：
+
+```go
+# core/vm/instructions.go
+
+func opCodeCopy(pc *uint64, evm *EVM, contract *Contract, memory *Memory, stack *Stack) ([]byte, error) {	var (		memOffset  = stack.pop()		codeOffset = stack.pop()		length     = stack.pop()	)	codeCopy := getDataBig(contract.Code, codeOffset, length)	memory.Set(memOffset.Uint64(), length.Uint64(), codeCopy)	evm.interpreter.intPool.put(memOffset, codeOffset, length)	return nil, nil}
+```
+
+`auxdata`[在字节码中编码元数据的哈希值](https://github.com/ethereum/solidity/blob/8fbfd62d15ae83a757301db35621e95bccace97b/docs/metadata.rst#encoding-of-the-metadata-hash-in-the-bytecode)。
+
+> Because we might support other ways to retrieve the metadata file in the future, the mapping {"bzzr0": <Swarm hash>} is stored [CBOR](https://tools.ietf.org/html/rfc7049)-encoded. Since the beginning of that encoding is not easy to find, its length is added in a two-byte big-endian encoding. The current version of the Solidity compiler thus adds the following to the end of the deployed bytecode:
+>
+> `0xa1 0x65 'b' 'z' 'z' 'r' '0' 0x58 0x20 <32 bytes swarm hash> 0x00 0x29`
+>
+> So in order to retrieve the data, the end of the deployed bytecode can be checked to match that pattern and use the Swarm hash to retrieve the file.
+
+#### 纠错🚧
+
+`0x65`是`PUSH6`指令（`# core/vm/jump_table.go`和`# core/vm/opcodes.go`中已验证），所以字节码应解读为`0xa1 0x65 'b' 'z' 'z' 'r' '0' 'X' 0x20 <32 bytes swarm hash> 0x00 0x29`
+
+创建合约，调用`Create`方法，完成：
+
+* 检查创建者的余额是否拥有足够的余额转账
+* 根据创建者的地址及其`nonce`生成新合约的地址
+* 在`StateDB`中使用新合约的地址创建新合约账户
+* 创建者将初始的以太币转到新合约账户中
+* EVM运行预加载代码，返回运行时合约代码给EVM
+* 收取创建合约的Gas，加载运行时合约代码
+
+```go	maxCodeSizeExceeded := evm.ChainConfig().IsEIP158(evm.BlockNumber) && len(ret) > params.MaxCodeSize	if err == nil && !maxCodeSizeExceeded {		createDataGas := uint64(len(ret)) * params.CreateDataGas		if contract.UseGas(createDataGas) {			evm.StateDB.SetCode(contractAddr, ret)		} else {			err = ErrCodeStoreOutOfGas		}	}	if maxCodeSizeExceeded || (err != nil && (evm.ChainConfig().IsHomestead(evm.BlockNumber) || err != ErrCodeStoreOutOfGas)) {		evm.StateDB.RevertToSnapshot(snapshot)		if err != errExecutionReverted {			contract.UseGas(contract.Gas)		}	}	if maxCodeSizeExceeded && err == nil {		err = errMaxCodeSizeExceeded	}	if evm.vmConfig.Debug && evm.depth == 0 {		evm.vmConfig.Tracer.CaptureEnd(ret, gas-contract.Gas, time.Since(start), err)	}	return ret, contractAddr, contract.Gas, err}
+```
+
+```go
+# core/vm/evm.go
+
+func (evm *EVM) Create(caller ContractRef, code []byte, gas uint64, value *big.Int) (ret []byte, contractAddr common.Address, leftOverGas uint64, err error) {	if evm.depth > int(params.CallCreateDepth) {		return nil, common.Address{}, gas, ErrDepth	}	if !evm.CanTransfer(evm.StateDB, caller.Address(), value) {		return nil, common.Address{}, gas, ErrInsufficientBalance	}	nonce := evm.StateDB.GetNonce(caller.Address())	evm.StateDB.SetNonce(caller.Address(), nonce+1)	contractAddr = crypto.CreateAddress(caller.Address(), nonce)	contractHash := evm.StateDB.GetCodeHash(contractAddr)	if evm.StateDB.GetNonce(contractAddr) != 0 || (contractHash != (common.Hash{}) && contractHash != emptyCodeHash) {		return nil, common.Address{}, 0, ErrContractAddressCollision	}	snapshot := evm.StateDB.Snapshot()	evm.StateDB.CreateAccount(contractAddr)	if evm.ChainConfig().IsEIP158(evm.BlockNumber) {		evm.StateDB.SetNonce(contractAddr, 1)	}	evm.Transfer(evm.StateDB, caller.Address(), contractAddr, value)	contract := NewContract(caller, AccountRef(contractAddr), value, gas)	contract.SetCallCode(&contractAddr, crypto.Keccak256Hash(code), code)	if evm.vmConfig.NoRecursion && evm.depth > 0 {		return nil, contractAddr, gas, nil	}	if evm.vmConfig.Debug && evm.depth == 0 {		evm.vmConfig.Tracer.CaptureStart(caller.Address(), contractAddr, true, code, gas, value)	}	start := time.Now()	ret, err = run(evm, contract, nil)	maxCodeSizeExceeded := evm.ChainConfig().IsEIP158(evm.BlockNumber) && len(ret) > params.MaxCodeSize	if err == nil && !maxCodeSizeExceeded {		createDataGas := uint64(len(ret)) * params.CreateDataGas		if contract.UseGas(createDataGas) {			evm.StateDB.SetCode(contractAddr, ret)		} else {			err = ErrCodeStoreOutOfGas		}	}	if maxCodeSizeExceeded || (err != nil && (evm.ChainConfig().IsHomestead(evm.BlockNumber) || err != ErrCodeStoreOutOfGas)) {		evm.StateDB.RevertToSnapshot(snapshot)		if err != errExecutionReverted {			contract.UseGas(contract.Gas)		}	}	if maxCodeSizeExceeded && err == nil {		err = errMaxCodeSizeExceeded	}	if evm.vmConfig.Debug && evm.depth == 0 {		evm.vmConfig.Tracer.CaptureEnd(ret, gas-contract.Gas, time.Since(start), err)	}	return ret, contractAddr, contract.Gas, err}
 ```
 
 ## 测试运行时实例
@@ -159,12 +316,6 @@ PUSH1 0x08
 JUMP
 JUMPDEST
 STOP
-```
-
-#### 存疑❓
-
-```diff
-- 字节码和汇编语言代码不是顺序对应的关系？
 ```
 
 实例进行了1950次函数调用，过程（有删减，详见附录[运行时实例测试日志](#运行时实例测试日志)）如下：

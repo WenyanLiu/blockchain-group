@@ -37,6 +37,9 @@
 | 2018/4/12 | ??? | 袁佳豪 |  |
 | 2018/4/12 | [以太坊虚拟机解释器](./EVMInterpreter.md) | 刘文炎 |  |
 | 2018/4/12 | [新区块写入WriteBlockWithState方法](./InsertChainAndWriteBlockWithState.md) | 王浩 |  :checkered_flag: |
+| 2018/4/18 | ??? | 袁佳豪 |  |
+| 2018/4/18 | [以太坊虚拟机释疑](./EVMInterpreter.md#释疑) | 刘文炎 |  |
+| 2018/4/18 | ??? | 王浩 |  |
 
   
 
