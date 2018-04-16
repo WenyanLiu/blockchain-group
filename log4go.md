@@ -41,7 +41,16 @@ git clone https://github.com/WenyanLiu/log4go-ethereum.git
 
 `[Debug] 2018/04/03 19:07:07 /Users/WenyanLiu/log4go-ethereum/cmd/geth/main.go/main() line 220`
 
-## What's New
+## Version History
+
+- [1.2-RELEASE](https://github.com/WenyanLiu/log4go-ethereum/releases/tag/1.2-RELEASE)
+    - 10 Apr, 2018
+    - 增加了获取函数名的方法
+
+- [1.1-RELEASE](https://github.com/WenyanLiu/log4go-ethereum/releases/tag/1.1-RELEASE)
+    - 10 Apr, 2018
+    - 修复了字符串分割指定值错误的bug
+    - 优化了log输出的格式
 
 - [1.0-RELEASE](https://github.com/WenyanLiu/log4go-ethereum/releases/tag/1.0-RELEASE)
     - 9 Apr, 2018
@@ -68,7 +77,7 @@ git clone https://github.com/WenyanLiu/log4go-ethereum.git
 * `Output`：`Stdout`控制台打印和`file`文件输出。
 
 ```go
-// cmd/geth/main.go
+# cmd/geth/main.go
 package main
 
 import (
@@ -102,7 +111,7 @@ func main() {
 * `line`：行号。
 
 ```go
-// log/debuglog.go
+# log/debuglog.go
 package log
 
 import (
