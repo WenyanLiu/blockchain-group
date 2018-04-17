@@ -33,9 +33,7 @@ type Block struct {
    header       *Header
    uncles       []*Header
    transactions Transactions
-   
 	...
-	
 }
 ```
 
@@ -44,11 +42,8 @@ type Block struct {
 ```go
 batch := bc.db.NewBatch()
 ...
-
 WriteBlockReceipts(batch, block.Hash(), block.NumberU64(), receipts)
-
 ...
-
 ```
 收据写入数据库的方法
 ```go
@@ -151,11 +146,31 @@ func NewDatabase(diskdb ethdb.Database) *Database {
 }
 ```
 
+stateDB的结构
+
+blockchain.stateCache = &cachingDB{
+
+​	db:	&Database{
+
+​		diskdb: blockchain.db,
+
+​		nodes: map[common.Hash]*cachedNode{
+			{}: {children: make(map[common.Hash]int)},
+		},
+
+​		preimages: make(map[common.Hash][]byte),
+
+​	}
+
+​	codeSizeCache: csc,
+
+}
+
+
+
 #### state在insertChain()方法插入时的作用
 
-1.在将block插入链中时，使用insertChain()方法，首先创建一个新的state(stateDB类型)，参数为父块的状态root和blockchain的stateCache
-
-##### 
+1.在将block插入链中时，使用insertChain()方法，首先创建一个新的state(stateDB类型)，参数为父块的状态root和blockchain的stateCache（cachingDB类型）
 
 ```go
 // insertChain()
@@ -185,6 +200,32 @@ func New(root common.Hash, db Database) (*StateDB, error) {
 		logs:              make(map[common.Hash][]*types.Log),
 		preimages:         make(map[common.Hash][]byte),
 	}, nil
+}
+```
+
+stateObject的结构体
+
+```go
+&stateObject{
+   db:            db, // *stateDB
+   address:       address,
+   addrHash:      crypto.Keccak256Hash(address[:]),
+   data:          data, // Account
+   cachedStorage: make(Storage),
+   dirtyStorage:  make(Storage),
+   onDirty:       onDirty,
+    ...
+}
+```
+
+Account数据类型
+
+```go
+type Account struct {
+   Nonce    uint64
+   Balance  *big.Int // 余额
+   Root     common.Hash // merkle root of the storage trie
+   CodeHash []byte
 }
 ```
 
@@ -322,7 +363,7 @@ if bc.cacheConfig.Disabled {
 }
 ```
 
-trie\database.go
+trie\database.go    Commit()
 
 ```go
 func (db *Database) Commit(node common.Hash, report bool) error {
@@ -396,6 +437,9 @@ func (db *Database) Commit(node common.Hash, report bool) error {
 }
 ```
 
+
+trie\database.go    commit()
+```
     // commit is the private locked version of Commit.
     func (db *Database) commit(hash common.Hash, batch ethdb.Batch) error {
        // If the node does not exist, it's a previously committed node
@@ -425,10 +469,10 @@ func (db *Database) Commit(node common.Hash, report bool) error {
        return nil
     }
     
-    
+
+```
 
 ```go
-​```go
 // stateDB数据结构
 type StateDB struct {
 	db   Database
@@ -495,16 +539,14 @@ type Database struct {
 }
 ```
 
+### 疑问
 
+>以太坊技术详解与实战
+>
+>
 > 以太坊中共有三个LevelDB数据库，分别是BlockDB、StateDB和ExtrasDB。BlockDB保存了块的主体内容，包括块头和交易；StateDB保存了账户的状态数据；ExtrasDB保存了收据信息和其他辅助信息。
 
 
-
-```
-// NodeDatabase is the path to the database containing the previously seen
-// live nodes in the network.
-NodeDatabase string `toml:",omitempty"`
-```
 
 
 
