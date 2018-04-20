@@ -4,8 +4,9 @@
 
 * [开始使用以太坊](./开始使用以太坊.md)
 * 以太坊源码学习
-  * 数据结构
+  * 数据结构与存储
       * trie: [Modified Merkle Patricia Tree](./trie.md)
+      * [物理存储](./physicalView.md)
   * （待整理）
       * [Sender函数](./Sender.md)
       * [EVM解释器](./EVMInterpreter.md)
@@ -22,9 +23,8 @@
 | 2018/3/20 | 区块与交易的数据结构初探 | 刘文炎 |  |
 | 2018/3/20 | Miner包 Consensus包 | 王浩 |  |
 | 2018/3/24 | Transaction与block的打包与提交 | 袁佳豪 |  |
-| 2018/3/24 | 以太坊物理存储分析 | 刘文炎 |  |
+| 2018/3/24 | [以太坊物理存储分析](./physicalView.md)<br>[数据库访问工具](./plyvel.md) | 刘文炎 | :checkered_flag: |
 | 2018/3/24 | [Miner包中的挖矿流程](./minerPackage.md) | 王浩 |:checkered_flag:  |
-| 2018/3/24 | 以太坊物理存储分析<br>[数据库访问工具](./plyvel.md) | 刘文炎 |  |
 | 2018/3/27 | Gas管理 DoS攻击 交易打包与执行 交易堵塞 | 袁佳豪 |  |
 | 2018/3/27 | 从世界状态获取账户余额 | 刘文炎 |  |
 | 2018/3/27 | worker中新区块组装与交易提交| 王浩 ||
