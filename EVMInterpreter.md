@@ -130,6 +130,20 @@ pop
 #### 释疑❗️
 
 ```diff
++ 编译丢失变量名、注释、代码格式等。
+```
+
+Solidity文档 » 常见问题 » [存在反编译器吗？](http://solidity.readthedocs.io/en/latest/frequently-asked-questions.html#is-there-a-decompiler-available)
+
+> There is no exact decompiler to Solidity, but [Porosity](https://github.com/comaeio/porosity) is close. Because some information like variable names, comments, and source code formatting is lost in the compilation process, it is not possible to completely recover the original source code.
+>
+> Bytecode can be disassembled to opcodes, a service that is provided by several blockchain explorers.
+> 
+> Contracts on the blockchain should have their original source code published if they are to be used by third parties.
+
+除了Porosity有点接近之外，Solidity没有严格意义上的反编译器。由于诸如变量名、注释、代码格式等会在编译过程中丢失，所以完全反编译回源代码是没有可能的。
+
+```diff
 + 智能合约的字节码：
 ```
 
@@ -522,6 +536,8 @@ STOP
 
 ![Run()](img/EVM_InterpreterRun.png)
 
+#### (*Interpreter).Run()
+
 ```go
 # core/vm/interpreter.go
 func (in *Interpreter) Run(contract *Contract, input []byte) (ret []byte, err error) {
@@ -625,7 +641,125 @@ func (in *Interpreter) Run(contract *Contract, input []byte) (ret []byte, err er
 
 :exclamation:	evm.depth
 
-* [ ] 计划：Execute() with input data
+* [x] 计划：[Execute() with input data](#abi编码外部调用的方式)
+
+## 智能合约调用的方式
+
+外部程序通过创建交易，调用部署在区块链上的合约。
+
+> **Compiling Solidity into EVM bytecode.** Although contracts are rendered as sets of functions in Solidity, the EVM bytecode has no support for functions. Therefore, the Solidity compiler translates contracts so that their first part implements a function dispatching mechanism. More specifically, each function is uniquely identified by a signature, based on its name and type parameters. Upon function invocation, this signature is passed as input to the called contract: if it matches some function, the execution jumps to the corresponding code, otherwise it jumps to the fallback function. This is a special function with no name and no arguments, which can be arbitrarily programmed. The fallback function is executed also when the contract is passed an empty signature: this happens e.g. when sending ether to the contract.
+> 
+> ——Atzei, N., Bartoletti, M. and Cimoli, T., 2017, April. A survey of attacks on Ethereum smart contracts (SoK). In International Conference on Principles of Security and Trust (pp. 164-186). Springer, Berlin, Heidelberg.
+
+Solidity字节码实现了函数调度机制，即每个函数由基于名称和类型参数的签名唯一识别。当调用函数时，传入签名作为调用合约的输入：如果签名与某个函数匹配，执行跳转到相应的代码；否则，跳转到`fallback()`函数。
+
+#### 认识智能合约的调用
+
+让我们先看一下最基本的存储合约`C`，函数`setCBD()`和`getCBD()`可以用来变更或取出变量`cbd`的值。
+
+```solidity
+pragma solidity ^0.4.21;contract C {    uint256 cbd;    function setCBD(uint256 _cbd) public {        cbd = _cbd;    }    function getCBD() public view returns (uint256) {        return cbd;    }}
+```
+
+该合约允许任何人调用`setCBD()`，传入不同的值，在合约中覆盖存储`cbd`（在区块链的历史记录中能够追溯），并且`cbd`可以被任何人调用`getCBD()`访问。
+
+1. 部署合约
+
+![Contract deploy](img/evm_deploy.png)
+
+![Contract created](img/evm_create.png)
+
+![Creation of C](img/evm_creation.png)
+
+2. 调用`setCBD()`，传入109，变更`cbd`
+
+![Set cbd](img/evm_set.png)
+
+![Set input](img/evm_input.png)
+
+![Transact to C.setCBD](img/evm_transact_set.png)
+
+3. 调用`getCBD()`，获取`cbd`
+
+![Get cbd](img/evm_get.png)
+
+![Call to C.getCBD](img/evm_call_get.png)
+
+#### 分析智能合约的调用
+
+1. 合约调用的`input`是什么？
+
+调用`setCBD()`的交易的`input`是：
+
+```
+0x30d2bbdf000000000000000000000000000000000000000000000000000000000000006d
+```
+
+EVM直接将字节序列`input`作为`calldata`传递给合约；如果合约是个Solidity程序，那么EVM将`input`解释为方法调用，执行相应的汇编代码。
+
+`input`可以分为两个部分：
+
+```
+// 4字节的方法选择器
+0x30d2bbdf
+// 32字节的参数
+000000000000000000000000000000000000000000000000000000000000006d
+```
+
+其中，方法选择器是方法签名SHA3-256的前4字节。在上述合约中，方法的签名是`setCBD(unit256)`，由方法的名称和参数类型构成。
+
+![sha3("setCBD(unit256)")](img/evm_sha3.png)
+
+类似地，调用`getCBD()`的`input`是：
+
+```python
+>>> binascii.hexlify(sha3("getCBD()"))[0:8]
+'7a3feda0'
+```
+
+2. 合约如何处理`input`？
+
+<details>
+    <summary>编译合约C：</summary>
+
+```solc
+solc --bin --asm c3.sol======= c3.sol:C =======EVM assembly:... */ "c3.sol":28:216  contract C {  mstore(0x40, 0x60)  jumpi(tag_1, iszero(callvalue))  0x0  dup1  reverttag_1:  dataSize(sub_0)  dup1  dataOffset(sub_0)  0x0  codecopy  0x0  returnstopsub_0: assembly {... */  /* "c3.sol":28:216  contract C {      mstore(0x40, 0x60)      jumpi(tag_1, lt(calldatasize, 0x4))      calldataload(0x0)      0x100000000000000000000000000000000000000000000000000000000      swap1      div      0xffffffff      and      dup1      0x30d2bbdf      eq      tag_2      jumpi      dup1      0x7a3feda0      eq      tag_3      jumpi    tag_1:      0x0      dup1      revert... */  /* "c3.sol":64:130  function setCBD(uint256 _cbd) public {    tag_2:      jumpi(tag_4, iszero(callvalue))      0x0      dup1      revert    tag_4:      tag_5      0x4      dup1      dup1      calldataload      swap1      0x20      add      swap1      swap2      swap1      pop      pop      jump(tag_6)    tag_5:      stop... */  /* "c3.sol":136:213  function getCBD() public view returns (uint256) {    tag_3:      jumpi(tag_7, iszero(callvalue))      0x0      dup1      revert    tag_7:      tag_8      jump(tag_9)    tag_8:      mload(0x40)      dup1      dup3      dup2      mstore      0x20      add      swap2      pop      pop      mload(0x40)      dup1      swap2      sub      swap1      return... */  /* "c3.sol":64:130  function setCBD(uint256 _cbd) public {    tag_6:        /* "c3.sol":118:122  _cbd */      dup1        /* "c3.sol":112:115  cbd */      0x0        /* "c3.sol":112:122  cbd = _cbd */      dup2      swap1      sstore      pop... */  /* "c3.sol":64:130  function setCBD(uint256 _cbd) public {      pop      jump      // out... */  /* "c3.sol":136:213  function getCBD() public view returns (uint256) {    tag_9:        /* "c3.sol":175:182  uint256 */      0x0        /* "c3.sol":202:205  cbd */      dup1      sload        /* "c3.sol":195:205  return cbd */      swap1      pop... */  /* "c3.sol":136:213  function getCBD() public view returns (uint256) {      swap1      jump      // out    auxdata: 0xa165627a7a72305820fb568ce44e37d3d44e130cb2358a389d005fa1698c6207c9a8b2dd50099eda870029}Binary:6060604052341561000f57600080fd5b60d38061001d6000396000f3006060604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806330d2bbdf14604e5780637a3feda014606e575b600080fd5b3415605857600080fd5b606c60048080359060200190919050506094565b005b3415607857600080fd5b607e609e565b6040518082815260200191505060405180910390f35b8060008190555050565b600080549050905600a165627a7a72305820fb568ce44e37d3d44e130cb2358a389d005fa1698c6207c9a8b2dd50099eda870029
+```
+
+</details>
+
+```solc
+sub_0: assembly {... */  /* "c3.sol":28:216  contract C {      mstore(0x40, 0x60)      jumpi(tag_1, lt(calldatasize, 0x4))
+      // 加载前4个字节作为方法选择器      calldataload(0x0)      0x100000000000000000000000000000000000000000000000000000000      swap1      div      0xffffffff      and
+      
+      // 如果选择器匹配0x30d2bbdf，跳转到setCBD(uint256)      dup1      0x30d2bbdf      eq      tag_2      jumpi
+      
+      // 如果选择器匹配0x7a3feda0，跳转到getCBD()      dup1      0x7a3feda0      eq      tag_3      jumpi
+      
+    // 如果选择器匹配失败，还原并返回    tag_1:      0x0      dup1      revert
+      
+    // 方法setCBD(uint256)... */  /* "c3.sol":64:130  function setCBD(uint256 _cbd) public {    tag_2:      jumpi(tag_4, iszero(callvalue))      0x0      dup1      revert    tag_4:
+      // 保存位置，方法调用后跳转      tag_5      0x4      dup1      dup1
+      // 加载参数      calldataload      swap1      0x20      add      swap1      swap2      swap1      pop      pop
+      // 执行方法      jump(tag_6)    tag_5:
+      // 程序终止      stop... */  /* "c3.sol":136:213  function getCBD() public view returns (uint256) {    tag_3:      jumpi(tag_7, iszero(callvalue))      0x0      dup1      revert    tag_7:      tag_8      jump(tag_9)    tag_8:      mload(0x40)      dup1      dup3      dup2      mstore      0x20      add      swap2      pop      pop      mload(0x40)      dup1      swap2      sub      swap1      return... */  /* "c3.sol":64:130  function setCBD(uint256 _cbd) public {    tag_6:        /* "c3.sol":118:122  _cbd */      dup1        /* "c3.sol":112:115  cbd */      0x0        /* "c3.sol":112:122  cbd = _cbd */      dup2      swap1      sstore      pop... */  /* "c3.sol":64:130  function setCBD(uint256 _cbd) public {      pop      jump      // out... */  /* "c3.sol":136:213  function getCBD() public view returns (uint256) {    tag_9:        /* "c3.sol":175:182  uint256 */      0x0        /* "c3.sol":202:205  cbd */      dup1      sload        /* "c3.sol":195:205  return cbd */      swap1      pop... */  /* "c3.sol":136:213  function getCBD() public view returns (uint256) {      swap1      jump      // out
+```
+
+#### 验证智能合约的调用
+
+前文的[(*Interpreter).Run()](#interpreterrun)中，
+
+```go
+# core/vm/interpreter.go
+	contract.Input = input
+```
+
+```go
+# core/vm/instructions.go
+func opCallDataLoad(pc *uint64, evm *EVM, contract *Contract, memory *Memory, stack *Stack) ([]byte, error) {
+    stack.push(evm.interpreter.intPool.get().SetBytes(getDataBig(contract.Input, stack.pop(), big32)))
+    return nil, nil}
+```
 
 ## 附录
 
