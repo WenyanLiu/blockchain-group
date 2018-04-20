@@ -10,6 +10,7 @@
       * [物理存储](./physicalView.md)
   * （待整理）
       * [Sender函数](./Sender.md)
+      * [世界状态](./AccountBalance.md)
       * [EVM解释器](./EVMInterpreter.md)
 * 以太坊分析工具
   * [plyvel](./plyvel.md)：数据库访问工具
@@ -27,7 +28,7 @@
 | 2018/3/24 | [以太坊物理存储分析](./physicalView.md)<br>[数据库访问工具](./plyvel.md) | 刘文炎 | :checkered_flag: |
 | 2018/3/24 | [Miner包中的挖矿流程](./minerPackage.md) | 王浩 |:checkered_flag:  |
 | 2018/3/27 | Gas管理 DoS攻击 交易打包与执行 交易堵塞 | 袁佳豪 |  |
-| 2018/3/27 | 从世界状态获取账户余额 | 刘文炎 |  |
+| 2018/3/27 | [从世界状态获取账户余额](./AccountBalance.md) | 刘文炎 |  |
 | 2018/3/27 | worker中新区块组装与交易提交| 王浩 ||
 | 2018/3/30 | [Gas价目与虚拟机外的交易执行](./ApplyTransaction.md) | 袁佳豪 | :checkered_flag: |
 | 2018/3/30 | [改进的默克尔·帕特里夏树](./trie.md) | 刘文炎 | :checkered_flag: |
