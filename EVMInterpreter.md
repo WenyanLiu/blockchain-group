@@ -641,7 +641,7 @@ func (in *Interpreter) Run(contract *Contract, input []byte) (ret []byte, err er
 
 :exclamation:	evm.depth
 
-* [x] 计划：[Execute() with input data](#abi编码外部调用的方式)
+* [x] 计划：[Execute() with input data](#%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E8%B0%83%E7%94%A8%E7%9A%84%E6%96%B9%E5%BC%8F)
 
 ## 智能合约调用的方式
 
