@@ -6,6 +6,7 @@
 * 以太坊源码学习
   * 数据结构与存储
       * trie: [Modified Merkle Patricia Tree](./trie.md)
+      * [区块与交易数据结构初探](./BlockTransactionDataStructure.md)
       * [物理存储](./physicalView.md)
   * （待整理）
       * [Sender函数](./Sender.md)
@@ -20,7 +21,7 @@
 | :-: | :-: | :-: | :-: |
 | 2018/3/15 | [搭建以太坊私有链](./firstTryEthBuildPrivateChain.md) | 王浩 | :checkered_flag: |
 | 2018/3/20 | [以太坊架构梳理](./以太坊架构梳理.md) | 袁佳豪 | :checkered_flag:  |
-| 2018/3/20 | 区块与交易的数据结构初探 | 刘文炎 |  |
+| 2018/3/20 | [区块与交易的数据结构初探](./BlockTransactionDataStructure.md) | 刘文炎 |  |
 | 2018/3/20 | Miner包 Consensus包 | 王浩 |  |
 | 2018/3/24 | Transaction与block的打包与提交 | 袁佳豪 |  |
 | 2018/3/24 | [以太坊物理存储分析](./physicalView.md)<br>[数据库访问工具](./plyvel.md) | 刘文炎 | :checkered_flag: |
