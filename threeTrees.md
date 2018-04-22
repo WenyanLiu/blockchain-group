@@ -6,7 +6,7 @@
 
 
 
-### 交易与收据的存储
+### 一、交易与收据的存储
 
 ```go
 // Header 结构体
@@ -72,12 +72,29 @@ func WriteBlockReceipts(db ethdb.Putter, hash common.Hash, number uint64, receip
 
 
 
-### 状态的存储
+### 二、状态的存储
 
-#### stateCache的产生
+
+
+#### 数据结构
+
+> StateDB 持有状态树trie，状态改变的对象stateObjects
+>
+> Trie	状态树
+>
+> cachingDB	
+>
+> cacheNode
+
+数据结构如下图
+
+![](img/whImg/stateDBAndstateCache.png)
+
+
+
+#### stateCache的创建
 
 ```go
-
 // backend.go 创建Ethereum对象
 func New(ctx *node.ServiceContext, config *Config) (*Ethereum, error) {
 	
@@ -146,26 +163,6 @@ func NewDatabase(diskdb ethdb.Database) *Database {
 }
 ```
 
-stateDB的结构
-
-blockchain.stateCache = &cachingDB{
-
-​	db:	&Database{
-
-​		diskdb: blockchain.db,
-
-​		nodes: map[common.Hash]*cachedNode{
-			{}: {children: make(map[common.Hash]int)},
-		},
-
-​		preimages: make(map[common.Hash][]byte),
-
-​	}
-
-​	codeSizeCache: csc,
-
-}
-
 
 
 #### state在insertChain()方法插入时的作用
@@ -203,32 +200,6 @@ func New(root common.Hash, db Database) (*StateDB, error) {
 }
 ```
 
-stateObject的结构体
-
-```go
-&stateObject{
-   db:            db, // *stateDB
-   address:       address,
-   addrHash:      crypto.Keccak256Hash(address[:]),
-   data:          data, // Account
-   cachedStorage: make(Storage),
-   dirtyStorage:  make(Storage),
-   onDirty:       onDirty,
-    ...
-}
-```
-
-Account数据类型
-
-```go
-type Account struct {
-   Nonce    uint64
-   Balance  *big.Int // 余额
-   Root     common.Hash // merkle root of the storage trie
-   CodeHash []byte
-}
-```
-
 
 
 2.在交易的执行中会使用到新建的state
@@ -244,6 +215,16 @@ Process方法会调用ApplyTransaction方法，会使用state创建新的EVM，�
 // ApplyTransaction()
 vmenv := vm.NewEVM(context, statedb, config, cfg)
 ```
+在交易执行结束，会设置账户nonce，修改账号余额，此过程会修改或创建stateObject，添加到stateDB.stateObjects中
+```
+// 设置账户nonce
+st.state.SetNonce(sender.Address(), st.state.GetNonce(sender.Address())+1)
+
+// 添加到余额
+st.state.AddBalance(st.evm.Coinbase, new(big.Int).Mul(new(big.Int).SetUint64(st.gasUsed()), st.gasPrice))
+```
+
+
 
 3.验证交易state方法ValidateState中，会验证block的header.Root，和执行过交易后得到的stateDB返回的状态Root是否相等。
 
@@ -254,7 +235,7 @@ err = bc.Validator().ValidateState(block, parent, state, receipts, usedGas)
 
 
 
-4.然后，会调用WriteBlockWithState()将block和state进行存储
+4.至此，根据交易执行的结果，stateDB的内容就已设置完毕，会调用WriteBlockWithState()将block和state进行存储
 
 ```go
 // insertChain()
@@ -267,7 +248,13 @@ status, err := bc.WriteBlockWithState(block, receipts, state)
 
 #### WriteBlockWithState()中state处理
 
-1.状态提交，返回root
+**1.状态提交，返回root**
+
+首先会进行stateDB的提交，执行state.Commit()方法，这里会做两件事情：
+
+（1）遍历stateDB.stateObjects中的stateObject，更新securreTrie中的trie树结构中的每个node
+
+（2）更新stateCache.db.nodes和stateCache.db.preimages
 
 ```go
 // WriteBlockWithState()
@@ -313,7 +300,7 @@ func (s *StateDB) Commit(deleteEmptyObjects bool) (root common.Hash, err error) 
       delete(s.stateObjectsDirty, addr)
    }
    // Write trie changes.
-   // 写入trie的变化
+   // 写入trie的变化 主要更新triedb.db.nodes
    root, err = s.trie.Commit(func(leaf []byte, parent common.Hash) error {
       var account Account
       // 解码叶子
@@ -339,7 +326,11 @@ func (s *StateDB) Commit(deleteEmptyObjects bool) (root common.Hash, err error) 
 
 
 
-2.创建triedb，提交
+**2.创建triedb，提交**
+
+（1）将stateCache.db.preimages中的preimage写入leveldb数据库
+
+（2）trie树根节点以及孩子节点写入leveldb数据库
 
 ```go
 // WriteBlockWithState()
@@ -363,16 +354,12 @@ if bc.cacheConfig.Disabled {
 }
 ```
 
-trie\database.go    Commit()
+trie\database.go，Commit()方法
 
 ```go
 func (db *Database) Commit(node common.Hash, report bool) error {
-   // Create a database batch to flush persistent data out. It is important that
-   // outside code doesn't see an inconsistent state (referenced data removed from
-   // memory cache during commit but not yet in persistent storage). This is ensured
-   // by only uncaching existing data when the database write finalizes.
    // 创建一个db batch来flush out持久化数据
-   // 重要的是外部的code不能看到一个分持久化的状态（在提交期间从内存缓存中删除的引用数据，但在持久存储中还没有）
+   // 重要的是外部的code不能看到一个非持久化的状态（在提交期间从内存缓存中删除的引用数据，但在持久存储中还没有）
    // 这确保了只有在数据库写完之后，才会对现有数据进行uncaching的处理
    db.lock.RLock()
 
@@ -430,7 +417,7 @@ func (db *Database) Commit(node common.Hash, report bool) error {
    logger("Persisted trie from memory database", "nodes", nodes-len(db.nodes), "size", storage-db.nodesSize, "time", time.Since(start),
       "gcnodes", db.gcnodes, "gcsize", db.gcsize, "gctime", db.gctime, "livenodes", len(db.nodes), "livesize", db.nodesSize)
 
-   // Reset the garbage collection statistics
+   // 重置垃圾回收变量
    db.gcnodes, db.gcsize, db.gctime = 0, 0, 0
 
    return nil
@@ -438,113 +425,54 @@ func (db *Database) Commit(node common.Hash, report bool) error {
 ```
 
 
-trie\database.go    commit()
+**trie\database.go ，   commit()方法**
 ```
-    // commit is the private locked version of Commit.
-    func (db *Database) commit(hash common.Hash, batch ethdb.Batch) error {
-       // If the node does not exist, it's a previously committed node
-       // node不存在，则是一个提交过的node
-       node, ok := db.nodes[hash]
-       if !ok {
-          return nil
-       }
-       // 遍历node.children
-       for child := range node.children {
-          if err := db.commit(child, batch); err != nil {
-             return err
-          }
-       }
-       // 放入batch
-       if err := batch.Put(hash[:], node.blob); err != nil {
-          return err
-       }
-       // If we've reached an optimal match size, commit and start over
-       // 到达一个最佳的匹配尺寸，提交并启动
-       if batch.ValueSize() >= ethdb.IdealBatchSize {
-          if err := batch.Write(); err != nil {
-             return err
-          }
-          batch.Reset()
-       }
-       return nil
-    }
-    
-
-```
-
-```go
-// stateDB数据结构
-type StateDB struct {
-	db   Database
-	trie Trie
-
-	// 在内存中(live)的对象，执行一个状态交易时会改变
-	// This map holds 'live' objects, which will get modified while processing a state transition.
-	stateObjects      map[common.Address]*stateObject
-	stateObjectsDirty map[common.Address]struct{}
-
-	// DB error.
-	// State objects are used by the consensus core and VM which are
-	// unable to deal with database-level errors. Any error that occurs
-	// during a database read is memoized here and will eventually be returned
-	// by StateDB.Commit.
-	dbErr error
-
-	// The refund counter, also used by state transitioning.
-	refund uint64
-
-	thash, bhash common.Hash
-	txIndex      int
-	logs         map[common.Hash][]*types.Log
-	logSize      uint
-
-	preimages map[common.Hash][]byte
-
-	// Journal of state modifications. This is the backbone of
-	// Snapshot and RevertToSnapshot.
-	// 状态修改的记录
-	journal        journal
-	validRevisions []revision
-	nextRevisionId int
-
-	lock sync.Mutex
-}
-
-// bc.stateCache
-type cachingDB struct {
-	db            *trie.Database
-	mu            sync.Mutex
-	pastTries     []*trie.SecureTrie
-	codeSizeCache *lru.Cache
-}
-
-type Database struct {
-
-	// 存储matured节点
-	diskdb ethdb.Database // Persistent storage for matured trie nodes
-
-	// 节点数据和关系
-	nodes     map[common.Hash]*cachedNode // Data and references relationships of a node
-	preimages map[common.Hash][]byte      // Preimages of nodes from the secure trie
-	seckeybuf [secureKeyLength]byte       // Ephemeral buffer for calculating preimage keys
-
-	gctime  time.Duration      // Time spent on garbage collection since last commit
-	gcnodes uint64             // Nodes garbage collected since last commit
-	gcsize  common.StorageSize // Data storage garbage collected since last commit
-
-	nodesSize     common.StorageSize // Storage size of the nodes cache
-	preimagesSize common.StorageSize // Storage size of the preimages cache
-
-	lock sync.RWMutex
+func (db *Database) commit(hash common.Hash, batch ethdb.Batch) error {
+   // If the node does not exist, it's a previously committed node
+   // node不存在，则是一个提交过的node
+   node, ok := db.nodes[hash]
+   if !ok {
+      return nil
+   }
+   // 递归提交node.children
+   for child := range node.children {
+      if err := db.commit(child, batch); err != nil {
+         return err
+      }
+   }
+   // 放入batch
+   if err := batch.Put(hash[:], node.blob); err != nil {
+      return err
+   }
+   // If we've reached an optimal match size, commit and start over
+   // 到达一个batch的合适size，写入提交
+   if batch.ValueSize() >= ethdb.IdealBatchSize {
+      if err := batch.Write(); err != nil {
+         return err
+      }
+      batch.Reset()
+   }
+   return nil
 }
 ```
+
+
 
 ### 疑问
 
->以太坊技术详解与实战
->
+>《以太坊技术详解与实战》：
 >
 > 以太坊中共有三个LevelDB数据库，分别是BlockDB、StateDB和ExtrasDB。BlockDB保存了块的主体内容，包括块头和交易；StateDB保存了账户的状态数据；ExtrasDB保存了收据信息和其他辅助信息。
+
+我们发现，以太坊节点文件夹中，只有chainData、nodes、lightchainData文件夹下有数据库文件，其中nodes文件夹中为p2p邻居节点信息，lightchainData为轻节点使用的数据库，只有chainData为我们创建的全节点存储位置。
+
+![52440727429](img\whImg\geth1.png)
+
+![52440729591](img\whImg\geth2.png)
+
+而从代码中看，以太坊的交易信息、状态信息和收据信息，最终都存在了一个数据库当中，就是blockchain.db
+
+我们认为书中所讲BlockDB就是blockchain.db，StateDB是一个处于内存中的结构体，而ExtrasDB并没有找到对应的内容。
 
 
 
