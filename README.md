@@ -34,15 +34,15 @@
 | 2018/3/30 | [改进的默克尔·帕特里夏树](./trie.md) | 刘文炎 | :checkered_flag: |
 | 2018/3/30 | [新区块的插入](./newBlockInsert.md) | 王浩 | :checkered_flag:  |
 | 2018/3/30 | [fetcher与downloader](./fetcherAndDownLoader.md) | 王浩 |  |
-| 2018/4/4 | [EVM初探](./EVM.md) | 袁佳豪 |  |
+| 2018/4/4 | [EVM初探](./EVM.md) | 袁佳豪 | :checkered_flag: |
 | 2018/4/4 | [日志记录工具](./log4go.md)<br>[Sender函数](./Sender.md) | 刘文炎 | :checkered_flag: |
-| 2018/4/12 | ??? | 袁佳豪 |  |
+| 2018/4/12 | [虚拟机基本内容](./EVM学习.md) | 袁佳豪 | :checkered_flag: |
 | 2018/4/12 | [以太坊虚拟机解释器](./EVMInterpreter.md) | 刘文炎 | :checkered_flag: |
 | 2018/4/12 | [新区块写入WriteBlockWithState方法](./InsertChainAndWriteBlockWithState.md) | 王浩 |  :checkered_flag: |
-| 2018/4/17 | ??? | 袁佳豪 |  |
+| 2018/4/17 | [EVM存储设计](./EVM存储.md)| 袁佳豪 |  |
 | 2018/4/17 | [以太坊虚拟机释疑](./EVMInterpreter.md#%E9%87%8A%E7%96%91%EF%B8%8F) | 刘文炎 | :checkered_flag: |
 | 2018/4/17 | [以太坊三棵树](./threeTrees.md) | 王浩 |  |
-| 2018/4/24 | ??? | 袁佳豪 |  |
+| 2018/4/24 | [Memory 使用与新增Opcode](./EVM存储.md#存储管理) | 袁佳豪 |  |
 | 2018/4/24 | [以太坊虚拟机释疑2](./EVMInterpreter.md#%E9%87%8A%E7%96%91%EF%B8%8F)<br>[智能合约的调用方式](./EVMInterpreter.md#%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E8%B0%83%E7%94%A8%E7%9A%84%E6%96%B9%E5%BC%8F) | 刘文炎 |  |
 | 2018/4/24 | ??? | 王浩 |  |
 
