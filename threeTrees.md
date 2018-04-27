@@ -6,7 +6,9 @@
 
 
 
-### 一、交易与收据的存储
+### 一、交易树与收据树
+
+#### **Header 结构体**
 
 ```go
 // Header 结构体
@@ -24,6 +26,10 @@ type Header struct {
 	...
 }
 ```
+
+
+
+#### **交易树**
 
 每个block产生的**交易**会存储在block结构体中
 
@@ -45,7 +51,12 @@ batch := bc.db.NewBatch()
 WriteBlockReceipts(batch, block.Hash(), block.NumberU64(), receipts)
 ...
 ```
+
+
+#### **收据树**
+
 收据写入数据库的方法
+
 ```go
 // 存储一个block所有的交易收据为一个收据slice，这个用来在链重组时，重新规划丢弃的交易
 func WriteBlockReceipts(db ethdb.Putter, hash common.Hash, number uint64, receipts types.Receipts) error {
@@ -72,7 +83,7 @@ func WriteBlockReceipts(db ethdb.Putter, hash common.Hash, number uint64, receip
 
 
 
-### 二、状态的存储
+### 二、状态树
 
 
 
@@ -89,6 +100,12 @@ func WriteBlockReceipts(db ethdb.Putter, hash common.Hash, number uint64, receip
 数据结构如下图
 
 ![](img/whImg/stateDBAndstateCache.png)
+
+
+
+#### insertChain与WriteBlockWithState流程
+
+![](img/whImg/stateDBAndStateCacheCommit.jpg)
 
 
 
@@ -167,7 +184,7 @@ func NewDatabase(diskdb ethdb.Database) *Database {
 
 #### state在insertChain()方法插入时的作用
 
-1.在将block插入链中时，使用insertChain()方法，首先创建一个新的state(stateDB类型)，参数为父块的状态root和blockchain的stateCache（cachingDB类型）
+**1.在将block插入链中时，使用insertChain()方法，首先创建一个新的state(stateDB类型)，参数为父块的状态root和blockchain的stateCache（cachingDB类型）**
 
 ```go
 // insertChain()
@@ -200,9 +217,32 @@ func New(root common.Hash, db Database) (*StateDB, error) {
 }
 ```
 
+// OpenTrie方法 得到Trie树
 
+```go
+// OpenTrie opens the main account trie.
+// 打开主账号的trie
+func (db *cachingDB) OpenTrie(root common.Hash) (Trie, error) {
+   db.mu.Lock()
+   defer db.mu.Unlock()
 
-2.在交易的执行中会使用到新建的state
+   for i := len(db.pastTries) - 1; i >= 0; i-- {
+      if db.pastTries[i].Hash() == root {
+         // 原来trie树中存在root
+         // 返回一个复制的trie
+         return cachedTrie{db.pastTries[i].Copy(), db}, nil
+      }
+   }
+   // 如果没有，新建一个SecureTrie
+   tr, err := trie.NewSecure(root, db.db, MaxTrieCacheGen)
+   if err != nil {
+      return nil, err
+   }
+   return cachedTrie{tr, db}, nil
+}
+```
+
+**2.在交易的执行中会使用到新建的state**
 
 ```go
 // insertChain()
@@ -226,7 +266,7 @@ st.state.AddBalance(st.evm.Coinbase, new(big.Int).Mul(new(big.Int).SetUint64(st.
 
 
 
-3.验证交易state方法ValidateState中，会验证block的header.Root，和执行过交易后得到的stateDB返回的状态Root是否相等。
+**3.验证交易state方法ValidateState中，会验证block的header.Root，和执行过交易后得到的stateDB返回的状态Root是否相等。**
 
 ```go
 // insertChain()
@@ -326,7 +366,7 @@ func (s *StateDB) Commit(deleteEmptyObjects bool) (root common.Hash, err error) 
 
 
 
-**2.创建triedb，提交**
+**2.创建triedb，提交
 
 （1）将stateCache.db.preimages中的preimage写入leveldb数据库
 
@@ -426,7 +466,7 @@ func (db *Database) Commit(node common.Hash, report bool) error {
 
 
 **trie\database.go ，   commit()方法**
-```
+```go
 func (db *Database) commit(hash common.Hash, batch ethdb.Batch) error {
    // If the node does not exist, it's a previously committed node
    // node不存在，则是一个提交过的node
@@ -466,9 +506,9 @@ func (db *Database) commit(hash common.Hash, batch ethdb.Batch) error {
 
 我们发现，以太坊节点文件夹中，只有chainData、nodes、lightchainData文件夹下有数据库文件，其中nodes文件夹中为p2p邻居节点信息，lightchainData为轻节点使用的数据库，只有chainData为我们创建的全节点存储位置。
 
-![52440727429](img\whImg\geth1.png)
+![52440727429](img/whImg/geth1.png)
 
-![52440729591](img\whImg\geth2.png)
+![52440729591](img/whImg/geth2.png)
 
 而从代码中看，以太坊的交易信息、状态信息和收据信息，最终都存在了一个数据库当中，就是blockchain.db
 
