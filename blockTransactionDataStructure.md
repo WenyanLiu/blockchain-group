@@ -7,7 +7,7 @@
 * Transaction存储在Block中
     * 每个Block存储多个Transaction，以提高TPS
 
-![Blockchain的数据结构](img/BlockTransactionDataStructure_block.png)    
+![Blockchain的数据结构](img/blockTransactionDataStructure_block.png)    
 
 #### Blockchain的存储方式
 
@@ -42,10 +42,10 @@
 
 #### Block加入Chain的过程
 
-![Block加入Chain的过程](img/BlockTransactionDataStructure_block2chain.png)
+![Block加入Chain的过程](img/blockTransactionDataStructure_block2chain.png)
 
 #### 时序图
 
-![时序图](img/BlockTransactionDataStructure_sequence.png)
+![时序图](img/blockTransactionDataStructure_sequence.png)
 
 
