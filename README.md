@@ -46,7 +46,7 @@
 | 2018/4/23 | [Memory 使用与新增Opcode](./evm存储.md#存储管理) | 袁佳豪 | :checkered_flag: |
 | 2018/4/23 | [以太坊虚拟机释疑2](./evmInterpreter.md#%E9%87%8A%E7%96%91%EF%B8%8F)<br>[智能合约的调用方式](./evmInterpreter.md#%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E8%B0%83%E7%94%A8%E7%9A%84%E6%96%B9%E5%BC%8F)<br>[fallback函数](./fallbackFunction.md) | 刘文炎 | :checkered_flag: |
 | 2018/4/28 | [区块验证细节](./verifyBlock.md) | 袁佳豪 |  |
-| 2018/4/28 | [黄皮书拾遗](./yellowpaperOmissions.md) | 刘文炎 |  |
+| 2018/4/28 | [黄皮书拾遗](./yellowpaperOmissions.md) | 刘文炎 | :checkered_flag: |
 
 ## 参考文献
 1. Wood, G., 2014. [Ethereum: A secure decentralised generalised transaction ledger](https://ethereum.github.io/yellowpaper/paper.pdf), Ethereum Project Yellow Paper.
