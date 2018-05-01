@@ -105,6 +105,18 @@ func WriteBlockReceipts(db ethdb.Putter, hash common.Hash, number uint64, receip
 
 #### insertChain与WriteBlockWithState流程
 
+insertChain方法
+
+- 会对block的heade和body进行验证
+- 执行block中的交易
+- 验证state
+- 调用WriteBlockWithState方法将block和state写入数据库
+
+WriteBlockWithState方法
+
+- stateDB.commit方法，更新stateObject，更新cachingDB.db.nodes
+- trieDB.commit方法，写入preimage到数据库，写入cachingDB.db.nodes到数据库
+
 ![](img/whImg/stateDBAndStateCacheCommit.jpg)
 
 
