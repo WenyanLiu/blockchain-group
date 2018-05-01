@@ -33,8 +33,7 @@
 | 2018/3/27 | worker中新区块组装与交易提交| 王浩 ||
 | 2018/3/30 | [Gas价目与虚拟机外的交易执行](./applyTransaction.md) | 袁佳豪 | :checkered_flag: |
 | 2018/3/30 | [改进的默克尔·帕特里夏树](./trie.md) | 刘文炎 | :checkered_flag: |
-| 2018/3/30 | [新区块的插入](./newBlockInsert.md) | 王浩 | :checkered_flag:  |
-| 2018/3/30 | [fetcher与downloader](./fetcherAndDownLoader.md) | 王浩 |  |
+| 2018/3/30 | [新区块的插入](./newBlockInsert.md)<br>[fetcher与downloader](./fetcherAndDownLoader.md) | 王浩 |  |
 | 2018/4/4 | [EVM初探](./evm.md) | 袁佳豪 | :checkered_flag: |
 | 2018/4/4 | [日志记录工具](./log4go.md)<br>[Sender函数](./sender.md) | 刘文炎 | :checkered_flag: |
 | 2018/4/12 | [虚拟机基本内容](./evm学习.md) | 袁佳豪 | :checkered_flag: |
