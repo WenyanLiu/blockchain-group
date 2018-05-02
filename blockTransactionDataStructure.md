@@ -38,7 +38,7 @@
 
 #### Chian的创建及初始化
 
-![Chain的创建及初始化](img/BlockTransactionDataStructure_chain.png)
+![Chain的创建及初始化](img/blockTransactionDataStructure_chain.png)
 
 #### Block加入Chain的过程
 
