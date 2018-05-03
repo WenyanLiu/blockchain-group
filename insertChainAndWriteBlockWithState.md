@@ -454,28 +454,6 @@ func (bc *BlockChain) WriteBlockWithState(block *types.Block, receipts []*types.
 
 ### 遗留问题
 
-body存储
-
-> txs
->
-> uncles
-
-header存储
-
-> 交易root
->
-> 收据root
->
-> 状态root
-
-
-
-状态相关
-
-> statedb
->
-> stateCache
-
 downloader
 
 > 触发以及过程
