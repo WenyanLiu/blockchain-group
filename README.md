@@ -48,7 +48,7 @@
 | 2018/4/28 | [黄皮书拾遗](./yellowpaperOmissions.md) | 刘文炎 | :checkered_flag: |
 | 2018/5/4 | ？？？ | 袁佳豪 |  |
 | 2018/5/4 | [《以太坊技术详解与实战》拾遗](./yyanBookOmissions.md)<br>[《以太坊技术详解与实战》隐私保护与数据安全](./yyBookPrivacy.md) | 刘文炎 |  |
-| 2018/5/4 | ？？？ | 王浩 |  |
+| 2018/5/4 | [《以太坊技术详解与实战》框架、共识、雷电网络、分片](./ethArchitecture.md) | 王浩 |  |
 
 ## 参考文献
 1. Wood, G., 2014. [Ethereum: A secure decentralised generalised transaction ledger](https://ethereum.github.io/yellowpaper/paper.pdf), Ethereum Project Yellow Paper.
