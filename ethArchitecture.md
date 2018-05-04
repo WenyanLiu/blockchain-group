@@ -31,6 +31,8 @@
 
 
 
+####[共识机制](./consensus.md)
+
 #### 雷电网络
 
 雷电网络（Raiden Network）是一种脱机缩放解决方案，用于在Ethereum块链中执行符合ERC20标准的令牌传输。 它是Ethereum的Bitcoin闪电网络版本，可实现近即时，低费用，可扩展和隐私保护的付款。
