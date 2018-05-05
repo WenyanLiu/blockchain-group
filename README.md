@@ -21,9 +21,9 @@
       * [区块验证细节](./verifyBlock.md)
       * [《以太坊技术详解与实战》数字资产发行和数据查询分析工具](./以太坊数字资产发行和数据查询分析工具.md)
   * 交易与区块的打包、提交与执行
-      *[Transaction与block的打包与提交](./transactionAndBlock.md)
-      *[Gas管理 DoS攻击 交易打包与执行 交易堵塞]()
-      *[Gas价目与虚拟机外的交易执行](./applyTransaction.md)
+      * [Transaction与block的打包与提交](./transactionAndBlock.md)
+      * [Gas管理 DoS攻击 交易打包与执行 交易堵塞]()
+      * [Gas价目与虚拟机外的交易执行](./applyTransaction.md)
   * 以太坊虚拟机
       * [EVM初探](./evm.md) 
       * [虚拟机基本内容](./evm学习.md)
