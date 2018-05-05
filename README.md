@@ -13,6 +13,9 @@
       * [Sender函数](./sender.md)
       * [世界状态](./accountBalance.md)
       * [EVM解释器](./evmInterpreter.md)
+      * [黄皮书拾遗](./yellowpaperOmissions.md)
+      * [《以太坊技术详解与实战》拾遗](./yyanBookOmissions.md)
+      * [隐私保护与数据安全](./yyBookPrivacy.md)
 * 以太坊分析工具
   * [plyvel](./plyvel.md)：数据库访问工具
   * [log4go-ethereum](./log4go.md)：针对Go Ethereum的日志记录工具
