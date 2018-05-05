@@ -4,6 +4,8 @@
 
 * [开始使用以太坊](./开始使用以太坊.md)
 * 以太坊源码学习
+  * 以太坊结构框架
+      *[以太坊框架梳理](./以太坊架构梳理.md)
   * 数据结构与存储
       * trie: [Modified Merkle Patricia Tree](./trie.md)
       * [区块与交易数据结构初探](./blockTransactionDataStructure.md)
@@ -16,6 +18,17 @@
       * [黄皮书拾遗](./yellowpaperOmissions.md)
       * [《以太坊技术详解与实战》拾遗](./yyanBookOmissions.md)
       * [隐私保护与数据安全](./yyBookPrivacy.md)
+      * [区块验证细节](./verifyBlock.md)
+      * [《以太坊技术详解与实战》数字资产发行和数据查询分析工具](./以太坊数字资产发行和数据查询分析工具.md)
+  * 交易与区块的打包、提交与执行
+      *[Transaction与block的打包与提交](./transactionAndBlock.md)
+      *[Gas管理 DoS攻击 交易打包与执行 交易堵塞]()
+      *[Gas价目与虚拟机外的交易执行](./applyTransaction.md)
+  * 以太坊虚拟机
+      * [EVM初探](./evm.md) 
+      * [虚拟机基本内容](./evm学习.md)
+      * [EVM存储设计](./evm存储.md)
+      * [Memory 使用与新增Opcode](./evm存储.md#存储管理)
 * 以太坊分析工具
   * [plyvel](./plyvel.md)：数据库访问工具
   * [log4go-ethereum](./log4go.md)：针对Go Ethereum的日志记录工具
@@ -49,7 +62,7 @@
 | 2018/4/23 | [以太坊虚拟机释疑2](./evmInterpreter.md#%E9%87%8A%E7%96%91%EF%B8%8F)<br>[智能合约的调用方式](./evmInterpreter.md#%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E8%B0%83%E7%94%A8%E7%9A%84%E6%96%B9%E5%BC%8F)<br>[fallback函数](./fallbackFunction.md) | 刘文炎 | :checkered_flag: |
 | 2018/4/28 | [区块验证细节](./verifyBlock.md) | 袁佳豪 |  |
 | 2018/4/28 | [黄皮书拾遗](./yellowpaperOmissions.md) | 刘文炎 | :checkered_flag: |
-| 2018/5/4 | ？？？ | 袁佳豪 |  |
+| 2018/5/4 | [《以太坊技术详解与实战》数字资产发行和数据查询分析工具](./以太坊数字资产发行和数据查询分析工具.md) | 袁佳豪 |  |
 | 2018/5/4 | [《以太坊技术详解与实战》拾遗](./yyanBookOmissions.md)<br>[《以太坊技术详解与实战》隐私保护与数据安全](./yyBookPrivacy.md) | 刘文炎 |  |
 | 2018/5/4 | [《以太坊技术详解与实战》框架、共识、雷电网络、分片](./ethArchitecture.md) | 王浩 |  |
 
