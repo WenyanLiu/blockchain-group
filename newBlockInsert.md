@@ -1,6 +1,6 @@
 # 区块插入具体过程
 
-以太坊通过fetcher和downloader将邻居节点传送的区块进行验证，并插入本地链中。
+以太坊本地节点获得一个新的block有三种途径，fetcher和downloader以及自身挖矿，都可以得到新的block，并插入本地区块链中。
 
 #### fetcher的方式
 
@@ -11,15 +11,19 @@
 - insert方法中会调用f.verifyHeader验证block头部，验证通过后会执行f.insertChain方法，f.insertChain方法会调用blockchain.InsertChain方法插入区块
 
 #### downloader的方式
-- downloader方法用来和邻居节点进行区块同步，在有新邻居加入或每10秒回强制同步一次
-
-- handler.go会执行loop循环会处理邻居发送的NewBlockMsg消息，如果调用sync.go的synchronise方法 
-- sync.go的synchronise方法会设置downloader的模式，FullSync还是FastSync，调用downloader.Synchronise方法
+- downloader方法用来和邻居节点进行区块同步，在有新邻居加入或每10秒会强制同步一次
+- handler.go会执行loop循环会处理邻居发送的NewBlockMsg消息，如果调用sync.go的synchronise方法，sync.go的synchronise方法会设置downloader的模式，FullSync或FastSync，调用downloader.Synchronise方法
 - downloader.Synchronise方法会调用d.syncWithPeer方法
 - d.syncWithPeer会创建fetchers函数数组，调用d.spawnSync(fetchers)方法
-- d.spawnSync方法会执行fetchers中的函数：
-- fetchHeaders，fetchBodies，fetchReceipts，processHeaders，processFullSyncContent或者processFastSyncContent
+- d.spawnSync方法会执行fetchers中的函数：fetchHeaders，fetchBodies，fetchReceipts，processHeaders，processFullSyncContent或者processFastSyncContent
 - 获取到block之后会执行blockchain.InsertChain方法插入区块
+
+#### 本节点挖矿组装block的方式
+
+- miner包负责向外提供一个“挖矿”得到的新区块。
+- miner.start()启动挖矿后，会从交易池中取出交易，执行后组装以新的block
+- 同时使用相应的共识机制（Ethash或Clique），对block进行封装
+- 完成后将block 写入本地区块并发送给邻居节点
 
 #### 
 
@@ -58,7 +62,7 @@ for {
 }
 ```
 
-txpool会执行setNewHead()
+txpool会执行setNewHead()方法，更新
 
 ```
 //txpool.go
