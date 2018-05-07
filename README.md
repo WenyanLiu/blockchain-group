@@ -63,7 +63,7 @@
 | 2018/4/28 | [区块验证细节](./verifyBlock.md) | 袁佳豪 |  |
 | 2018/4/28 | [黄皮书拾遗](./yellowpaperOmissions.md) | 刘文炎 | :checkered_flag: |
 | 2018/5/4 | [《以太坊技术详解与实战》数字资产发行和数据查询分析工具](./以太坊数字资产发行和数据查询分析工具.md) | 袁佳豪 |  |
-| 2018/5/4 | [《以太坊技术详解与实战》拾遗](./yyanBookOmissions.md)<br>[《以太坊技术详解与实战》隐私保护与数据安全](./yyBookPrivacy.md) | 刘文炎 |  |
+| 2018/5/4 | [《以太坊技术详解与实战》拾遗](./yyanBookOmissions.md)<br>[《以太坊技术详解与实战》隐私保护与数据安全](./yyBookPrivacy.md) | 刘文炎 | :checkered_flag: |
 | 2018/5/4 | [《以太坊技术详解与实战》框架、共识、雷电网络、分片](./ethArchitecture.md) | 王浩 |  |
 
 ## 参考文献
