@@ -30,7 +30,7 @@ type txdata struct {
 }
 ```
 
-当[ApplyTransaction()](./applyTransaction.md#%E4%B8%80-message)恢复交易的发起者地址时，先从交易的签名中恢复出公钥，再将公钥转化为`Address`类型的地址。对此，定义`Signer`接口：
+当[ApplyTransaction()](./docs/applyTransaction.md#%E4%B8%80-message)恢复交易的发起者地址时，先从交易的签名中恢复出公钥，再将公钥转化为`Address`类型的地址。对此，定义`Signer`接口：
 
 ```go
 # core/types/transaction_signing.go

@@ -82,6 +82,6 @@ func (self *StateDB) getStateObject(addr common.Address) (stateObject *stateObje
 
 关注`load`过程：
 
-具体见[trie/trie.go](./trie.md#triego)。
+具体见[trie/trie.go](./docs/trie.md#triego)。
 
 
