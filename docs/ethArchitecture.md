@@ -31,7 +31,7 @@
 
 
 
-####[共识机制](./consensus.md)
+####[共识机制](./docs/consensus.md)
 
 #### 雷电网络
 
