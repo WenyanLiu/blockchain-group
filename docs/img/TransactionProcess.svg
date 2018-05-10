@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- 由 Microsoft Visio, SVG Export 生成 TransactionProcess.svg Page-1 -->
+<!-- 由 Microsoft Visio, SVG Export 生成 交易执行流程.svg Page-1 -->
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events"
 		xmlns:v="http://schemas.microsoft.com/visio/2003/SVGExtensions/" width="11.6929in" height="8.26772in"
 		viewBox="0 0 841.89 595.276" xml:space="preserve" color-interpolation-filters="sRGB" class="st51">
@@ -203,7 +203,7 @@
 			</g>
 			<rect x="0" y="496.063" width="55.7154" height="99.2126" class="st11"/>
 		</g>
-		<g id="shape21-25" v:mID="21" v:groupContext="shape" transform="translate(70.8661,-396.976)">
+		<g id="shape21-25" v:mID="21" v:groupContext="shape" transform="translate(69.9369,-396.976)">
 			<title>圆角的矩形</title>
 			<desc>新的交易</desc>
 			<v:userDefs>
@@ -550,17 +550,17 @@
 			<title>动态连接线.79</title>
 			<path d="M0 595.28 L-21.26 595.28 L-21.26 353.82 L26.79 353.82 L26.79 368.04" class="st20"/>
 		</g>
-		<g id="shape81-125" v:mID="81" v:groupContext="shape" v:layerMember="1" transform="translate(107.008,-396.976)">
+		<g id="shape81-125" v:mID="81" v:groupContext="shape" v:layerMember="1" transform="translate(92.3704,-396.976)">
 			<title>动态连接线.81</title>
-			<path d="M-6.87 595.28 L-6.87 616.54 L-7.31 616.54 L-7.31 639.58" class="st20"/>
+			<path d="M6.84 595.28 L6.84 616.54 L7.33 616.54 L7.33 639.58" class="st20"/>
 		</g>
-		<g id="shape91-130" v:mID="91" v:groupContext="shape" v:layerMember="1" transform="translate(92.835,-467.717)">
+		<g id="shape91-130" v:mID="91" v:groupContext="shape" v:layerMember="1" transform="translate(106.544,-467.717)">
 			<title>动态连接线</title>
-			<path d="M6.87 595.28 L6.87 616.54 L7.31 616.54 L7.31 634.88" class="st20"/>
+			<path d="M-6.84 595.28 L-6.84 616.54 L-7.33 616.54 L-7.33 634.88" class="st20"/>
 		</g>
 		<g id="shape92-135" v:mID="92" v:groupContext="shape" transform="translate(74.3319,-39.426)">
 			<title>圆角的矩形.92</title>
-			<desc>邻居节点</desc>
+			<desc>本地节点</desc>
 			<v:userDefs>
 				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
 				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
@@ -590,7 +590,7 @@
 			<path d="M5.57 595.28 L50.14 595.28 A5.57145 5.57145 -180 0 0 55.72 589.7 L55.72 557.34 A5.57145 5.57145 -180 0 0 50.14
 						 551.76 L5.57 551.76 A5.57145 5.57145 -180 0 0 0 557.34 L0 589.7 A5.57145 5.57145 -180 0 0 5.57 595.28 Z"
 					class="st26"/>
-			<text x="7.86" y="576.85" class="st18" v:langID="2052"><v:paragraph v:horizAlign="1"/><v:tabList/>邻居节点</text>		</g>
+			<text x="7.86" y="576.85" class="st18" v:langID="2052"><v:paragraph v:horizAlign="1"/><v:tabList/>本地节点</text>		</g>
 		<g id="shape93-141" v:mID="93" v:groupContext="shape" v:layerMember="1" transform="translate(95.103,-82.9378)">
 			<title>动态连接线.93</title>
 			<path d="M7.09 595.28 L7.09 571.87" class="st20"/>
