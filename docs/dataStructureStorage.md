@@ -36,12 +36,19 @@
 
 trie包实现了改进的默克尔・帕特里夏树（Modified Merkle Patricia Tree, MPT），提供了任意长度的二进制数据（字节数组）之间的映射的持久化存储。
 
-以太坊的区块头部中的`stateRoot`、`transacionsRoot`、`receiptsRoot`使用MPT存储。### 预备知识
+以太坊的区块头部中的`stateRoot`、`transacionsRoot`、`receiptsRoot`使用MPT存储。
+
+### 预备知识
 
 MPT是一种前缀树的变种，基本思想来自[前缀树](#前缀树)、[压缩前缀树](#压缩前缀树)和[哈希树](#哈希树)。
-#### 前缀树前缀树（trie）是一种用于快速搜索的数据结构。如图所示，该前缀树存储了key为"A"、"to"、"tea"、"ted"、"ten"、"in"和"inn"，每个完整的英语单词都有与其对应的整数值。
 
-![trie](./img/trie_trie.png)前缀树的性质归纳为：
+#### 前缀树
+
+前缀树（trie）是一种用于快速搜索的数据结构。如图所示，该前缀树存储了key为"A"、"to"、"tea"、"ted"、"ten"、"in"和"inn"，每个完整的英语单词都有与其对应的整数值。
+
+![trie](./img/trie_trie.png)
+
+前缀树的性质归纳为：
 1. 根结点不包含字符，其他节点包含一个字符；
 1. 从根节点到某个节点遍历时经过的字符连接起来，构成该节点的字符串；
 1. 每个节点的子节点包含的字符串均不相同。
@@ -166,14 +173,91 @@ trie
 
 计算原有树形结构的哈希值调用`hashChildren`计算所有子节点的哈希值，将原有的子节点替换成子节点的哈希值。
 
-```gofunc (h *hasher) hash(n node, db *Database, force bool) (node, node, error) {	if hash, dirty := n.cache(); hash != nil {		if db == nil {			return hash, n, nil		}		if n.canUnload(h.cachegen, h.cachelimit) {			cacheUnloadCounter.Inc(1)			return hash, hash, nil		}		if !dirty {			return hash, n, nil		}	}	collapsed, cached, err := h.hashChildren(n, db)	if err != nil {		return hashNode{}, n, err	}	hashed, err := h.store(collapsed, db, force)	if err != nil {		return hashNode{}, n, err	}	cachedHash, _ := hashed.(hashNode)	switch cn := cached.(type) {	case *shortNode:		cn.flags.hash = cachedHash		if db != nil {			cn.flags.dirty = false		}	case *fullNode:		cn.flags.hash = cachedHash		if db != nil {			cn.flags.dirty = false		}	}	return hashed, cached, nil}
+```go
+func (h *hasher) hash(n node, db *Database, force bool) (node, node, error) {
+	if hash, dirty := n.cache(); hash != nil {
+		if db == nil {
+			return hash, n, nil
+		}
+		if n.canUnload(h.cachegen, h.cachelimit) {
+			cacheUnloadCounter.Inc(1)
+			return hash, hash, nil
+		}
+		if !dirty {
+			return hash, n, nil
+		}
+	}
+	collapsed, cached, err := h.hashChildren(n, db)
+	if err != nil {
+		return hashNode{}, n, err
+	}
+	hashed, err := h.store(collapsed, db, force)
+	if err != nil {
+		return hashNode{}, n, err
+	}
+	cachedHash, _ := hashed.(hashNode)
+	switch cn := cached.(type) {
+	case *shortNode:
+		cn.flags.hash = cachedHash
+		if db != nil {
+			cn.flags.dirty = false
+		}
+	case *fullNode:
+		cn.flags.hash = cachedHash
+		if db != nil {
+			cn.flags.dirty = false
+		}
+	}
+	return hashed, cached, nil
+}
 ```
 
 `hashChildren`函数递归地从叶子节点向上计算到根节点。
 
 ```go
-func (h *hasher) hashChildren(original node, db *Database) (node, node, error) {	var err error	switch n := original.(type) {	case *shortNode:		collapsed, cached := n.copy(), n.copy()		collapsed.Key = hexToCompact(n.Key)		cached.Key = common.CopyBytes(n.Key)		if _, ok := n.Val.(valueNode); !ok {			collapsed.Val, cached.Val, err = h.hash(n.Val, db, false)			if err != nil {				return original, original, err			}		}		if collapsed.Val == nil {			collapsed.Val = valueNode(nil)
-        }		return collapsed, cached, nil	case *fullNode:		collapsed, cached := n.copy(), n.copy()		for i := 0; i < 16; i++ {			if n.Children[i] != nil {				collapsed.Children[i], cached.Children[i], err = h.hash(n.Children[i], db, false)				if err != nil {					return original, original, err				}			} else {				collapsed.Children[i] = valueNode(nil)			}		}		cached.Children[16] = n.Children[16]		if collapsed.Children[16] == nil {			collapsed.Children[16] = valueNode(nil)		}		return collapsed, cached, nil	default:		return n, original, nil	}}
+func (h *hasher) hashChildren(original node, db *Database) (node, node, error) {
+	var err error
+
+	switch n := original.(type) {
+	case *shortNode:
+		collapsed, cached := n.copy(), n.copy()
+		collapsed.Key = hexToCompact(n.Key)
+		cached.Key = common.CopyBytes(n.Key)
+
+		if _, ok := n.Val.(valueNode); !ok {
+			collapsed.Val, cached.Val, err = h.hash(n.Val, db, false)
+			if err != nil {
+				return original, original, err
+			}
+		}
+		if collapsed.Val == nil {
+			collapsed.Val = valueNode(nil)
+        }
+		return collapsed, cached, nil
+
+	case *fullNode:
+		collapsed, cached := n.copy(), n.copy()
+
+		for i := 0; i < 16; i++ {
+			if n.Children[i] != nil {
+				collapsed.Children[i], cached.Children[i], err = h.hash(n.Children[i], db, false)
+				if err != nil {
+					return original, original, err
+				}
+			} else {
+				collapsed.Children[i] = valueNode(nil)
+			}
+		}
+		cached.Children[16] = n.Children[16]
+		if collapsed.Children[16] == nil {
+			collapsed.Children[16] = valueNode(nil)
+		}
+		return collapsed, cached, nil
+
+	default:
+		return n, original, nil
+	}
+}
 ```
 
 #### trie/iterator.go
@@ -284,10 +368,56 @@ func (t *Trie) insert(n node, prefix, key []byte, value node) (bool, node, error
     switch n := n.(type) {
     case *shortNode:
         matchlen := prefixLen(key, n.Key)
-        if matchlen == len(n.Key) {            dirty, nn, err := t.insert(n.Val, append(prefix, key[:matchlen]...), key[matchlen:], value)
-            if !dirty || err != nil {                return false, n, err            }            return true, &shortNode{n.Key, nn, t.newFlag()}, nil        }
-        branch := &fullNode{flags: t.newFlag()}        var err error        _, branch.Children[n.Key[matchlen]], err = t.insert(nil, append(prefix, n.Key[:matchlen+1]...), n.Key[matchlen+1:], n.Val)        if err != nil {            return false, nil, err        }        _, branch.Children[key[matchlen]], err = t.insert(nil, append(prefix, key[:matchlen+1]...), key[matchlen+1:], value)        if err != nil {            return false, nil, err        }        if matchlen == 0 {            return true, branch, nil        }        return true, &shortNode{key[:matchlen], branch, t.newFlag()}, nil    case *fullNode:        dirty, nn, err := t.insert(n.Children[key[0]], append(prefix, key[0]), key[1:], value)        if !dirty || err != nil {            return false, n, err        }        n = n.copy()        n.flags = t.newFlag()        n.Children[key[0]] = nn        return true, n, nil    case nil:        return true, &shortNode{key, value, t.newFlag()}, nil    case hashNode:
-        rn, err := t.resolveHash(n, prefix)        if err != nil {            return false, nil, err        }        dirty, nn, err := t.insert(rn, prefix, key, value)        if !dirty || err != nil {            return false, rn, err        }        return true, nn, nil    default:        panic(fmt.Sprintf("%T: invalid node: %v", n, n))    }}
+        if matchlen == len(n.Key) {
+            dirty, nn, err := t.insert(n.Val, append(prefix, key[:matchlen]...), key[matchlen:], value)
+            if !dirty || err != nil {
+                return false, n, err
+            }
+            return true, &shortNode{n.Key, nn, t.newFlag()}, nil
+        }
+        branch := &fullNode{flags: t.newFlag()}
+        var err error
+        _, branch.Children[n.Key[matchlen]], err = t.insert(nil, append(prefix, n.Key[:matchlen+1]...), n.Key[matchlen+1:], n.Val)
+        if err != nil {
+            return false, nil, err
+        }
+        _, branch.Children[key[matchlen]], err = t.insert(nil, append(prefix, key[:matchlen+1]...), key[matchlen+1:], value)
+        if err != nil {
+            return false, nil, err
+        }
+        if matchlen == 0 {
+            return true, branch, nil
+        }
+        return true, &shortNode{key[:matchlen], branch, t.newFlag()}, nil
+
+    case *fullNode:
+        dirty, nn, err := t.insert(n.Children[key[0]], append(prefix, key[0]), key[1:], value)
+        if !dirty || err != nil {
+            return false, n, err
+        }
+        n = n.copy()
+        n.flags = t.newFlag()
+        n.Children[key[0]] = nn
+        return true, n, nil
+
+    case nil:
+        return true, &shortNode{key, value, t.newFlag()}, nil
+
+    case hashNode:
+        rn, err := t.resolveHash(n, prefix)
+        if err != nil {
+            return false, nil, err
+        }
+        dirty, nn, err := t.insert(rn, prefix, key, value)
+        if !dirty || err != nil {
+            return false, rn, err
+        }
+        return true, nn, nil
+
+    default:
+        panic(fmt.Sprintf("%T: invalid node: %v", n, n))
+    }
+}
 ```
 
 `TryGet`函数根据MPT的key获取value。
@@ -436,7 +566,34 @@ type txdata struct {
 ```go
 # core/database_util.go
 
-var (	headHeaderKey = []byte("LastHeader")	headBlockKey  = []byte("LastBlock")	headFastKey   = []byte("LastFast")	trieSyncKey   = []byte("TrieSync")	headerPrefix        = []byte("h")	tdSuffix            = []byte("t")	numSuffix           = []byte("n")	blockHashPrefix     = []byte("H")	bodyPrefix          = []byte("b")	blockReceiptsPrefix = []byte("r")	lookupPrefix        = []byte("l")	bloomBitsPrefix     = []byte("B")	preimagePrefix = "secure-key-"	configPrefix   = []byte("ethereum-config-")	BloomBitsIndexPrefix = []byte("iB")	oldReceiptsPrefix = []byte("receipts-")	oldTxMetaSuffix   = []byte{0x01}	ErrChainConfigNotFound = errors.New("ChainConfig not found")	preimageCounter    = metrics.NewRegisteredCounter("db/preimage/total", nil)	preimageHitCounter = metrics.NewRegisteredCounter("db/preimage/hits", nil))
+var (
+	headHeaderKey = []byte("LastHeader")
+	headBlockKey  = []byte("LastBlock")
+	headFastKey   = []byte("LastFast")
+	trieSyncKey   = []byte("TrieSync")
+
+	headerPrefix        = []byte("h")
+	tdSuffix            = []byte("t")
+	numSuffix           = []byte("n")
+	blockHashPrefix     = []byte("H")
+	bodyPrefix          = []byte("b")
+	blockReceiptsPrefix = []byte("r")
+	lookupPrefix        = []byte("l")
+	bloomBitsPrefix     = []byte("B")
+
+	preimagePrefix = "secure-key-"
+	configPrefix   = []byte("ethereum-config-")
+
+	BloomBitsIndexPrefix = []byte("iB")
+
+	oldReceiptsPrefix = []byte("receipts-")
+	oldTxMetaSuffix   = []byte{0x01}
+
+	ErrChainConfigNotFound = errors.New("ChainConfig not found")
+
+	preimageCounter    = metrics.NewRegisteredCounter("db/preimage/total", nil)
+	preimageHitCounter = metrics.NewRegisteredCounter("db/preimage/hits", nil)
+)
 ```
 
 ## 查询任务实战
@@ -462,7 +619,11 @@ var (	headHeaderKey = []byte("LastHeader")	headBlockKey  = []byte("LastBlock")
 # DB.get(l,49f65849655317172a3f3f499303dc74ad30e7859b9b2ac7e9b04e02e30c7b49)
 >>> DB.get('6c49f65849655317172a3f3f499303dc74ad30e7859b9b2ac7e9b04e02e30c7b49')
 'e3a05e33fee0dd7a6a2d6c99a1879f9b3819572c9e18019a4de785a06a3c039d1fca1880'
-[  5e33fee0dd7a6a2d6c99a1879f9b3819572c9e18019a4de785a06a3c039d1fca,  18,  "",]
+[
+  5e33fee0dd7a6a2d6c99a1879f9b3819572c9e18019a4de785a06a3c039d1fca,
+  18,
+  "",
+]
 ```
 
 ##### 第二种类型的查询
@@ -475,9 +636,9 @@ var (	headHeaderKey = []byte("LastHeader")	headBlockKey  = []byte("LastBlock")
 
 **getPastLogs**
 
-.. code-block:: javascript
-
+```
     web3.eth.getPastLogs(options [, callback])
+```
 
 Gets past logs, matching the given options.
 
@@ -509,8 +670,7 @@ The structure of the returned event ``Object`` in the ``Array`` looks as follows
 
 **Example**
 
-.. code-block:: javascript
-
+```
     web3.eth.getPastLogs({
         address: "0x11f4d0A3c12e86B4b5F39B213F7E19D048276DAe",
         topics: ["0x033456732123ffff2342342dd12342434324234234fd234fd23fd4f23d4234"]
@@ -527,7 +687,8 @@ The structure of the returned event ``Object`` in the ``Array`` looks as follows
         blockNumber: 1234,
         address: '0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe'
     },{...}]
-    
+```
+
 ![](img/dataStructureStorage_2_1.png)
 ![](img/dataStructureStorage_2_2.png)
 
