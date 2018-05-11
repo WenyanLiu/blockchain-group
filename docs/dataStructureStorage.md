@@ -637,7 +637,7 @@ var (
 **getPastLogs**
 
 ```
-    web3.eth.getPastLogs(options [, callback])
+web3.eth.getPastLogs(options [, callback])
 ```
 
 Gets past logs, matching the given options.
@@ -671,22 +671,22 @@ The structure of the returned event ``Object`` in the ``Array`` looks as follows
 **Example**
 
 ```
-    web3.eth.getPastLogs({
-        address: "0x11f4d0A3c12e86B4b5F39B213F7E19D048276DAe",
-        topics: ["0x033456732123ffff2342342dd12342434324234234fd234fd23fd4f23d4234"]
-    })
-    .then(console.log);
+web3.eth.getPastLogs({
+    address: "0x11f4d0A3c12e86B4b5F39B213F7E19D048276DAe",
+    topics: ["0x033456732123ffff2342342dd12342434324234234fd234fd23fd4f23d4234"]
+})
+.then(console.log);
 
-    > [{
-        data: '0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385',
-        topics: ['0xfd43ade1c09fade1c0d57a7af66ab4ead7c2c2eb7b11a91ffdd57a7af66ab4ead7', '0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385']
-        logIndex: 0,
-        transactionIndex: 0,
-        transactionHash: '0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385',
-        blockHash: '0xfd43ade1c09fade1c0d57a7af66ab4ead7c2c2eb7b11a91ffdd57a7af66ab4ead7',
-        blockNumber: 1234,
-        address: '0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe'
-    },{...}]
+> [{
+    data: '0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385',
+    topics: ['0xfd43ade1c09fade1c0d57a7af66ab4ead7c2c2eb7b11a91ffdd57a7af66ab4ead7', '0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385']
+    logIndex: 0,
+    transactionIndex: 0,
+    transactionHash: '0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385',
+    blockHash: '0xfd43ade1c09fade1c0d57a7af66ab4ead7c2c2eb7b11a91ffdd57a7af66ab4ead7',
+    blockNumber: 1234,
+    address: '0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe'
+},{...}]
 ```
 
 ![](img/dataStructureStorage_2_1.png)
