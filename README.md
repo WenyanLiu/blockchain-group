@@ -27,7 +27,7 @@
 * 《以太坊技术详解与实战》学习与补充
   * [《以太坊技术详解与实战》数字资产发行和数据查询分析工具](./docs/以太坊数字资产发行和数据查询分析工具.md)
   * [《以太坊技术详解与实战》拾遗](./docs/yyanBookOmissions.md)
-  * [隐私保护与数据安全](./docs/yyBookPrivacy.md)
+  * [《以太坊技术详解与实战》隐私保护与数据安全](./docs/yyBookPrivacy.md)
   * [《以太坊技术详解与实战》框架、共识、雷电网络、分片](./docs/ethArchitecture.md)
 * 其他
    * [fallback函数](./docs/fallbackFunction.md)
