@@ -4,13 +4,10 @@
 
 * [开始使用以太坊](./docs/开始使用以太坊.md)
 * 以太坊源码学习
-  * 以太坊结构框架
-      *[以太坊框架梳理](./docs/以太坊架构梳理.md)
+  * [以太坊框架梳理](./docs/以太坊架构梳理.md)
   * 数据结构与存储
       * [数据存储与组织](./docs/dataStructureStorage.md)
       * [区块与交易数据结构初探](./docs/blockTransactionDataStructure.md)
-      * [世界状态](./docs/accountBalance.md)
-      * [物理存储](./docs/physicalView.md)   
   * 交易的执行
       * [Transaction与block的打包与提交](./docs/transactionAndBlock.md)
       * [Gas管理 DoS攻击 交易打包与执行 交易堵塞]()
