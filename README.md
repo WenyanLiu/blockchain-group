@@ -66,9 +66,9 @@
 | 2018/5/4 | [《以太坊技术详解与实战》拾遗](./docs/yyanBookOmissions.md)<br>[《以太坊技术详解与实战》隐私保护与数据安全](./docs/yyBookPrivacy.md) | 刘文炎 | :checkered_flag: |
 | 2018/5/4 | [《以太坊技术详解与实战》框架、共识、雷电网络、分片](./docs/ethArchitecture.md) | 王浩 |  |
 | 2018/5/6 | [总结汇报](./docs/总结汇报.md) | 袁佳豪<br>王浩<br>刘文炎 |  |
-| 2018/5/11 | ??? | 袁佳豪 |  |
 | 2018/5/11 | [查询任务实战](./docs/dataStructureStorage.md#查询任务实战) | 刘文炎 |  |
 | 2018/5/11 | ??? | 王浩 |  |
+ 2018/5/15 | [Gas机制总结](./docs/GasAndGasLimit.md) | 袁佳豪 |  |
 
 ## 参考文献
 1. Wood, G., 2014. [Ethereum: A secure decentralised generalised transaction ledger](https://ethereum.github.io/yellowpaper/paper.pdf), Ethereum Project Yellow Paper.
