@@ -2,37 +2,40 @@
 
 ## 目录
 
-* [开始使用以太坊](./开始使用以太坊.md)
+* [开始使用以太坊](./docs/开始使用以太坊.md)
 * 以太坊源码学习
   * 以太坊结构框架
       *[以太坊框架梳理](./docs/以太坊架构梳理.md)
   * 数据结构与存储
       * trie: [Modified Merkle Patricia Tree](./docs/trie.md)
       * [区块与交易数据结构初探](./docs/blockTransactionDataStructure.md)
-      * [物理存储](./docs/physicalView.md)
-  * （待整理）
-      * [fallback函数](./docs/fallbackFunction.md)
-      * [Sender函数](./docs/sender.md)
       * [世界状态](./docs/accountBalance.md)
-      * [EVM解释器](./docs/evmInterpreter.md)
-      * [黄皮书拾遗](./docs/yellowpaperOmissions.md)
-      * [《以太坊技术详解与实战》拾遗](./docs/yyanBookOmissions.md)
-      * [隐私保护与数据安全](./docs/yyBookPrivacy.md)
-      * [区块验证细节](./docs/verifyBlock.md)
-      * [《以太坊技术详解与实战》数字资产发行和数据查询分析工具](./docs/以太坊数字资产发行和数据查询分析工具.md)
-  * 交易与区块的打包、提交与执行
+      * [物理存储](./docs/physicalView.md)   
+  * 交易的执行
       * [Transaction与block的打包与提交](./docs/transactionAndBlock.md)
       * [Gas管理 DoS攻击 交易打包与执行 交易堵塞]()
       * [Gas价目与虚拟机外的交易执行](./docs/applyTransaction.md)
+      * [EVM解释器](./docs/evmInterpreter.md)
+  * 共识算法
+      * [区块验证细节](./docs/verifyBlock.md)
   * 以太坊虚拟机
       * [EVM初探](./docs/evm.md) 
       * [虚拟机基本内容](./docs/evm学习.md)
+      * [EVM解释器](./docs/evmInterpreter.md)
       * [EVM存储设计](./docs/evm存储.md)
       * [Memory 使用与新增Opcode](./docs/evm存储.md#存储管理)
 * 以太坊分析工具
   * [plyvel](./docs/plyvel.md)：数据库访问工具
   * [log4go-ethereum](./docs/log4go.md)：针对Go Ethereum的日志记录工具
-
+* 《以太坊技术详解与实战》学习与补充
+  * [《以太坊技术详解与实战》数字资产发行和数据查询分析工具](./docs/以太坊数字资产发行和数据查询分析工具.md)
+  * [《以太坊技术详解与实战》拾遗](./docs/yyanBookOmissions.md)
+  * [隐私保护与数据安全](./docs/yyBookPrivacy.md)
+  * [《以太坊技术详解与实战》框架、共识、雷电网络、分片](./docs/ethArchitecture.md)
+* 其他
+   * [fallback函数](./docs/fallbackFunction.md)
+   * [Sender函数](./docs/sender.md)
+   * [黄皮书拾遗](./docs/yellowpaperOmissions.md)  
 ## 路线
 
 | 日期 | 主题 | 作者 | 存档 |
