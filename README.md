@@ -73,4 +73,5 @@
 ## 参考文献
 1. Wood, G., 2014. [Ethereum: A secure decentralised generalised transaction ledger](https://ethereum.github.io/yellowpaper/paper.pdf), Ethereum Project Yellow Paper.
 2. Starchain, 2018. [师大链——面向丰富查询的联盟链](./docs/starchain.md), Starchain.
+3. Mark Russinovich, 2018. [An Introduction to Blockchain](./docs/MicrosoftBuild.md), Microsoft.
 
