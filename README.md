@@ -7,7 +7,7 @@
   * 以太坊结构框架
       *[以太坊框架梳理](./docs/以太坊架构梳理.md)
   * 数据结构与存储
-      * trie: [Modified Merkle Patricia Tree](./docs/trie.md)
+      * [数据存储与组织](./docs/dataStructureStorage.md)
       * [区块与交易数据结构初探](./docs/blockTransactionDataStructure.md)
       * [世界状态](./docs/accountBalance.md)
       * [物理存储](./docs/physicalView.md)   
@@ -45,13 +45,13 @@
 | 2018/3/20 | [区块与交易的数据结构初探](./docs/blockTransactionDataStructure.md) | 刘文炎 | :checkered_flag: |
 | 2018/3/20 | [共识机制与Consensus包](./docs/consensus.md) | 王浩 |  |
 | 2018/3/24 | [Transaction与block的打包与提交](./docs/transactionAndBlock.md) | 袁佳豪 | :checkered_flag: |
-| 2018/3/24 | [以太坊物理存储分析](./docs/physicalView.md)<br>[数据库访问工具](./docs/plyvel.md) | 刘文炎 | :checkered_flag: |
+| 2018/3/24 | [以太坊物理存储分析](./docs/dataStructureStorage.md#数据的物理存储)<br>[数据库访问工具](./docs/plyvel.md) | 刘文炎 | :checkered_flag: |
 | 2018/3/24 | [Miner包中的挖矿流程](./docs/minerPackage.md) | 王浩 |:checkered_flag:  |
 | 2018/3/27 | Gas管理 DoS攻击 交易打包与执行 交易堵塞 | 袁佳豪 |  |
 | 2018/3/27 | [从世界状态获取账户余额](./docs/accountBalance.md) | 刘文炎 | :checkered_flag: |
 | 2018/3/27 | worker中新区块组装与交易提交| 王浩 ||
 | 2018/3/30 | [Gas价目与虚拟机外的交易执行](./docs/applyTransaction.md) | 袁佳豪 | :checkered_flag: |
-| 2018/3/30 | [改进的默克尔·帕特里夏树](./docs/trie.md) | 刘文炎 | :checkered_flag: |
+| 2018/3/30 | [改进的默克尔·帕特里夏树](./docs/dataStructureStorage.md#数据的组织形式) | 刘文炎 | :checkered_flag: |
 | 2018/3/30 | [新区块的插入](./docs/newBlockInsert.md)<br>[fetcher与downloader](./docs/fetcherAndDownLoader.md) | 王浩 |  |
 | 2018/4/4 | [EVM初探](./docs/evm.md) | 袁佳豪 | :checkered_flag: |
 | 2018/4/4 | [日志记录工具](./docs/log4go.md)<br>[Sender函数](./docs/sender.md) | 刘文炎 | :checkered_flag: |
@@ -68,6 +68,10 @@
 | 2018/5/4 | [《以太坊技术详解与实战》数字资产发行和数据查询分析工具](./docs/以太坊数字资产发行和数据查询分析工具.md) | 袁佳豪 |  |
 | 2018/5/4 | [《以太坊技术详解与实战》拾遗](./docs/yyanBookOmissions.md)<br>[《以太坊技术详解与实战》隐私保护与数据安全](./docs/yyBookPrivacy.md) | 刘文炎 | :checkered_flag: |
 | 2018/5/4 | [《以太坊技术详解与实战》框架、共识、雷电网络、分片](./docs/ethArchitecture.md) | 王浩 |  |
+| 2018/5/6 | [总结汇报](./docs/总结汇报.md) | 袁佳豪<br>王浩<br>刘文炎 |  |
+| 2018/5/11 | ??? | 袁佳豪 |  |
+| 2018/5/11 | [查询任务实战](./docs/dataStructureStorage.md#查询任务实战) | 刘文炎 |  |
+| 2018/5/11 | ??? | 王浩 |  |
 
 ## 参考文献
 1. Wood, G., 2014. [Ethereum: A secure decentralised generalised transaction ledger](https://ethereum.github.io/yellowpaper/paper.pdf), Ethereum Project Yellow Paper.
