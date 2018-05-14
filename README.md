@@ -33,7 +33,9 @@
    * [fallback函数](./docs/fallbackFunction.md)
    * [Sender函数](./docs/sender.md)
    * [黄皮书拾遗](./docs/yellowpaperOmissions.md)  
-## 路线
+
+<details>
+    <summary>路线</summary>
 
 | 日期 | 主题 | 作者 | 存档 |
 | :-: | :-: | :-: | :-: |
@@ -68,7 +70,9 @@
 | 2018/5/6 | [总结汇报](./docs/总结汇报.md) | 袁佳豪<br>王浩<br>刘文炎 |  |
 | 2018/5/11 | [查询任务实战](./docs/dataStructureStorage.md#查询任务实战) | 刘文炎 |  |
 | 2018/5/11 | ??? | 王浩 |  |
- 2018/5/15 | [Gas机制总结](./docs/GasAndGasLimit.md) | 袁佳豪 |  |
+| 2018/5/15 | [Gas机制总结](./docs/GasAndGasLimit.md) | 袁佳豪 |  |
+
+</details>
 
 ## 参考文献
 1. Wood, G., 2014. [Ethereum: A secure decentralised generalised transaction ledger](https://ethereum.github.io/yellowpaper/paper.pdf), Ethereum Project Yellow Paper.
