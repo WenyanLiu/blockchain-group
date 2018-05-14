@@ -35,7 +35,7 @@
    * [黄皮书拾遗](./docs/yellowpaperOmissions.md)  
 
 <details>
-    <summary>路线</summary>
+    <summary><b>路线</b></summary>
 
 | 日期 | 主题 | 作者 | 存档 |
 | :-: | :-: | :-: | :-: |
