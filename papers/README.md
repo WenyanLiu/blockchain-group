@@ -46,7 +46,7 @@
 
 | Title | Authors | Published in | Year | Files | Notes |
 | :-: | :-: | :-: | :-: | :-: | :-: |
-| 区块链隐私保护研究综述 | 祝烈煌, 高峰, 沈蒙, 李艳东, 郑宝昆, 毛洪亮, 吴震 | 计算机研究与发展 | 2017 | [:ledger:](http://crad.ict.ac.cn/CN/article/downloadArticleFile.do?attachType=PDF&id=3529) |  |
+| 区块链隐私保护研究综述 | 祝烈煌, 高峰, 沈蒙, 李艳东, 郑宝昆, 毛洪亮, 吴震 | 计算机研究与发展 | 2017 | [:ledger:](http://crad.ict.ac.cn/CN/article/downloadArticleFile.do?attachType=PDF&id=3529) | [:memo:](./notes/区块链隐私保护研究综述.pdf)  |
 
 ## Applications
 
