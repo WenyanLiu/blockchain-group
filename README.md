@@ -1,6 +1,10 @@
-# 区块链学习
+<div align="center">
+	<img width="700" src="media/favicon.png" alt="Blockchain Group">
+</div>
 
-* [docs](./docs)目录：学习[Go Ethereum](https://github.com/ethereum/go-ethereum)的架构、数据结构与存储、虚拟机和共识算法等关键技术。
-* [papers](./papers)目录：研读区块链的前沿论文。
-* [slides](./slides)目录：报告、讲座存档。
+## 目录
+
+* [文档](./docs) - [Go Ethereum](https://github.com/ethereum/go-ethereum)的架构、数据存储、虚拟机和共识协议等关键技术的学习文档
+* [论文](./papers) - 区块链的前沿论文
+* [报告](./slides) - 报告、讲座和研讨班的幻灯片
 
