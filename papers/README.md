@@ -1,46 +1,56 @@
 # 区块链论文
 
-研读区块链论文列表。
+区块链的前沿论文
 
 ## 目录
 
-1. [Survey](#survey)
-1. [Consensus](#consensus)
-1. [Block generation parameters](#block-generation-parameters)
-1. [Attacks](#attacks)
-1. [Privacy](#privacy)
-1. [Applications](#applications)
+* [Survey](#survey)
+* [Consensus](#consensus)
+* [Block generation parameters](#block-generation-parameters)
+* [Attacks](#attacks)
+* [Privacy](#privacy)
+* [Applications](#applications)
 
 ---
 
 ## Survey
 
-- Elsden, C., Manohar, A., Briggs, J., Harding, M., Speed, C. and Vines, J., 2018, April. [Making Sense of Blockchain Applications: A Typology for HCI](https://dl.acm.org/ft_gateway.cfm?id=3174032&type=pdf). In Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems (p. 458). ACM.
-- Nakamoto, S., 2008. [Bitcoin: A peer-to-peer electronic cash system](http://www.academia.edu/download/32413652/BitCoin_P2P_electronic_cash_system.pdf).
+| Title | Authors | Published in | Year | Files | Notes |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| Making Sense of Blockchain Applications: A Typology for HCI | Chris Elsden, Arthi Manohar, Jo Briggs, Mike Harding, Chris Speed, John Vines | CHI | 2018 | [:ledger:](https://dl.acm.org/ft_gateway.cfm?id=3174032&type=pdf) |  |
 
 ## Consensus
 
-- Pass, R. and Shi, E., 2018, April. Thunderella: blockchains with optimistic instant confirmation. In Annual International Conference on the Theory and Applications of Cryptographic Techniques (pp. 3-33). Springer, Cham.
-- Badertscher, C., Garay, J., Maurer, U., Tschudi, D. and Zikas, V., 2018, April. But why does it work? A rational protocol design treatment of bitcoin. In Annual International Conference on the Theory and Applications of Cryptographic Techniques (pp. 34-65). Springer, Cham.
-- David, B., Gaži, P., Kiayias, A. and Russell, A., 2018, April. Ouroboros Praos: An adaptively-secure, semi-synchronous proof-of-stake blockchain. In Annual International Conference on the Theory and Applications of Cryptographic Techniques (pp. 66-98). Springer, Cham.
-- Alwen, J., Blocki, J. and Pietrzak, K., 2018, April. Sustained space complexity. In Annual International Conference on the Theory and Applications of Cryptographic Techniques (pp. 99-130). Springer, Cham.
-- Cohen, B. and Pietrzak, K., 2018, April. Simple proofs of sequential work. In Annual International Conference on the Theory and Applications of Cryptographic Techniques (pp. 451-467). Springer, Cham.
-- Micali, S., 2016. [Algorand: The efficient and democratic ledger](https://arxiv.org/pdf/1607.01341). arXiv preprint arXiv:1607.01341.
+| Title | Authors | Published in | Year | Files | Notes |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| Thunderella: Blockchains with Optimistic Instant Confirmation | Rafael Pass, Elaine Shi | EUROCRYPT | 2018 |  |  |
+| But Why Does It Work? A Rational Protocol Design Treatment of Bitcoin | Christian Badertscher, Juan A. Garay, Ueli Maurer, Daniel Tschudi, Vassilis Zikas | EUROCRYPT | 2018 |  |  |
+| Ouroboros Praos: An Adaptively-Secure, Semi-synchronous Proof-of-Stake Blockchain | Bernardo David, Peter Gazi, Aggelos Kiayias, Alexander Russell | EUROCRYPT | 2018 |  |  |
+| Sustained Space Complexity | Joël Alwen, Jeremiah Blocki, Krzysztof Pietrzak | EUROCRYPT | 2018 |  |  |
+| Simple Proofs of Sequential Work | Bram Cohen, Krzysztof Pietrzak | EUROCRYPT | 2018 |  |  |
+| Algorand: Scaling Byzantine Agreements for Cryptocurrencies | Yossi Gilad, Rotem Hemo, Silvio Micali, Georgios Vlachos, Nickolai Zeldovich | SOSP | 2017 | [:ledger:](https://dl.acm.org/ft_gateway.cfm?id=3132757&type=pdf) |  |
 
 ## Block generation parameters
 
-- "GHOST": [Secure High-Rate Transaction Processing in Bitcoin](http://www.cs.huji.ac.il/~avivz/pubs/15/btc_ghost_full.pdf). Sompolinsky Y, Zohar A. FC '15.
-- "PHANTOM": [A Scalable BlockDAG protocol](https://eprint.iacr.org/2018/104.pdf). Sompolinsky Y, Zohar A. '18.
+| Title | Authors | Published in | Year | Files | Notes |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| Secure High-Rate Transaction Processing in Bitcoin | Yonatan Sompolinsky, Aviv Zohar | Financial Cryptography | 2015 | [:ledger:](https://eprint.iacr.org/2013/881.pdf?hc_location=ufi) |  |
 
 ## Attacks
 
-- Atzei, N., Bartoletti, M. and Cimoli, T., 2017, April. [A survey of attacks on Ethereum smart contracts (SoK)](https://pdfs.semanticscholar.org/66cc/6e3f36c4282a189249523a5e88577739b736.pdf). In International Conference on Principles of Security and Trust (pp. 164-186). Springer, Berlin, Heidelberg.
+| Title | Authors | Published in | Year | Files | Notes |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| A Survey of Attacks on Ethereum Smart Contracts (SoK) | Nicola Atzei, Massimo Bartoletti, Tiziana Cimoli | POST | 2017 | [:ledger:](https://pdfs.semanticscholar.org/66cc/6e3f36c4282a189249523a5e88577739b736.pdf) |  |
 
 ## Privacy
 
-- 祝烈煌, 高峰, 沈蒙, 李艳东, 郑宝昆, 毛洪亮 and 吴震, 2017. [区块链隐私保护研究综述](http://crad.ict.ac.cn/CN/article/downloadArticleFile.do?attachType=PDF&id=3529). 计算机研究与发展, pp.2170-2186.
+| Title | Authors | Published in | Year | Files | Notes |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| 区块链隐私保护研究综述 | 祝烈煌, 高峰, 沈蒙, 李艳东, 郑宝昆, 毛洪亮, 吴震 | 计算机研究与发展 | 2017 | [:ledger:](http://crad.ict.ac.cn/CN/article/downloadArticleFile.do?attachType=PDF&id=3529) |  |
 
 ## Applications
 
-- [BigchainDB: A Scalable Blockchain Database](https://www.bigchaindb.com/whitepaper/bigchaindb-whitepaper.pdf). McConaghy T, Marques R, Müller A, De Jonghe D, McConaghy T, McMullen G, Henderson R, Bellemare S, Granzotto A. '17
+| Title | Authors | Published in | Year | Files | Notes |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| BigchainDB: a scalable blockchain database | McConaghy, Trent, Rodolphe Marques, Andreas Müller, Dimitri De Jonghe, Troy McConaghy, Greg McMullen, Ryan Henderson, Sylvain Bellemare, and Alberto Granzotto |  | 2016 | [:ledger:](https://www.bigchaindb.com/whitepaper/bigchaindb-whitepaper.pdf) |  |
 
