@@ -1,5 +1,5 @@
 <div align="center">
-	<img width="700" src="media/favicon.png" alt="Blockchain Group">
+	<img width="500" src="media/favicon.png" alt="Blockchain Group">
 </div>
 
 ## 目录
