@@ -28,7 +28,7 @@
 | Ouroboros Praos: An Adaptively-Secure, Semi-synchronous Proof-of-Stake Blockchain | Bernardo David, Peter Gazi, Aggelos Kiayias, Alexander Russell | EUROCRYPT | 2018 |  |  |
 | Sustained Space Complexity | Joël Alwen, Jeremiah Blocki, Krzysztof Pietrzak | EUROCRYPT | 2018 |  |  |
 | Simple Proofs of Sequential Work | Bram Cohen, Krzysztof Pietrzak | EUROCRYPT | 2018 |  |  |
-| Algorand: Scaling Byzantine Agreements for Cryptocurrencies | Yossi Gilad, Rotem Hemo, Silvio Micali, Georgios Vlachos, Nickolai Zeldovich | SOSP | 2017 | [:ledger:](https://dl.acm.org/ft_gateway.cfm?id=3132757&type=pdf) |  |
+| Algorand: Scaling Byzantine Agreements for Cryptocurrencies | Yossi Gilad, Rotem Hemo, Silvio Micali, Georgios Vlachos, Nickolai Zeldovich | SOSP | 2017 | [:ledger:](https://dl.acm.org/ft_gateway.cfm?id=3132757&type=pdf) | [📝](./notes/Algorand-Scaling Byzantine Agreements for Cryptocurrencies 演示文档.pdf) |
 
 ## Block generation parameters
 
