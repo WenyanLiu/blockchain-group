@@ -1,6 +1,6 @@
 # 以太坊源码学习
 
-学习[Go Ethereum](https://github.com/ethereum/go-ethereum)的架构、数据结构与存储、虚拟机和共识算法等关键技术。
+[Go Ethereum](https://github.com/ethereum/go-ethereum)的架构、数据存储、虚拟机和共识协议等关键技术的学习文档
 
 ## 目录
 
@@ -8,8 +8,8 @@
 * 以太坊源码学习
   * [以太坊框架梳理](./docs/以太坊架构梳理.md)
   * 数据结构与存储
-      * [数据存储与组织](./docs/dataStructureStorage.md)
       * [区块与交易数据结构初探](./docs/blockTransactionDataStructure.md)
+      * [数据存储与组织](./docs/dataStructureStorage.md)
   * 交易的执行
       * [Transaction与block的打包与提交](./docs/transactionAndBlock.md)
       * [Gas管理 DoS攻击 交易打包与执行 交易堵塞]()
@@ -17,24 +17,24 @@
       * [EVM解释器](./docs/evmInterpreter.md)
   * 共识算法
       * [区块验证细节](./docs/verifyBlock.md)
+          * [Sender函数](./docs/sender.md)
   * 以太坊虚拟机
       * [EVM初探](./docs/evm.md) 
-      * [虚拟机基本内容](./docs/evm学习.md)
+      * [EVM基本内容](./docs/evm学习.md)
       * [EVM解释器](./docs/evmInterpreter.md)
+          * [fallback函数](./docs/fallbackFunction.md)
       * [EVM存储设计](./docs/evm存储.md)
-      * [Memory 使用与新增Opcode](./docs/evm存储.md#存储管理)
+      * [Memory使用与新增Opcode](./docs/evm存储.md#存储管理)
 * 以太坊分析工具
   * [plyvel](./docs/plyvel.md)：数据库访问工具
   * [log4go-ethereum](./docs/log4go.md)：针对Go Ethereum的日志记录工具
-* 《以太坊技术详解与实战》学习与补充
-  * [《以太坊技术详解与实战》数字资产发行和数据查询分析工具](./docs/以太坊数字资产发行和数据查询分析工具.md)
-  * [《以太坊技术详解与实战》拾遗](./docs/yyanBookOmissions.md)
+* 《以太坊技术详解与实战》
+  * [数字资产发行和数据查询分析工具](./docs/以太坊数字资产发行和数据查询分析工具.md)
+  * [框架、共识、雷电网络、分片](./docs/ethArchitecture.md)
   * [隐私保护与数据安全](./docs/yyBookPrivacy.md)
-  * [《以太坊技术详解与实战》框架、共识、雷电网络、分片](./docs/ethArchitecture.md)
-* 其他
-   * [fallback函数](./docs/fallbackFunction.md)
-   * [Sender函数](./docs/sender.md)
-   * [黄皮书拾遗](./docs/yellowpaperOmissions.md)  
+  * [《以太坊技术详解与实战》拾遗](./docs/yyanBookOmissions.md)
+* 以太坊黄皮书
+   * [以太坊黄皮书拾遗](./docs/yellowpaperOmissions.md)  
 
 <details>
     <summary>路线</summary>
