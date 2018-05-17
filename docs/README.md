@@ -10,12 +10,22 @@
   * 数据结构与存储
       * [区块与交易数据结构初探](./docs/blockTransactionDataStructure.md)
       * [数据存储与组织](./docs/dataStructureStorage.md)
+  * 邻居区块插入
+      - [新区块插入](/newBlockInsert.md)
+      - [fetcher与downloader](./docs/fetcherAndDownLoader.md)
+      - [[新区块写入区块链](/insertChainAndWriteBlockWithState.md)]()
+      - [[以太坊中三棵树的存储](/threeTrees.md)](./docs/applyTransaction.md)
+  * 区块挖掘
+      * [[Miner包中的挖矿流程](./docs/minerPackage.md)](./docs/transactionAndBlock.md)
+      * [本地区块的组装](./docs/commitNewWork.md)
+      * [共识机制与Consensus包](./docs/consensus.md)
   * 交易的执行
       * [Transaction与block的打包与提交](./docs/transactionAndBlock.md)
       * [Gas管理 DoS攻击 交易打包与执行 交易堵塞]()
       * [Gas价目与虚拟机外的交易执行](./docs/applyTransaction.md)
       * [EVM解释器](./docs/evmInterpreter.md)
   * 共识算法
+      * [Ethash](./docs/Ethash.md)
       * [区块验证细节](./docs/verifyBlock.md)
           * [Sender函数](./docs/sender.md)
   * 以太坊虚拟机
