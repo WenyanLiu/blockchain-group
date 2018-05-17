@@ -21,7 +21,7 @@
       * [共识机制与Consensus](./docs/consensus.md)
   * 交易的执行
       * [Transaction与block的打包与提交](./docs/transactionAndBlock.md)
-      * [Gas管理 DoS攻击 交易打包与执行 交易堵塞]()
+      * [Gas管理](./docs/GasAndGasLimit.md)
       * [Gas价目与虚拟机外的交易执行](./docs/applyTransaction.md)
       * [EVM解释器](./docs/evmInterpreter.md)
   * 共识算法
