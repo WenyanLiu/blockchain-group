@@ -29,7 +29,7 @@
 | Sustained Space Complexity | Joël Alwen, Jeremiah Blocki, Krzysztof Pietrzak | EUROCRYPT | 2018 |  |  |
 | Simple Proofs of Sequential Work | Bram Cohen, Krzysztof Pietrzak | EUROCRYPT | 2018 |  |  |
 | Algorand: Scaling Byzantine Agreements for Cryptocurrencies | Yossi Gilad, Rotem Hemo, Silvio Micali, Georgios Vlachos, Nickolai Zeldovich | SOSP | 2017 | [:ledger:](https://dl.acm.org/ft_gateway.cfm?id=3132757&type=pdf) | [:memo:](./notes/Algorand演示文档.pdf) |
-| Secure High-Rate Transaction Processing in Bitcoin | Yonatan Sompolinsky, Aviv Zohar |  | 2013 |[:ledger:](https://fc15.ifca.ai/preproceedings/paper_30.pdf)   |  [:memo:](./notes/GHOST阅读笔记.ppdf) |
+| Secure High-Rate Transaction Processing in Bitcoin | Yonatan Sompolinsky, Aviv Zohar |  | 2013 |[:ledger:](https://fc15.ifca.ai/preproceedings/paper_30.pdf)   |  [:memo:](./notes/GHOST阅读笔记.pdf) |
 ## Block generation parameters
 
 | Title | Authors | Published in | Year | Files | Notes |
