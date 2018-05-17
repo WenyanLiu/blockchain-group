@@ -13,12 +13,12 @@
   * 邻居区块插入
       - [新区块插入](/newBlockInsert.md)
       - [fetcher与downloader](./docs/fetcherAndDownLoader.md)
-      - [[新区块写入区块链](/insertChainAndWriteBlockWithState.md)]()
-      - [[以太坊中三棵树的存储](/threeTrees.md)](./docs/applyTransaction.md)
+      - [新区块写入区块链](/insertChainAndWriteBlockWithState.md)
+      - [以太坊中三棵树的存储](/threeTrees.md)
   * 区块挖掘
-      * [[Miner包中的挖矿流程](./docs/minerPackage.md)](./docs/transactionAndBlock.md)
+      * [Miner包中的挖矿流程](./docs/minerPackage.md)
       * [本地区块的组装](./docs/commitNewWork.md)
-      * [共识机制与Consensus包](./docs/consensus.md)
+      * [共识机制与Consensus](./docs/consensus.md)
   * 交易的执行
       * [Transaction与block的打包与提交](./docs/transactionAndBlock.md)
       * [Gas管理 DoS攻击 交易打包与执行 交易堵塞]()

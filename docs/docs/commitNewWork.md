@@ -22,7 +22,9 @@
 
 ![](./img/whImg/commitNewWork.jpg)
 
-#### 源码分析
+## 源码分析
+
+####  commitNewWork
 
 commitNewWork方法作用是打包一个新的区块（缺少共识），此方法会将self.chain, header, work.state, work.txs, uncles, work.receipts等信息提交给engine.Finalize方法打包，返回一个只差共识步骤的block。
 
