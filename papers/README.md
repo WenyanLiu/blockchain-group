@@ -27,7 +27,7 @@
 | But Why Does It Work? A Rational Protocol Design Treatment of Bitcoin | Christian Badertscher, Juan A. Garay, Ueli Maurer, Daniel Tschudi, Vassilis Zikas | EUROCRYPT | 2018 |  |  |
 | Ouroboros Praos: An Adaptively-Secure, Semi-synchronous Proof-of-Stake Blockchain | Bernardo David, Peter Gazi, Aggelos Kiayias, Alexander Russell | EUROCRYPT | 2018 |  |  |
 | Sustained Space Complexity | Joël Alwen, Jeremiah Blocki, Krzysztof Pietrzak | EUROCRYPT | 2018 |  |  |
-| Simple Proofs of Sequential Work | Bram Cohen, Krzysztof Pietrzak | EUROCRYPT | 2018 |  |  |
+| Simple Proofs of Sequential Work | Bram Cohen, Krzysztof Pietrzak | EUROCRYPT | 2018 | [:ledger:](https://fc15.ifca.ai/preproceedings/paper_30.pdf)  |  [:memo:](./notes/GHOST阅读笔记.ppdf) |
 | Algorand: Scaling Byzantine Agreements for Cryptocurrencies | Yossi Gilad, Rotem Hemo, Silvio Micali, Georgios Vlachos, Nickolai Zeldovich | SOSP | 2017 | [:ledger:](https://dl.acm.org/ft_gateway.cfm?id=3132757&type=pdf) | [:memo:](./notes/Algorand演示文档.pdf) |
 | Secure High-Rate Transaction Processing in Bitcoin | Yonatan Sompolinsky, Aviv Zohar | EUROCRYPT | 2013 |  |  |
 ## Block generation parameters
