@@ -192,7 +192,7 @@ search:
 
 
 
-**1. 对于每一个区块，通过扫描区块头的方式计算出下一个种子（seed），该种子只与当前区块有关。**
+**1. 对于每一个区块，通过扫描区块头的方式计算出下一个种子（seed），该种子只与当前区块号有关。**
 
 ```go
 // epochLength = 30000
@@ -228,6 +228,50 @@ def zpad(s, length):
 ```go
 // 生成cache
 generateCache(cache, d.epoch, seed)
+{    
+ 	...
+    
+	header := *(*reflect.SliceHeader)(unsafe.Pointer(&dest))
+	cache := *(*[]byte)(unsafe.Pointer(&header))
+
+	// Calculate the number of theoretical rows (we'll store in one buffer nonetheless)
+	size := uint64(len(cache))
+	rows := int(size) / hashBytes
+
+    ...
+    
+	// Create a hasher to reuse between invocations
+	keccak512 := makeHasher(sha3.NewKeccak512())
+
+	// 顺序生成原始数据集
+	keccak512(cache, seed)
+	// hashBytes = 64
+	for offset := uint64(hashBytes); offset < size; offset += hashBytes {
+		keccak512(cache[offset:], cache[offset-hashBytes:offset])
+		atomic.AddUint32(&progress, 1)
+	}
+	// Use a low-round version of randmemohash
+	temp := make([]byte, hashBytes)
+
+	for i := 0; i < cacheRounds; i++ {
+		for j := 0; j < rows; j++ {
+			var (
+				srcOff = ((j - 1 + rows) % rows) * hashBytes
+				dstOff = j * hashBytes
+				xorOff = (binary.LittleEndian.Uint32(cache[dstOff:]) % uint32(rows)) * hashBytes
+			)
+			// 异或
+			bitutil.XORBytes(temp, cache[srcOff:srcOff+hashBytes], cache[xorOff:xorOff+hashBytes])
+			keccak512(cache[dstOff:], temp)
+			atomic.AddUint32(&progress, 1)
+		}
+	}
+	// Swap the byte order on big endian systems and return
+	// 如果系统是高字节序
+	if !isLittleEndian() {
+		swap(cache)
+	}
+}
 ```
 
 **3. 基于缓存再生成一个1GB的数据集，称其为DAG。数据集中的每一个元素都只依赖于缓存中的某几个元素，也就是说，只要有缓存，就可以快速地计算出DAG中指定位置的元素。挖矿者存储数据集，数据集随时间线性增长。** 
@@ -263,6 +307,54 @@ generateDataset(d.dataset, d.epoch, cache){
     ...
 }
 
+
+// 从256个伪随机的选择的cache nodes组合数据，hash后计算得到一个单独的数据集node
+func generateDatasetItem(cache []uint32, index uint32, keccak512 hasher) []byte {
+	// Calculate the number of theoretical rows (we use one buffer nonetheless)
+	// 计算理论行数 len(cache) / 16
+	rows := uint32(len(cache) / hashWords)
+
+	// Initialize the mix
+	// 初始化mix 64
+	mix := make([]byte, hashBytes)
+
+	// 把cache 放入 mix  ^ 异或
+	binary.LittleEndian.PutUint32(mix, cache[(index%rows)*hashWords]^index)
+	for i := 1; i < hashWords; i++ {
+		binary.LittleEndian.PutUint32(mix[i*4:], cache[(index%rows)*hashWords+uint32(i)])
+	}
+	keccak512(mix, mix)
+
+	// Convert the mix to uint32s to avoid constant bit shifting
+	// 转mix到 uint32
+	intMix := make([]uint32, hashWords)
+	for i := 0; i < len(intMix); i++ {
+		intMix[i] = binary.LittleEndian.Uint32(mix[i*4:])
+	}
+	// fnv it with a lot of random cache nodes based on index
+	// 使用fnvhash
+	for i := uint32(0); i < datasetParents; i++ {
+
+		// a*0x01000193 ^ b
+		parent := fnv(index^i, intMix[i%16]) % rows
+		fnvHash(intMix, cache[parent*hashWords:])
+	}
+	// Flatten the uint32 mix into a binary one and return
+	// 把uint32 的intMix 变成二进制
+	for i, val := range intMix {
+		binary.LittleEndian.PutUint32(mix[i*4:], val)
+	}
+	keccak512(mix, mix)
+	return mix
+}
+
+
+// fnvHash mixes in data into mix using the ethash fnv method.
+func fnvHash(mix []uint32, data []uint32) {
+	for i := 0; i < len(mix); i++ {
+		mix[i] = mix[i]*0x01000193 ^ data[i]
+	}
+}
 ```
 
 
@@ -271,16 +363,16 @@ generateDataset(d.dataset, d.epoch, cache){
 
 挖矿可以概括为”矿工“从DAG中随机选择元素并对其进行散列的过程，DAG也可以理解为一个完整的搜索空间，挖矿的过程就是从DAG中随机选择元素（类似比特币挖矿中试探合适nonce的过程）进行散列运算。
 
-1. 该**预处理的Header**（从最新的块导出）和**当前nonce**（当前推测），组合起来使用SHA3状算法来创建我们最初的128字节的混合组合，称为 **Mix 0** 这里。
-2. 该**Mix**是用来从DAG进行检索，由所表示的计算，其128字节的页面用来**获取DAG页**块。
-3. 该**混合Mix 0与检索DAG页合并。这是通过使用以太坊特定的混合功能来生成下一个Mix，这里称为Mix 1**。
+1. 该**预处理的Header**（从最新的块导出）和**当前nonce**（当前推测），组合起来使用SHA3算法来创建我们最初的128字节的混合组合，称为 **Mix 0** 这里。
+2. 该**Mix**是用来计算，从DAG获取哪个128字节的page，page代表了**获取的DAG页块**。
+3. 该**混合Mix 0与检索DAG页合并。通过使用以太坊特定的混合功能（fnvHash）来生成下一个Mix，这里称为Mix 1**。
 4. 2 3 步骤重复了64次，最终得到 **Mix 64**
 5. **Mix 64** 被后处理，产生更短的32字节**Mix Digest**。
 6. **Mix Digest** 与预定义的32字节**Target进行比较**。如果**Mix Digest**小于或等于**Target**，则**当前随机数nonce**被认为是成功的，并且将被广播到以太网网络。否则，**当前**随机数被认为是无效的，并且该算法重新运行不同的随机数（通过递增当前随机数或随机选取新随机数）。
 
 ![](img\whImg\ethash_algorithm.png)
 
-
+hashimotoFull方法
 
 ```go
 // 调用的hashimotoFull函数在本包的算法库中 
