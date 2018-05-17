@@ -45,7 +45,7 @@
 ## Data Mining
 | Title | Authors | Published in | Year | Files | Notes |
 | :-: | :-: | :-: | :-: | :-: | :-: |
-| Detecting Ponzi Schemes on Ethereum: Towards Healthier Blockchain Technology|Weili Chen, Weili Chen, Zibin Zheng, Jiahui Cui, Edith Ngai, Peilin Zheng,  Yuren Zhou| WWW | 2018 | [:ledger:](https://dl.acm.org/citation.cfm?id=3186046)|[:memo:](./notes/)|                                                                                 
+| Detecting Ponzi Schemes on Ethereum: Towards Healthier Blockchain Technology|Weili Chen, Weili Chen, Zibin Zheng, Jiahui Cui, Edith Ngai, Peilin Zheng,  Yuren Zhou| WWW | 2018 | [:ledger:](https://dl.acm.org/citation.cfm?id=3186046)|[:memo:](./notes/Detecting%20Ponzi%20Schemes%20on%20Ethereum.pdf)|                                                                                 
 
 ## Applications
 
