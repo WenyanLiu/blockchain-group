@@ -44,8 +44,8 @@
 | 区块链隐私保护研究综述 | 祝烈煌, 高峰, 沈蒙, 李艳东, 郑宝昆, 毛洪亮, 吴震 | 计算机研究与发展 | 2017 | [:ledger:](http://crad.ict.ac.cn/CN/article/downloadArticleFile.do?attachType=PDF&id=3529) | [:memo:](./notes/区块链隐私保护研究综述.pdf)  |
 
 ## Data Mining
-| Title | Authors | Published in | Year | Files | Notes |
-| :-: | :-: | :-: | :-: | :-: | :-: |
+| Title | Authors | Published in | Year | Files | Notes | Code |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | Detecting Ponzi Schemes on Ethereum: Towards Healthier Blockchain Technology|Weili Chen, Weili Chen, Zibin Zheng, Jiahui Cui, Edith Ngai, Peilin Zheng,  Yuren Zhou| WWW | 2018 | [:ledger:](https://dl.acm.org/citation.cfm?id=3186046)|[:memo:](./notes/Detecting%20Ponzi%20Schemes%20on%20Ethereum.pdf)|                                                                                 
 
 ## Applications
