@@ -22,7 +22,7 @@ Ethash的POW是memory-hard，支持矿机抵御。这意味着POW计算需要选
 
 缓存和DAG中每增加30000个区块更新一次，所以绝大多数“矿工”将把精力放在读取数据集上，而不是改变它
 
-![](img\whImg\Ethash.jpg)
+![](img/whImg/Ethash.jpg)
 
 ### 源码解析 sealer.go
 
@@ -370,7 +370,7 @@ func fnvHash(mix []uint32, data []uint32) {
 5. **Mix 64** 被后处理，产生更短的32字节**Mix Digest**。
 6. **Mix Digest** 与预定义的32字节**Target进行比较**。如果**Mix Digest**小于或等于**Target**，则**当前随机数nonce**被认为是成功的，并且将被广播到以太网网络。否则，**当前**随机数被认为是无效的，并且该算法重新运行不同的随机数（通过递增当前随机数或随机选取新随机数）。
 
-![](img\whImg\ethash_algorithm.png)
+![](img/whImg/ethash_algorithm.png)
 
 hashimotoFull方法
 
