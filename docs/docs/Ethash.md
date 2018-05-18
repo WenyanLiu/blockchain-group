@@ -359,7 +359,11 @@ func fnvHash(mix []uint32, data []uint32) {
 
 
 
-**数据集的产生hash验证过程**
+#### **数据集的产生hash验证过程**
+
+下面部分参考了这篇文章：
+
+[Ethereum's Memory Hardness Explained, and the Road to Mining It with Custom Hardware](https://www.vijaypradeep.com/blog/2017-04-28-ethereums-memory-hardness-explained/)
 
 挖矿可以概括为”矿工“从DAG中随机选择元素并对其进行散列的过程，DAG也可以理解为一个完整的搜索空间，挖矿的过程就是从DAG中随机选择元素（类似比特币挖矿中试探合适nonce的过程）进行散列运算。
 
@@ -371,6 +375,16 @@ func fnvHash(mix []uint32, data []uint32) {
 6. **Mix Digest** 与预定义的32字节**Target进行比较**。如果**Mix Digest**小于或等于**Target**，则**当前随机数nonce**被认为是成功的，并且将被广播到以太网网络。否则，**当前**随机数被认为是无效的，并且该算法重新运行不同的随机数（通过递增当前随机数或随机选取新随机数）。
 
 ![](img/whImg/ethash_algorithm.png)
+
+
+
+#### 为什么这个是内存困难的？
+
+每个混合操作都需要从DAG读取128个字节（上图，步骤2）。散列单个随机数需要64个混合，导致（128字节x 64）= 8 KB的存储器读取。这些读取是随机访问（每个128字节的页面是基于混合函数伪随机选择的），因此将一小块DAG放入L1或L2缓存并不会有多大帮助，因为下一次DAG获取很可能产生缓存未命中。由于从内存中获取DAG页面比混合计算慢得多，因此加速混合计算几乎没有性能改进。加速ethash散列算法的最佳方法是加速从内存中获取128字节的DAG页面。因此，我们认为ethash算法是内存硬性或[内存限制](https://en.wikipedia.org/wiki/Memory_bound_function)，因为系统的内存带宽限制了我们的性能。
+
+
+
+
 
 hashimotoFull方法
 
