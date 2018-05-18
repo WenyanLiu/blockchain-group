@@ -15,13 +15,13 @@
 
 ## Survey
 
-| Title | Authors | Published in | Year | Files | Notes | Code |
+| Title | Authors | Published in | Year | Files | Notes | Supplementaries |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Making Sense of Blockchain Applications: A Typology for HCI | Chris Elsden, Arthi Manohar, Jo Briggs, Mike Harding, Chris Speed, John Vines | CHI | 2018 | [:ledger:](https://dl.acm.org/ft_gateway.cfm?id=3174032&type=pdf) |  |  |
+| Making Sense of Blockchain Applications: A Typology for HCI | Chris Elsden, Arthi Manohar, Jo Briggs, Mike Harding, Chris Speed, John Vines | CHI | 2018 | [:ledger:](https://dl.acm.org/ft_gateway.cfm?id=3174032&type=pdf) |  | [:floppy_disk:](https://figshare.com/articles/Survey_and_Typology_of_Blockchain_Applications_Sep_2017_/5765502/1) |
 
 ## Consensus
 
-| Title | Authors | Published in | Year | Files | Notes | Code |
+| Title | Authors | Published in | Year | Files | Notes | Supplementaries |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | Thunderella: Blockchains with Optimistic Instant Confirmation | Rafael Pass, Elaine Shi | EUROCRYPT | 2018 |  |  |
 | But Why Does It Work? A Rational Protocol Design Treatment of Bitcoin | Christian Badertscher, Juan A. Garay, Ueli Maurer, Daniel Tschudi, Vassilis Zikas | EUROCRYPT | 2018 |  |  |
@@ -34,24 +34,30 @@
 
 ## Attacks
 
-| Title | Authors | Published in | Year | Files | Notes | Code |
+| Title | Authors | Published in | Year | Files | Notes | Supplementaries |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | A Survey of Attacks on Ethereum Smart Contracts (SoK) | Nicola Atzei, Massimo Bartoletti, Tiziana Cimoli | POST | 2017 | [:ledger:](https://pdfs.semanticscholar.org/66cc/6e3f36c4282a189249523a5e88577739b736.pdf) |  |
 
 ## Data Mining
 
-| Title | Authors | Published in | Year | Files | Notes | Code |
+| Title | Authors | Published in | Year | Files | Notes | Supplementaries |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | Detecting Ponzi Schemes on Ethereum: Towards Healthier Blockchain Technology|Weili Chen, Weili Chen, Zibin Zheng, Jiahui Cui, Edith Ngai, Peilin Zheng,  Yuren Zhou| WWW | 2018 | [:ledger:](https://dl.acm.org/citation.cfm?id=3186046)|[:memo:](./notes/Detecting%20Ponzi%20Schemes%20on%20Ethereum.pdf)|                                                                               
 
 ## Privacy
 
-| Title | Authors | Published in | Year | Files | Notes | Code |
+| Title | Authors | Published in | Year | Files | Notes | Supplementaries |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | 区块链隐私保护研究综述 | 祝烈煌, 高峰, 沈蒙, 李艳东, 郑宝昆, 毛洪亮, 吴震 | 计算机研究与发展 | 2017 | [:ledger:](http://crad.ict.ac.cn/CN/article/downloadArticleFile.do?attachType=PDF&id=3529) | [:memo:](./notes/区块链隐私保护研究综述.pdf)  |
 
 ## Applications
 
-| Title | Authors | Published in | Year | Files | Notes | Code |
+| Title | Authors | Published in | Year | Files | Notes | Supplementaries |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | BigchainDB: a scalable blockchain database | McConaghy, Trent, Rodolphe Marques, Andreas Müller, Dimitri De Jonghe, Troy McConaghy, Greg McMullen, Ryan Henderson, Sylvain Bellemare, and Alberto Granzotto |  | 2016 | [:ledger:](https://www.bigchaindb.com/whitepaper/bigchaindb-whitepaper.pdf) |  |
+
+> Legend:
+> 
+> | :ledger: | :memo: | :keyboard: | :camera: | :floppy_disk: |
+> | :-: | :-: |  :-: |  :-: |  :-: | 
+> | PDF<br>Files | Notes | Code | Slides | Other<br>Supplementaries |
