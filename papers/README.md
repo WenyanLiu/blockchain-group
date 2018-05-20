@@ -13,13 +13,13 @@
 
 ---
 
-## Survey
+### Survey
 
 | Title | Authors | Published in | Year | Files | Notes | Supplementaries |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | Making Sense of Blockchain Applications: A Typology for HCI | Chris Elsden, Arthi Manohar, Jo Briggs, Mike Harding, Chris Speed, John Vines | CHI | 2018 | [:ledger:](https://dl.acm.org/ft_gateway.cfm?id=3174032&type=pdf) |  | [:floppy_disk:](https://figshare.com/articles/Survey_and_Typology_of_Blockchain_Applications_Sep_2017_/5765502/1) |
 
-## Consensus
+### Consensus
 
 | Title | Authors | Published in | Year | Files | Notes | Supplementaries |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
@@ -32,25 +32,25 @@
 | Algorand: Scaling Byzantine Agreements for Cryptocurrencies | Yossi Gilad, Rotem Hemo, Silvio Micali, Georgios Vlachos, Nickolai Zeldovich | SOSP | 2017 | [:ledger:](https://dl.acm.org/ft_gateway.cfm?id=3132757&type=pdf) | [:memo:](./notes/Algorand演示文档.pdf) |
 | Secure High-Rate Transaction Processing in Bitcoin | Yonatan Sompolinsky, Aviv Zohar | Financial Cryptography | 2013 |[:ledger:](https://fc15.ifca.ai/preproceedings/paper_30.pdf)   |  [:memo:](./notes/GHOST阅读笔记.pdf) |
 
-## Attacks
+### Attacks
 
 | Title | Authors | Published in | Year | Files | Notes | Supplementaries |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | A Survey of Attacks on Ethereum Smart Contracts (SoK) | Nicola Atzei, Massimo Bartoletti, Tiziana Cimoli | POST | 2017 | [:ledger:](https://pdfs.semanticscholar.org/66cc/6e3f36c4282a189249523a5e88577739b736.pdf) |  |
 
-## Data Mining
+### Data Mining
 
 | Title | Authors | Published in | Year | Files | Notes | Supplementaries |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | Detecting Ponzi Schemes on Ethereum: Towards Healthier Blockchain Technology|Weili Chen, Weili Chen, Zibin Zheng, Jiahui Cui, Edith Ngai, Peilin Zheng,  Yuren Zhou| WWW | 2018 | [:ledger:](https://dl.acm.org/citation.cfm?id=3186046)|[:memo:](./notes/Detecting%20Ponzi%20Schemes%20on%20Ethereum.pdf)|                                                                               
 
-## Privacy
+### Privacy
 
 | Title | Authors | Published in | Year | Files | Notes | Supplementaries |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | 区块链隐私保护研究综述 | 祝烈煌, 高峰, 沈蒙, 李艳东, 郑宝昆, 毛洪亮, 吴震 | 计算机研究与发展 | 2017 | [:ledger:](http://crad.ict.ac.cn/CN/article/downloadArticleFile.do?attachType=PDF&id=3529) | [:memo:](./notes/区块链隐私保护研究综述.pdf)  |
 
-## Applications
+### Applications
 
 | Title | Authors | Published in | Year | Files | Notes | Supplementaries |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
