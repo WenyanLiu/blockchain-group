@@ -1,5 +1,12 @@
 # Ouroboros权益证明算法
 
+> 
+| Title: | Ouroboros: A Provably Secure Proof-of-Stake Blockchain Protocol |
+| --- | --- |
+| Authors: | Aggelos Kiayias, Alexander Russell, Bernardo David, Roman Oliynykov |
+| Institution: | University of Edinburgh, IOHK, University of Connecticut, Aarhus University |
+| Hournal: | CRYPTO’ 17 |
+
 Ouroboros权益证明（PoS）算法是协议中最重要的部分。它定义了节点达到账本状态共识的方式。
 
 Ouroboros算法是唯一一个基于证明安全的区块链权益证明协议。
