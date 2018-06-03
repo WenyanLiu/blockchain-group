@@ -55,7 +55,7 @@
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | 区块链隐私保护研究综述 | 祝烈煌, 高峰, 沈蒙, 李艳东, 郑宝昆, 毛洪亮, 吴震 | 计算机研究与发展 | 2017 | [:ledger:](http://crad.ict.ac.cn/CN/article/downloadArticleFile.do?attachType=PDF&id=3529) | [:memo:](./notes/区块链隐私保护研究综述.md) |
 | Deanonymisation of Clients in Bitcoin P2P Network | Alex Biryukov, Dmitry Khovratovich, Ivan Pustogarov | CCS | 2014 | [:ledger:](https://www.cryptolux.org/images/a/a1/Ccsfp614s-biryukovATS.pdf) | [:memo:](./notes/Deanonymisation%20of%20Clients%20in%20Bitcoin%20P2P%20Network.pdf) | [:camera:](http://www.hiero.lu/doc/H1_Alex-Biryukov-Research-CC.pdf) |
-| Fergal Reid, Martin Harrigan | An Analysis of Anonymity in the Bitcoin System | SPSN | 2011: 1318-1326
+| Fergal Reid, Martin Harrigan | An Analysis of Anonymity in the Bitcoin System | SPSN | 2013 |
 
 
 ### Applications
@@ -72,5 +72,5 @@
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwNTM0ODI1NDJdfQ==
+eyJoaXN0b3J5IjpbNzQyNTk5MDUwXX0=
 -->
