@@ -45,7 +45,7 @@
 | Detecting Ponzi Schemes on Ethereum: Towards Healthier Blockchain Technology|Weili Chen, Weili Chen, Zibin Zheng, Jiahui Cui, Edith Ngai, Peilin Zheng,  Yuren Zhou| WWW | 2018 | [:ledger:](https://dl.acm.org/citation.cfm?id=3186046)|[:memo:](./notes/Detecting%20Ponzi%20Schemes%20on%20Ethereum.pdf)|                                                                               
 | Dissecting Ponzi schemes on Ethereum: identification, analysis, and impact|Massimo Bartoletti, Salvatore Carta, Tiziana Cimoli, Roberto Saia | | 2017 | [:ledger:](http://pdfs.semanticscholar.org/96ae/cce3b5f82a6e920445eb4bfd8ab71189538a.pdf)|[:memo:](./notes/Dissecting%20Ponzi%20schemes%20on%20Ethereum.pdf)|                                                                               
 | Data mining for detecting Bitcoin Ponzi schemes|Massimo Bartoletti, Barbara Pes, Sergio Serusi | | 2017 | |[:memo:](./notes/Data%20mining%20for%20detecting%20Bitcoin%20Ponzi%20schemes.pdf)|                                                                               
-| Analyzing the Bitcoin Ponzi Scheme Ecosystem | Marie Vasek and Tyler Moore| 2018 | |[:memo:](./notes/比特币旁氏系统生态.md)|                                                                               
+| Analyzing the Bitcoin Ponzi Scheme Ecosystem | Marie Vasek and Tyler Moore| | 2018| |[:memo:](./notes/比特币旁氏系统生态.md)|                                                                               
 
 
 ### Privacy
