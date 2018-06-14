@@ -80,6 +80,4 @@
 ![User network. (**a**) Log–log plot of the cumulative degree distributions. (**b**) Log–log plot of the cumulative component size distribution. (**c**) Temporal histogram showing the number of edges per month. (**d**) Temporal histogram showing the density per month. (**e**) Temporal histogram showing the average path length per month](https://media.springernature.com/original/springer-static/image/chp%3A10.1007%2F978-1-4614-4139-7_10/MediaObjects/273444_1_En_10_Fig4_HTML.gif)
 
 用户网络图a展示了双对数坐标系中的累积度数分布。图c-e分别展示了每月用户网络的边数、密度和平均路径长度。
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIxMzQyOTkxMDZdfQ==
--->
+
