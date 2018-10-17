@@ -6,7 +6,7 @@
 
 PoW挖矿过程：
 
-![](/img/whImg/PoW.jpg)
+![](./img/whImg/PoW.jpg)
 
 
 
@@ -48,7 +48,7 @@ BFT风格的PoS：分配给验证者相对的权利，让他们有权提出块�
 
 Clique包
 
-![](/img/whImg/clique.jpg)
+![](./img/whImg/clique.jpg)
 
 POA****区块数据结构**
 
