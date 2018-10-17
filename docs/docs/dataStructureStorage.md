@@ -464,7 +464,7 @@ type Header struct {
 	Time        *big.Int       `json:"timestamp"        gencodec:"required"`
 	Extra       []byte         `json:"extraData"        gencodec:"required"`
 	MixDigest   common.Hash    `json:"mixHash"          gencodec:"required"`
-	Nonce       BlockNonce     `json:"nonce"            gencodec:"required"` }
+	Nonce       BlockNonce     `json:"nonce"            gencodec:"required"`}
 ```
 
 ![header](img/physicalView_header.png)
@@ -649,9 +649,6 @@ Gets past logs, matching the given options.
   - ``toBlock`` -  ``Number|String``: The number of the latest block (``"latest"`` may be given to mean the most recent and ``"pending"`` currently mining, block). By default ``"latest"``.
   - ``address`` -  ``String|Array``: An address or a list of addresses to only get logs from particular account(s).
   - ``topics`` - ``Array``: An array of values which must each appear in the log entries. The order is important, if you want to leave topics out use ``null``, e.g. ``[null, '0x12...']``. You can also pass an array for each topic with options for that topic e.g. ``[null, ['option1', 'option2']]``
-
-
-.. _eth-getpastlogs-return:
 
 **Returns**
 
