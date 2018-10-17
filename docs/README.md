@@ -13,8 +13,8 @@
   * 邻居区块插入
       - [新区块插入](./docs/newBlockInsert.md)
       - [fetcher与downloader](./docs/fetcherAndDownLoader.md)
-      - [新区块写入区块链](/insertChainAndWriteBlockWithState.md)
-      - [以太坊中三棵树的存储](/threeTrees.md)
+      - [新区块写入区块链](./docs/insertChainAndWriteBlockWithState.md)
+      - [以太坊中三棵树的存储](./docs/threeTrees.md)
   * 区块挖掘
       * [Miner包中的挖矿流程](./docs/minerPackage.md)
       * [本地区块的组装](./docs/commitNewWork.md)
