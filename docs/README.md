@@ -10,6 +10,7 @@
   * 数据结构与存储
       * [区块与交易数据结构初探](./docs/blockTransactionDataStructure.md)
       * [数据存储与组织](./docs/dataStructureStorage.md)
+          * [从世界状态获取账户余额](./docs/accountBalance.md)
   * 邻居区块插入
       - [新区块插入](./docs/newBlockInsert.md)
       - [fetcher与downloader](./docs/fetcherAndDownLoader.md)
