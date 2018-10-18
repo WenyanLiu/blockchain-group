@@ -27,6 +27,7 @@
       * [EVM解释器](./docs/evmInterpreter.md)
   * 共识算法
       * [Ethash](./docs/Ethash.md)
+      * [难度计算](./docs/totalDifficult.md)
       * [区块验证细节](./docs/verifyBlock.md)
           * [Sender函数](./docs/sender.md)
           * [双花问题](./docs/doublePay.md)
