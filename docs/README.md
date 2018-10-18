@@ -29,6 +29,7 @@
       * [Ethash](./docs/Ethash.md)
       * [区块验证细节](./docs/verifyBlock.md)
           * [Sender函数](./docs/sender.md)
+          * [双花问题](./docs/doublePay.md)
   * 以太坊虚拟机
       * [EVM初探](./docs/evm.md) 
       * [EVM基本内容](./docs/evm学习.md)
