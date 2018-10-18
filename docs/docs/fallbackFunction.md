@@ -13,14 +13,25 @@
 
 与其他函数类似，只要有足够的gas，`fallback`函数就可以执行复杂的操作。
 
-**注：**即使`fallback`函数不能传入参数，让然可以使用`msg.data`检索任何调用提供的负载。
+**注**：即使`fallback`函数不能传入参数，仍然可以使用`msg.data`检索任何调用提供的负载。
 
 ```solidity
-pragma solidity ^0.4.0;contract Test {    function() public { x = 1; }    uint x;}
+pragma solidity ^0.4.0;
 
-contract Sink {    function() public payable { }}
+contract Test {
+    function() public { x = 1; }
+    uint x;
+}
 
-contract Caller {    function callTest(Test test) public {        test.call(0xabcdef01);    }}
+contract Sink {
+    function() public payable { }
+}
+
+contract Caller {
+    function callTest(Test test) public {
+        test.call(0xabcdef01);
+    }
+}
 ```
 
 所有调用`Test`合约的交易都会触发`fallback`函数。向该合约发送以太币会引起一场，因为`fallback`函数没有修饰字`payable`。
