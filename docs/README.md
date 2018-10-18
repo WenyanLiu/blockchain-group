@@ -4,7 +4,7 @@
 
 ## 目录
 
-* [开始使用以太坊](./docs/开始使用以太坊.md)
+* [开始使用以太坊](./docs/firstTryEthBuildPrivateChain.md)
 * 以太坊源码学习
   * [以太坊框架梳理](./docs/以太坊架构梳理.md)
   * 数据结构与存储
